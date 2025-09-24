@@ -1,6 +1,12 @@
 ---
 const Name = 'M1saK1';
 const pageTitle = 'About Me';
+
+const myInfo = {
+  name: 'M1saK1',
+  bio: 'A passionate developer and a student from HDU.',
+  interests: ['coding', 'gaming', 'maimaidx', 'collecting figures'],
+};
 ---
 
 <html lang='zh-cn'>
@@ -18,9 +24,9 @@ const pageTitle = 'About Me';
     <br />
     <a href='/blog'>Blog</a>
     <h1>About Me</h1>
-    <p>Welcome to my blog! I'm {Name}, a passionate developer and a student from HDU.</p>
-    <p>I love exploring new technologies and sharing my knowledge with the community.</p>
-    <p>Now I'm learning Full-stack Development. Hope you enjoy my blog!</p>
+    <p>Welcome to my blog! I'm {myInfo.name}, {myInfo.bio}</p>
+    <p>I love {myInfo.interests.join(', ')}.</p>
+    <p>Now I'm learning Web full-stack development and web security. Hope you enjoy my blog!</p>
     <p>Made with Astro</p>
 </body>
 </html>
