@@ -1,3 +1,9 @@
+---
+import '../global.css';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+---
+
 <html>
     <head>
         <meta charset='UTF-8' />
@@ -6,17 +12,16 @@
         <meta name='generator' content='Astro Blog' />
         <title>M1saK1 Blog</title>
     </head>
-    <body>
-        <a href='/'>Home</a>
-        <br />
-        <a href='/about'>About</a>
-        <br />
-        <a href='/blog'>Blog</a>
-        <h1>Blog Posts</h1>
-        <p>Welcome to my blog! Here are some of my latest posts:</p>
-        <ul>
-            <li><a href='/posts/post-2'>最近的一些动态和想法</a></li>
-            <li><a href='/posts/post-1'>Astro学习笔记</a></li>
-        </ul>
+    <body class='flex flex-col min-h-screen'>
+        <Navigation />
+        <main class='flex-1'>
+            <h1>Blog Posts</h1>
+            <p>哈基米那没路多</p>
+            <ul>
+                <li><a href='/posts/post-2'>最近的一些动态和想法</a></li>
+                <li><a href='/posts/post-1'>Astro学习笔记</a></li>
+            </ul>
+        </main>
+        <Footer />
     </body>
 </html>

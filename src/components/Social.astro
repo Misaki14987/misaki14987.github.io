@@ -1,0 +1,28 @@
+---
+const { platform, username } = Astro.props;
+
+const platformMap = {
+	github: {
+		baseUrl: 'https://github.com/',
+		slug: 'github',
+	},
+	x: {
+		baseUrl: 'https://x.com/',
+		slug: 'x',
+	},
+	bilibili: {
+		baseUrl: 'https://space.bilibili.com/',
+		slug: 'bilibili',
+	},
+};
+
+type Platform = keyof typeof platformMap;
+
+const config = platformMap[platform as Platform] ?? { baseUrl: 'https://', slug: platform };
+const href = `${config.baseUrl}${username}`;
+const iconUrl = `https://cdn.simpleicons.org/${config.slug}/ffffff`;
+---
+
+<a href={href} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-8 h-8">
+	<img src={iconUrl} alt={`${platform} icon`} width="24" height="24" loading="lazy" />
+</a>

@@ -1,4 +1,7 @@
 ---
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import '../global.css';
 const Name = 'M1saK1';
 const pageTitle = 'About Me';
 
@@ -17,16 +20,15 @@ const myInfo = {
     <meta name='generator' content='Astro' />
     <title>{pageTitle}</title>
   </head>
-  <body>
-    <a href='/'>Home</a>
-    <br />
-    <a href='/about'>About</a>
-    <br />
-    <a href='/blog'>Blog</a>
-    <h1>About Me</h1>
-    <p>Welcome to my blog! I'm {myInfo.name}, {myInfo.bio}</p>
-    <p>I love {myInfo.interests.join(', ')}.</p>
-    <p>Now I'm learning Web full-stack development and web security. Hope you enjoy my blog!</p>
-    <p>Made with Astro</p>
-</body>
+  <body class='flex flex-col min-h-screen'>
+    <Navigation />
+    <main class='flex-1'>
+      <h1>About Me</h1>
+      <p>Welcome to my blog! I'm {myInfo.name}, {myInfo.bio}</p>
+      <p>I love {myInfo.interests.join(', ')}.</p>
+      <p>Now I'm learning Web full-stack development and web security. Hope you enjoy my blog!</p>
+      <p>Made with Astro</p>
+    </main>
+    <Footer />
+  </body>
 </html>
