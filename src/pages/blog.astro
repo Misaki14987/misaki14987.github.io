@@ -2,6 +2,8 @@
 import '../global.css';
 import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
+import Card from '../components/Card.astro';
+import Background from '../components/Background.astro';
 ---
 
 <html>
@@ -14,14 +16,21 @@ import Footer from '../components/Footer.astro';
     </head>
     <body class='flex flex-col min-h-screen'>
         <Navigation />
-        <main class='flex-1'>
-            <h1>Blog Posts</h1>
-            <p>哈基米那没路多</p>
-            <ul>
-                <li><a href='/posts/post-2'>最近的一些动态和想法</a></li>
-                <li><a href='/posts/post-1'>Astro学习笔记</a></li>
-            </ul>
-        </main>
+        <Background />
+        <div class='flex-1 items-center p-6'>
+                <Card title='2025' subtitle='Recent Thoughts' class='w-3.5/4 max-w-3xl mx-auto mt-10'>
+                    <a href='/posts/post-2'>
+                     <img src='src/assets/2025.jpg' alt='2025' class='w-full h-auto rounded-lg mb-4'/>
+                     </a>
+                    <p>最近的一些动态和想法</p>
+                </Card>
+                <Card title='Astro学习笔记' subtitle='Learning Notes' class='w-3.5/4 max-w-3xl mx-auto mt-10'>
+                    <a href='/posts/post-1'>
+                        <img src='src/assets/astro.png' alt='Astro Notes' class='w-full h-auto rounded-lg mb-4' />
+                    </a>
+                    <p>Astro学习笔记</p>
+                </Card>
+        </div>
         <Footer />
     </body>
 </html>

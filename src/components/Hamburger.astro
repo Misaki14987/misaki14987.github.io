@@ -1,0 +1,63 @@
+---
+export interface LinkItem {
+	href: string;
+	label: string;
+}
+
+interface Props {
+	links?: LinkItem[];
+}
+
+const defaultLinks: LinkItem[] = [
+	{ href: '/', label: 'Home' },
+	{ href: '/about', label: 'About' },
+	{ href: '/blog', label: 'Blog' },
+];
+
+const { links = defaultLinks }: Props = Astro.props;
+const menuId = `mobile-menu-${globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2)}`;
+---
+
+<div class='relative md:hidden' data-hamburger>
+	<button
+		type='button'
+		class='flex flex-col justify-center gap-1.5 rounded-xl border border-white/60 bg-white/80 px-3 py-2 shadow-sm backdrop-blur transition hover:bg-white'
+		aria-expanded='false'
+		aria-controls={menuId}
+		data-menu-toggle
+	>
+		<span class='block h-0.5 w-6 rounded-full bg-slate-800 transition-all duration-200'></span>
+		<span class='block h-0.5 w-6 rounded-full bg-slate-800 transition-all duration-200'></span>
+		<span class='block h-0.5 w-6 rounded-full bg-slate-800 transition-all duration-200'></span>
+	</button>
+
+	<nav
+		id={menuId}
+		class='absolute left-0 top-full z-50 mt-2 hidden min-w-[10rem] flex-col gap-1.5 rounded-2xl border border-white/70 bg-white/95 p-4 text-sm shadow-xl backdrop-blur data-[open="true"]:flex'
+		data-menu-panel
+	>
+		{links.map((link) => (
+			<a
+				href={link.href}
+				class='rounded-lg px-3 py-2 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900'
+			>
+				{link.label}
+			</a>
+		))}
+	</nav>
+</div>
+
+<script is:inline>
+  document.querySelectorAll('[data-hamburger]').forEach((wrapper) => {
+    const toggle = wrapper.querySelector('[data-menu-toggle]');
+    const panel = wrapper.querySelector('[data-menu-panel]');
+    if (!toggle || !panel) return;
+
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      panel.classList.toggle('hidden', expanded);
+      panel.dataset.open = expanded ? 'false' : 'true';
+    });
+  });
+</script>
