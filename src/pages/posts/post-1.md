@@ -1,10 +1,12 @@
 ---
+layout: ../../layouts/MarkdownLayout.astro
 title: 'Astro 学习笔记'
 pubDate: 2025-09-23
 description: '记录学习 Astro 框架的过程和心得。'
 author: 'M1saK1'
+category: 'Learning Notes'
 image:
-url: '/assets/images/astro-logo.png'
+url: 'src/assets/astro.png'
 alt: 'Astro Logo'
 tags: ['Frontend', 'Astro', 'Web Development']
 ---

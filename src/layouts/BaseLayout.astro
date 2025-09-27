@@ -4,7 +4,14 @@ import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
 import Background from '../components/Background.astro';
 
-const { title = 'M1saK1 Blog', bodyClass } = Astro.props;
+const {
+    title = 'M1saK1 Blog',
+    description,
+    bodyClass = '',
+    hideBackground = false,
+    showNavigation = true,
+    showFooter = true,
+} = Astro.props;
 ---
 
 <html lang='zh-cn'>
@@ -14,16 +21,24 @@ const { title = 'M1saK1 Blog', bodyClass } = Astro.props;
 		<meta name='viewport' content='width=device-width' />
 		<meta name='generator' content='Astro Blog' />
 		<title>{title}</title>
+		{description && <meta name='description' content={description} />}
+		<slot name='head' />
 	</head>
-	<body class={`flex flex-col min-h-screen ${bodyClass}`}>
-		<Background />
-		<header class='relative z-10'>
-			<Navigation />
-		</header>
-		<main class='flex-1 relative z-10'>
+	<body class={`relative flex min-h-screen flex-col ${bodyClass}`}>
+		{!hideBackground && <Background />}
+		{showNavigation && (
+			<header class='relative z-10 w-full'>
+				<Navigation />
+			</header>
+		)}
+		<main class='relative z-10 flex-1 w-full'>
 			<slot />
 		</main>
-		<Footer />
+		{showFooter && (
+			<footer class='relative z-10 w-full'>
+				<Footer />
+			</footer>
+		)}
 	</body>
 	
 </html>
