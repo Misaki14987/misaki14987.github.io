@@ -1,27 +1,7 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-import '../global.css';
-import Navigation from '../components/Navigation.astro';
-import Footer from '../components/Footer.astro';
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang='zh-cn'>
-	<head>
-		<meta charset='UTF-8' />
-		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-		<meta name='viewport' content='width=device-width' />
-		<meta name='generator' content='Astro Blog' />
-		<title>M1saK1 Blog</title>
-	</head>
-	<body class='flex flex-col min-h-screen '>
-		<Navigation />
-		<main class='flex-1'>
-			<Welcome />
-		</main>
-		<Footer />
-	</body>
-	
-</html>
+<BaseLayout>
+	<a> Hello, world! This is the homepage of M1saK1 Blog. </a>
+</BaseLayout>

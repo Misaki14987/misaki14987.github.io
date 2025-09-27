@@ -3,6 +3,8 @@ import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
 import '../global.css';
 import Card from '../components/Card.astro';
+import Background from '../components/Background.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 const Name = 'M1saK1';
 const pageTitle = 'About Me';
 
@@ -13,29 +15,14 @@ const myInfo = {
 };
 ---
 
-<html lang='zh-cn'>
-  <head>
-    <meta charset='UTF-8' />
-    <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-    <meta name='viewport' content='width=device-width' />
-    <meta name='generator' content='Astro' />
-    <title>{pageTitle}</title>
-  </head>
-  <body class='flex flex-col min-h-screen'>
-    <Navigation />
-    <main class='flex-1'>
-      <Card title=`你好我是${myInfo.name}` subtitle='About' class='w-3.5/4 max-w-3xl mx-auto mt-10'>
-        <p class='mb-4'>{myInfo.bio}</p>
-        <h3 class=' font-semibold mb-2'>兴趣爱好</h3>
+<BaseLayout>
+  <Card title=`你好我是${myInfo.name}` subtitle='About' class='w-3.5/4 max-w-3xl mx-auto mt-10'>
+    <p class='mb-4'>{myInfo.bio}</p>
+      <h3 class=' font-semibold mb-2'>兴趣爱好</h3>
         <ul class='list-disc list-inside'>
           {myInfo.interests.map((interest) => (
             <li>{interest}</li>
           ))}
         </ul>
-      </Card>
-    </main>
-    <Footer />
-  </body>
-</html>
-
-</html>
+  </Card>
+</BaseLayout>

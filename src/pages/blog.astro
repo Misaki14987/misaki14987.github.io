@@ -1,38 +1,21 @@
 ---
-import '../global.css';
-import Navigation from '../components/Navigation.astro';
-import Footer from '../components/Footer.astro';
 import Card from '../components/Card.astro';
-import Background from '../components/Background.astro';
 import banner2025 from '../assets/2025.jpg';
 import astroNotes from '../assets/astro.png';
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html>
-    <head>
-        <meta charset='UTF-8' />
-        <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-        <meta name='viewport' content='width=device-width' />
-        <meta name='generator' content='Astro Blog' />
-        <title>M1saK1 Blog</title>
-    </head>
-    <body class='flex flex-col min-h-screen'>
-        <Navigation />
-        <Background />
-        <div class='flex-1 items-center p-6'>
-                <Card title='2025' subtitle='Recent Thoughts' class='w-3.5/4 max-w-3xl mx-auto mt-10'>
-                    <a href='/posts/post-2'>
-                        <img src={banner2025.src} alt='2025' class='w-full h-auto rounded-lg mb-4' />
-                    </a>
-                    <p>最近的一些动态和想法</p>
-                </Card>
-                <Card title='Astro学习笔记' subtitle='Learning Notes' class='w-3.5/4 max-w-3xl mx-auto mt-10'>
-                    <a href='/posts/post-1'>
-                        <img src={astroNotes.src} alt='Astro Notes' class='w-full h-auto rounded-lg mb-4' />
-                    </a>
-                    <p>Astro学习笔记</p>
-                </Card>
-        </div>
-        <Footer />
-    </body>
-</html>
+<BaseLayout title='哈基米'>
+    <Card title='2025' subtitle='Recent Thoughts' class='w-3.5/4 max-w-3xl mx-auto mt-10'>
+        <a href='/posts/post-2'>
+            <img src={banner2025.src} alt='2025' class='w-full h-auto rounded-lg mb-4' />
+        </a>
+            <p>柳暗花明又一村</p>
+    </Card>
+    <Card title='Astro学习笔记' subtitle='Learning Notes' class='w-3.5/4 max-w-3xl mx-auto mt-10'>
+        <a href='/posts/post-1'>
+            <img src={astroNotes.src} alt='Astro Notes' class='w-full h-auto rounded-lg mb-4' />
+        </a>
+            <p>Astro学习笔记</p>
+    </Card>
+</BaseLayout>
