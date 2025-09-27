@@ -1,0 +1,15 @@
+---
+import Card from "./Card.astro";
+import blogs from "../scripts/utils";
+
+const recentBlogs = blogs.slice(0, 5);
+---
+<Card title='Recent Articles' subtitle='Direct to Blog' class='w-3.5/4 max-w-3xl mx-auto mt-10'>
+    <ul>
+        {recentBlogs.map((blog) => (
+            <li>
+                <a class='text-blue-500 hover:underline text-2xl' href={blog.link}>{blog.title}</a>
+            </li>
+        ))}
+    </ul>
+</Card>

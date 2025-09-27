@@ -1,0 +1,16 @@
+[
+  {
+    "title": "2025",
+    "subtitle": "Recent Thoughts",
+    "image": "2025.jpg",
+    "link": "/posts/post-2",
+    "description": "柳暗花明又一村"
+  },
+  {
+    "title": "Astro学习笔记",
+    "subtitle": "Learning Notes",
+    "image": "astro.png",
+    "link": "/posts/post-1",
+    "description": "Astro学习笔记"
+  }
+]

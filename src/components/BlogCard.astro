@@ -1,0 +1,14 @@
+---
+import Card from "./Card.astro";
+
+const { title, subtitle, image, link, description } = Astro.props;
+const imageSrc = typeof image === 'string' ? image : image?.src;
+---
+<Card title={title} subtitle={subtitle} class='w-3.5/4 max-w-3xl mx-auto mt-10'>
+    {imageSrc && (
+        <a href={link}>
+            <img src={imageSrc} alt={title} class='mb-4 h-auto w-full rounded-lg' />
+        </a>
+    )}
+        <p>{description}</p>
+</Card>

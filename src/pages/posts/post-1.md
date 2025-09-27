@@ -13,25 +13,16 @@ tags: ['Frontend', 'Astro', 'Web Development']
 
 # Astro 学习笔记
 
-![Astro Logo](/assets/images/astro-logo.png)
-_图片来源: [Astro 官网](https://astro.build/)_
-Astro 是一个现代化的前端框架，旨在帮助开发者构建快速、内容丰富的网站。它采用了组件化的开发方式，并支持多种前端框架（如 React、Vue、Svelte 等），使得开发者可以灵活选择自己熟悉的技术栈。
+Astro 是一个前端开发框架，可以用来快速搭建一些中小规模的网站（博客使用 astro 搭建）。
 
-## 为什么选择 Astro？
+## Why Astro?
 
-1. **性能优化**: Astro 默认生成静态 HTML 文件，减少了客户端的 JavaScript 负载，从而提升页面加载速度。
-2. **组件化开发**: Astro 支持多种前端框架，允许开发者在同一个项目中混合使用不同的组件。
-3. **易于上手**: Astro 提供了简洁的语法和丰富的文档，使得新手也能快速上手。
-4. **强大的生态系统**: Astro 拥有丰富的插件和集成，方便开发者扩展功能。
+Astro 在我的理解中是一个适合用来构建像博客这样的静态网站的框架。官网介绍的就是我们 Astro 是**Content-driven**,内容优先。
+Astro 自身的写法我感觉也还好，而且好在它可以兼容各种框架如 React,Vue，如果有团队开发大家写不一样的屎也无妨。
+Astro 可以非常好的自兼容 **Markdown** 和 **MDX**,而我们 React 还得找个库来处理。
+Astro 可以让开发者自控制渲染过程，优化性能。Astro 优先静态，这就使得其非常适合这种简单网站
+我也挺喜欢 Astro 这个**群岛架构**的理念，鼓励你去在模板里组织布局，按需引用组件。
 
-## 学习资源
+> 接下来就介绍一下我学习 Astro 的一些心得和过程吧
 
-- [Astro 官方文档](https://docs.astro.build/)
-- [Astro 教程](https://astro.build/tutorials)
-- [Astro 社区](https://astro.build/community)
-
-## 结语
-
-通过学习 Astro，我不仅提升了自己的前端开发技能，还对现代化的网页构建有了更深入的理解。希望这篇笔记能帮助到正在学习 Astro 的你！
-
-> AI 生成,作为占位符使用
+学习中......
