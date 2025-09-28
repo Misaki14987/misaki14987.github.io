@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const tags = Object.values(import.meta.glob('../posts/*.md', { eager: true })).map((post:any) => post.frontmatter.tags).flat();
+---
+
+<BaseLayout title='Tags'>
+    <div class='flex flex-row flex-wrap gap-4'>
+        {tags.map((tag) => (
+            <a href={`/tags/${tag}`} class='tag'>
+                {tag}
+            </a>
+        ))}
+    </div>
+</BaseLayout>
