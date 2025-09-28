@@ -8,7 +8,7 @@ category: 'Diary'
 image:
 url: 'src/assets/astro.png'
 alt: 'Astro Logo'
-tags: ['日常']
+tags: ['Daily']
 ---
 
 # Recently

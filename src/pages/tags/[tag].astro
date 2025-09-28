@@ -1,0 +1,31 @@
+---
+import Card from '../../components/Card.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+    const allPosts = Object.values(import.meta.glob('../posts/*.md', { eager: true }));
+    const uniqueTags = [...new Set(allPosts.map((post:any) => post.frontmatter.tags).flat())];
+    return uniqueTags.map((tag) => {
+        const filteredPosts = allPosts.filter((post: any) => (post.frontmatter.tags ?? []).includes(tag));
+        return {
+            params: { tag },
+            props: { posts: filteredPosts },
+        };
+    });
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+<BaseLayout title={tag}>
+    <div class='flex flex-row mt-4 w-1/2 mx-auto justify-center items-center flex-wrap gap-4'>
+    <p class='text-lg font-extrabold'>包含 {tag} 标签的文章</p>    
+        {posts.map((post: any) => (
+            <Card title={post.frontmatter.title} class='w-fit'>
+                <div>
+                    <a href={post.url}>{post.frontmatter.title}</a>
+                </div>
+            </Card>
+        ))}
+    </div>
+</BaseLayout>
