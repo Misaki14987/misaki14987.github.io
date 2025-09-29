@@ -14,15 +14,28 @@ const platformMap = {
 		baseUrl: 'https://space.bilibili.com/',
 		slug: 'bilibili',
 	},
+	rss: {
+		baseUrl: '/rss.xml',
+		slug: 'rss',
+	},
 };
 
 type Platform = keyof typeof platformMap;
 
 const config = platformMap[platform as Platform] ?? { baseUrl: 'https://', slug: platform };
-const href = `${config.baseUrl}${username}`;
-const iconUrl = `https://cdn.simpleicons.org/${config.slug}/ffffff`;
+const isRss = platform === 'rss';
+const href = isRss ? '/rss.xml' : `${config.baseUrl}${username}`;
+const iconUrl = isRss ? '' : `https://cdn.simpleicons.org/${config.slug}/ffffff`;
 ---
 
-<a href={href} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-8 h-8">
-	<img src={iconUrl} alt={`${platform} icon`} width="24" height="24" loading="lazy" />
-</a>
+{isRss ? (
+	<a href="/rss.xml" target="_blank" rel="noopener noreferrer" aria-label="RSS订阅" class="inline-flex items-center justify-center w-8 h-8">
+		<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+			<path d="M4.5 17.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0-4a10 10 0 0 1 10 10h2a12 12 0 0 0-12-12v2zm0-4a14 14 0 0 1 14 14h2A16 16 0 0 0 4.5 7.5v2z"/>
+		</svg>
+	</a>
+) : (
+	<a href={href} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-8 h-8">
+		<img src={iconUrl} alt={`${platform} icon`} width="24" height="24" loading="lazy" />
+	</a>
+)}
