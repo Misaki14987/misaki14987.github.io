@@ -1,15 +1,19 @@
 ---
+import Card from "../../components/Card.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const tags = Object.values(import.meta.glob('../posts/*.md', { eager: true })).map((post:any) => post.frontmatter.tags).flat();
 ---
 
 <BaseLayout title='Tags'>
-    <div class='flex flex-row flex-wrap gap-4'>
+    <div class='flex flex-row mt-4 w-1/2 mx-auto justify-center items-center flex-wrap gap-4'>
+        <p class='text-lg font-extrabold'>所有标签</p>
         {tags.map((tag) => (
-            <a href={`/tags/${tag}`} class='tag'>
-                {tag}
-            </a>
+            <Card title={tag} class='w-fit bg-gray-500/20 hover:bg-gray-500/30 transition-colors'>
+                <a href={`/tags/${tag}`} class='tag'>
+                    {tag}
+                </a>
+            </Card>
         ))}
     </div>
 </BaseLayout>
