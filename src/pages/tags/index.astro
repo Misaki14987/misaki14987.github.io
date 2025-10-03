@@ -1,5 +1,5 @@
 ---
-import Card from "../../components/Card.astro";
+import Card from "../../components/common/Card.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const tags = Object.values(import.meta.glob('../posts/*.md', { eager: true })).map((post:any) => post.frontmatter.tags).flat();
