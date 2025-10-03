@@ -1,5 +1,5 @@
 ---
-import Card from "./Card.astro";
+import Card from "./common/Card.astro";
 
 const { title, subtitle, image, link, description } = Astro.props;
 const imageSrc = typeof image === 'string' ? image : image?.src;

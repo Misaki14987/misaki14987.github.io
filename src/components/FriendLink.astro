@@ -1,0 +1,22 @@
+---
+import Card from "./common/Card.astro"
+import summ2 from '../assets/summ2.jpg'
+const friends = [
+    { name: 'summ2', url: 'https://summ2.link',description: '', image: summ2 }
+]
+---
+<div class='text-center mt-10'>
+    <h2 class='text-2xl font-bold mb-4'>以下为友链</h2>
+    {friends.map((friend) => (
+        <Card title={friend.name} class='w-3.5/4 max-w-3xl mx-auto mt-10'>
+            {friend.image && (
+                <div class='flex justify-center'>
+                    <img src={friend.image.src} alt={friend.name} class='mt-4 rounded-lg h-32 w-32' />
+                </div>
+            )}
+            <a class='text-blue-500 hover:underline text-2xl' href={friend.url}>{friend.url}</a>
+            <p>{friend.description}</p>
+
+        </Card>
+    ))}
+</div>
