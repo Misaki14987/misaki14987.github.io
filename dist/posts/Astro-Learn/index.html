@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="zh-cn"> <head><meta charset="UTF-8"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro Blog"><title>Astro 学习笔记 1 | M1saK1 Blog</title><meta name="description" content="记录学习 Astro 框架的过程和心得。1"><link rel="stylesheet" href="/_astro/Astro-Learn.CAltIZmB.css">
+<style>.article-content[data-astro-cid-xsct23v3] h1{display:none}.article-content[data-astro-cid-xsct23v3] h2{font-size:1.6rem;font-weight:600;margin-top:2.5rem;margin-bottom:1rem;color:#1e293b}.article-content[data-astro-cid-xsct23v3] h3{font-size:1.3rem;font-weight:600;margin-top:2rem;margin-bottom:.75rem;color:#1e293b}.article-content[data-astro-cid-xsct23v3] p{margin:1rem 0}.article-content[data-astro-cid-xsct23v3] ul,.article-content[data-astro-cid-xsct23v3] ol{padding-left:1.5rem;margin:1.25rem 0;list-style-position:outside}.article-content[data-astro-cid-xsct23v3] li{margin-bottom:.5rem}.article-content[data-astro-cid-xsct23v3] blockquote{border-left:4px solid rgba(148,163,184,.6);padding-left:1rem;font-style:italic;color:#475569;margin:1.5rem 0}.article-content[data-astro-cid-xsct23v3] code{background-color:#0f172a14;border-radius:.375rem;padding:.25rem .4rem;font-size:.95em}.article-content[data-astro-cid-xsct23v3] pre{background:linear-gradient(135deg,#0f172aeb,#1e40afe0);color:#e2e8f0;border-radius:.875rem;padding:1.25rem 1.5rem;overflow-x:auto;margin:2rem 0}.article-content[data-astro-cid-xsct23v3] a{color:#4f46e5;text-decoration:underline;text-decoration-color:#4f46e566;transition:color .15s ease,text-decoration-color .15s ease}.article-content[data-astro-cid-xsct23v3] a:hover{color:#2563eb;text-decoration-color:#2563eb99}@media (prefers-color-scheme: dark){.article-content[data-astro-cid-xsct23v3] h2,.article-content[data-astro-cid-xsct23v3] h3{color:#e2e8f0}.article-content[data-astro-cid-xsct23v3] blockquote{border-color:#94a3b873;color:#cbd5e1d9}.article-content[data-astro-cid-xsct23v3] code{background-color:#94a3b826}.article-content[data-astro-cid-xsct23v3] a{color:#818cf8}.article-content[data-astro-cid-xsct23v3] a:hover{color:#a5b4fc}}
+</style></head> <body class="relative flex min-h-screen flex-col bg-transparent"> <div class="blur-[100px] p-0 fixed inset-0 -z-10 h-full w-full"> <img src="/_astro/background.CaUEca1_.svg" alt="" fetchpriority="high"> </div> <header class="relative z-10 w-full"> <nav class="w-full border-b border-white/40 bg-white/60 backdrop-blur supports-[backdrop-filter]:bg-white/45"> <div class="relative md:hidden" data-hamburger> <button type="button" class="flex flex-col justify-center gap-1.5 rounded-xl border border-white/60 bg-white/80 px-3 py-2 shadow-sm backdrop-blur transition hover:bg-white" aria-expanded="false" aria-controls="mobile-menu-f9593fb2-0204-4348-991e-e4860b6d8582" data-menu-toggle> <span class="block h-0.5 w-6 rounded-full bg-slate-800 transition-all duration-200"></span> <span class="block h-0.5 w-6 rounded-full bg-slate-800 transition-all duration-200"></span> <span class="block h-0.5 w-6 rounded-full bg-slate-800 transition-all duration-200"></span> </button> <nav id="mobile-menu-f9593fb2-0204-4348-991e-e4860b6d8582" class="absolute left-0 top-full z-50 mt-2 hidden min-w-[10rem] flex-col gap-1.5 rounded-2xl border border-white/70 bg-white/95 p-4 text-sm shadow-xl backdrop-blur data-[open=&quot;true&quot;]:flex" data-menu-panel> <a href="/" class="rounded-lg px-3 py-2 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900"> Home </a><a href="/about" class="rounded-lg px-3 py-2 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900"> About </a><a href="/blog" class="rounded-lg px-3 py-2 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900"> Blog </a> </nav> </div> <script>
+  document.querySelectorAll('[data-hamburger]').forEach((wrapper) => {
+    const toggle = wrapper.querySelector('[data-menu-toggle]');
+    const panel = wrapper.querySelector('[data-menu-panel]');
+    if (!toggle || !panel) return;
+
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      panel.classList.toggle('hidden', expanded);
+      panel.dataset.open = expanded ? 'false' : 'true';
+    });
+  });
+</script> <div class="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium text-slate-600 sm:flex-nowrap sm:justify-between sm:gap-2"> <a href="/" class="inline-flex items-center rounded-full px-3 py-1.5 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 text-slate-600 hover:bg-slate-200/80 hover:text-slate-900"> Home </a><a href="/about" class="inline-flex items-center rounded-full px-3 py-1.5 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 text-slate-600 hover:bg-slate-200/80 hover:text-slate-900"> About </a><a href="/blog" class="inline-flex items-center rounded-full px-3 py-1.5 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 text-slate-600 hover:bg-slate-200/80 hover:text-slate-900"> Blog </a><a href="/tags" class="inline-flex items-center rounded-full px-3 py-1.5 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 text-slate-600 hover:bg-slate-200/80 hover:text-slate-900"> Tag </a> </div> </nav> </header> <main class="relative z-10 flex-1 w-full">  <section class="relative z-10 mx-auto w-full max-w-5xl px-6 pb-24 pt-28" data-astro-cid-xsct23v3> <div class="relative overflow-hidden rounded-3xl border border-white/40 bg-white/80 shadow-2xl backdrop-blur-xl dark:border-slate-700/60 dark:bg-slate-900/75" data-astro-cid-xsct23v3> <div class="pointer-events-none absolute inset-x-10 top-0 h-32 rounded-full bg-gradient-to-r from-pink-500/40 via-purple-500/30 to-sky-500/40 blur-3xl" data-astro-cid-xsct23v3></div> <article class="relative px-8 pb-12 pt-14 text-slate-800 dark:text-slate-100" data-astro-cid-xsct23v3> <header class="mb-12 text-center" data-astro-cid-xsct23v3> <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400" data-astro-cid-xsct23v3>Learning Notes</p> <h1 class="mt-3 text-4xl font-semibold tracking-tight text-slate-900 dark:text-white" data-astro-cid-xsct23v3>Astro 学习笔记 1</h1> <p class="mt-4 text-base text-slate-600 dark:text-slate-300" data-astro-cid-xsct23v3>记录学习 Astro 框架的过程和心得。1</p> <div class="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm text-slate-500 dark:text-slate-400" data-astro-cid-xsct23v3> <span data-astro-cid-xsct23v3>作者：M1saK1</span> <time datetime="2025-09-23T00:00:00.000Z" data-astro-cid-xsct23v3>2025年9月23日</time> </div> <ul class="mt-6 flex flex-wrap justify-center gap-2" data-astro-cid-xsct23v3> <li class="rounded-full border border-slate-200/70 px-3 py-1 text-xs font-medium uppercase tracking-wide text-slate-600 dark:border-slate-700 dark:text-slate-300" data-astro-cid-xsct23v3> Frontend </li><li class="rounded-full border border-slate-200/70 px-3 py-1 text-xs font-medium uppercase tracking-wide text-slate-600 dark:border-slate-700 dark:text-slate-300" data-astro-cid-xsct23v3> Astro </li><li class="rounded-full border border-slate-200/70 px-3 py-1 text-xs font-medium uppercase tracking-wide text-slate-600 dark:border-slate-700 dark:text-slate-300" data-astro-cid-xsct23v3> Web Development </li> </ul> </header> <div class="article-content mx-auto max-w-3xl space-y-6 text-[17px] leading-relaxed text-slate-700 dark:text-slate-200" data-astro-cid-xsct23v3> <h1 id="astro-学习笔记">Astro 学习笔记</h1>
+<p>Astro 是一个前端开发框架，可以用来快速搭建一些中小规模的网站（博客使用 astro 搭建）。</p>
+<h2 id="why-astro">Why Astro?</h2>
+<p>Astro 在我的理解中是一个适合用来构建像博客这样的静态网站的框架。官网介绍的就是我们 Astro 是<strong>Content-driven</strong>,内容优先。</p>
+<p>Astro 可以非常好的自兼容 <strong>Markdown</strong> 和 <strong>MDX</strong>，可以兼容各种框架如 <strong>React</strong>, <strong>Vue</strong>，如果有团队开发大家写不一样的屎也无妨。</p>
+<p>Astro 可以让开发者自控制渲染过程，优化性能。Astro 优先静态，这就使得其非常适合这种如博客这样的简单网站</p>
+<blockquote>
+<p>接下来就介绍一下我学习 Astro 的一些心得和过程</p>
+</blockquote>
+<h2 id="astro-的安装">Astro 的安装</h2>
+<p>Very Simple,先确保你有 Nodejs 环境</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 使用 npm 创建一个新的 Astro 项目</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> create</span><span style="color:#9ECBFF"> astro@latest</span></span>
+<span class="line"><span style="color:#6A737D"># 进入项目目录</span></span>
+<span class="line"><span style="color:#79B8FF">cd</span><span style="color:#9ECBFF"> your-project-name</span></span>
+<span class="line"><span style="color:#6A737D"># 安装依赖</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span></span>
+<span class="line"><span style="color:#6A737D"># 启动开发服务器</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> dev</span></span></code></pre>
+<p>使用其他的包管理器同理</p>
+<h2 id="什么是群岛架构">什么是群岛架构？</h2>
+<p>先介绍一下 Astro 的核心概念之一 <strong>群岛架构(Island Architecture)</strong></p>
+<p>简单来讲就是你的页面是一个大海，大海里占大多数的是不动的海面(静态的 HTML)，偶尔有几个小岛屿会动(动态的 JS 组件)。而 Astro 优先渲染海面部分(SSR)，再去渲染动态的岛屿(JS)。这样既能够保证页面的静态性能，让用户点开网站就能迅速的看到主体内容，又能在需要的时候再去提供动态的交互，也避免了让整个页面变成沉重的单页应用(SPA)。</p>
+<h2 id="astro-的项目结构">Astro 的项目结构</h2>
+<p>Astro 的项目结构非常简单，主要有以下几个部分：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>astro-project/</span></span>
+<span class="line"><span>├── public/             # 静态资源文件夹，存放图片、字体等</span></span>
+<span class="line"><span>├── src/                # 源代码文件夹</span></span>
+<span class="line"><span>│   ├── components/    # 组件文件夹，存放可复用的 UI 组件</span></span>
+<span class="line"><span>│   ├── layouts/       # 布局文件夹，存放页面布局</span></span>
+<span class="line"><span>│   ├── pages/         # 页面文件夹，存放网站的各个页面</span></span>
+<span class="line"><span>│   ├── styles/        # 样式文件夹，存放全局</span></span>
+<span class="line"><span>│   └── scripts/       # 脚本文件夹，存放全局脚本</span></span>
+<span class="line"><span>├── astro.config.mjs   # Astro 配置文件</span></span>
+<span class="line"><span>├── package.json       # 项目依赖和脚本</span></span>
+<span class="line"><span>└── tsconfig.json      # TypeScript 配置文件（如果使用 TypeScript）</span></span></code></pre>
+<p><code>src/pages</code> 目录下的文件会自动映射为网站的路由，请确保你有这个目录。
+其他的目录是约定俗成。
+astro.config.mjs 的相关配置后面再写）</p>
+<h2 id="astro-的基本语法">Astro 的基本语法</h2>
+<p>Astro 是基于组件进行开发的，文件的后缀名为<code>.astro</code>。
+Astro 的语法很简单，主要有三种部分：</p>
+<ol>
+<li><strong>组件导入</strong>：用来导入其他组件，写在两个<code>---</code> 之间。</li>
+<li><strong>前端脚本</strong>：用来处理数据和逻辑，写在两个<code>---</code> 之间。</li>
+<li><strong>模板部分</strong>：用来渲染 HTML，写在 <code>---</code> 之后。
+具体例子如下</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="astro"><code><span class="line"><span style="color:#6A737D">---</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Header </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../components/Header.astro'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> title</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'Hello, Astro!'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">---</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">html</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">>{title}&#x3C;/</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#79B8FF">Header</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">>{title}&#x3C;/</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">>Welcome to my Astro site.&#x3C;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">html</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>如你所见，就是简单的 HTML, 配上一些模板语法，比如 <code>{}</code> 来插入变量，<code>&#x3C;Component /></code> 来使用组件。如果你写过 React 或 Vue，应该会觉得很熟悉。</p> </div> </article> </div> </section>  </main> <footer class="relative z-10 w-full"> <footer class="bg-gray-800 text-white p-4 text-center"> <a href="https://github.com/Misaki14987" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-8 h-8"> <img src="https://cdn.simpleicons.org/github/ffffff" alt="github icon" width="24" height="24" loading="lazy"> </a> <a href="https://x.com/LianiuMis" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-8 h-8"> <img src="https://cdn.simpleicons.org/x/ffffff" alt="x icon" width="24" height="24" loading="lazy"> </a> <a href="https://space.bilibili.com/M" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-8 h-8"> <img src="https://cdn.simpleicons.org/bilibili/ffffff" alt="bilibili icon" width="24" height="24" loading="lazy"> </a> <a href="/rss.xml" target="_blank" rel="noopener noreferrer" aria-label="RSS订阅" class="inline-flex items-center justify-center w-8 h-8"> <img src="../assets/rss.svg" alt="rss icon" width="24" height="24" loading="lazy"> </a> <p>&copy; 2025 M1saK1. All rights reserved.</p> </footer> </footer> </body></html> 

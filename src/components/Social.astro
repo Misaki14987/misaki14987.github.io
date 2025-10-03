@@ -25,7 +25,7 @@ type Platform = keyof typeof platformMap;
 const config = platformMap[platform as Platform] ?? { baseUrl: 'https://', slug: platform };
 const isRss = platform === 'rss';
 const href = isRss ? '/rss.xml' : `${config.baseUrl}${username}`;
-const iconUrl = isRss ? '/icons/rss.svg' : `https://cdn.simpleicons.org/${config.slug}/ffffff`;
+const iconUrl = isRss ? '../assets/rss.svg' : `https://cdn.simpleicons.org/${config.slug}/ffffff`;
 ---
 
 <a
