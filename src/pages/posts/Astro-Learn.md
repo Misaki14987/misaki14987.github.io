@@ -98,3 +98,9 @@ const title = 'Hello, Astro!';
 ```
 
 如你所见，就是简单的 HTML, 配上一些模板语法，比如 `{}` 来插入变量，`<Component />` 来使用组件。如果你写过 React 或 Vue，应该会觉得很熟悉。
+
+暂时写到这里
+
+## 参考资料
+
+- [Astro 官方文档](https://docs.astro.build/zh/)
