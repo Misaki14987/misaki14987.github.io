@@ -6,21 +6,21 @@ export interface Props {
     class?: string;
 }
 
-const { title, subtitle, variant = 'solid', class: additionalClasses='' } = Astro.props;
+const { title, subtitle, variant = 'solid', class: additionalClasses = '' } = Astro.props;
 
 const baseClass =
-  'rounded-3xl p-6 sm:p-8 transition-shadow duration-200 ' +
-  'shadow-lg shadow-blue-900/10 backdrop-blur';
+    'rounded-3xl p-6 sm:p-8 transition-shadow duration-200 backdrop-blur ' +
+    'shadow-[0_16px_40px_var(--card-shadow)] hover:shadow-[0_22px_55px_var(--card-shadow-hover)]';
 
-const variantClasses = variant === 'solid'
-    ? 'bg-white hover:shadow-blue-900/20'
-    : 'bg-white/70 hover:shadow-blue-900/20';
+const variantClasses =
+    variant === 'solid'
+        ? 'bg-[color:var(--card-bg)]'
+        : 'bg-[color:var(--card-bg)] backdrop-brightness-110';
 
-const classes = baseClass + ' ' + variantClasses + ' ' + additionalClasses;
-
+const classes = `${baseClass} ${variantClasses} ${additionalClasses}`;
 ---
 <section class={classes}>
   <h2 class="text-2xl font-bold mb-2">{title}</h2>
-  {subtitle && <p class="text-gray-600 mb-4">{subtitle}</p>}
+  {subtitle && <p class="mb-4" style="color: var(--card-subtitle);">{subtitle}</p>}
   <slot />
 </section>
