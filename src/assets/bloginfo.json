@@ -3,14 +3,14 @@
     "title": "2025",
     "subtitle": "Recent Thoughts",
     "image": "2025.jpg",
-    "link": "src/pages/posts/Recently.astro",
+    "link": "/posts/Recently",
     "description": "大一的一些想法"
   },
   {
     "title": "Astro学习笔记",
     "subtitle": "Learning Notes",
     "image": "astro.png",
-    "link": "src/pages/posts/Astro-Learn.astro",
+    "link": "/posts/Astro-Learn",
     "description": "Astro学习笔记(1)"
   }
 ]
