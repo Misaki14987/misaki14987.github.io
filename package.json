@@ -9,10 +9,12 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/preact": "^4.1.1",
     "@astrojs/rss": "^4.0.12",
     "@tailwindcss/vite": "^4.1.13",
     "astro": "^5.13.9",
     "preact": "^10.27.2",
+    "react-markdown": "^10.1.0",
     "stellar-solstice": "link:",
     "tailwindcss": "^4.1.13"
   }

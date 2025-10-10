@@ -1,12 +1,25 @@
 // @ts-check
-import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
-
+import preact from '@astrojs/preact';
+import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://blog.yodelist.icu',
+  integrations: [preact()],
+
   vite: {
-    // @ts-ignore
     plugins: [tailwindcss()],
+    esbuild: {
+      jsx: 'automatic',
+      jsxImportSource: 'preact',
+    },
+    resolve: {
+      alias: {
+        react: 'preact/compat',
+        'react-dom': 'preact/compat',
+        'react-dom/test-utils': 'preact/test-utils',
+        'react-dom/server': 'preact/compat/server',
+        'react/jsx-runtime': 'preact/jsx-runtime',
+      },
+    },
   },
 });
