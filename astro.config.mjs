@@ -4,6 +4,7 @@ import preact from '@astrojs/preact';
 import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://blog.yodelist.icu',
   integrations: [preact()],
   vite: {
     plugins: [tailwindcss()],
