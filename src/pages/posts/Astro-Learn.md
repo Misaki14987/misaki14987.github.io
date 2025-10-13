@@ -121,7 +121,7 @@ export default defineConfig({
 
 还有许多选项可以来优化开发构建过程和网站性能,具体配置项可以参考[官方文档](https://docs.astro.build/zh-cn/reference/configuration-reference/)
 
-# Astro 模板语法
+## Astro 模板语法
 
 Astro 的语法是一种类 JSX 的语法，比如
 
@@ -200,7 +200,3 @@ Depth: 3
 ## 参考资料
 
 - [Astro 官方文档](https://docs.astro.build/zh/)
-
-```
-
-```
