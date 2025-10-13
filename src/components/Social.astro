@@ -23,16 +23,14 @@ const platformMap = {
 type Platform = keyof typeof platformMap;
 
 const config = platformMap[platform as Platform] ?? { baseUrl: 'https://', slug: platform };
-const isRss = platform === 'rss';
-const href = isRss ? '/rss.xml' : `${config.baseUrl}${username}`;
-const iconUrl = isRss ? '../assets/rss.svg' : `https://cdn.simpleicons.org/${config.slug}/ffffff`;
+const href = `${config.baseUrl}${username}`;
+const iconUrl = `https://cdn.simpleicons.org/${config.slug}/ffffff`;
 ---
 
 <a
 	href={href}
 	target="_blank"
 	rel="noopener noreferrer"
-	aria-label={isRss ? 'RSS订阅' : undefined}
 	class="inline-flex items-center justify-center w-8 h-8"
 >
 	<img src={iconUrl} alt={`${platform} icon`} width="24" height="24" loading="lazy" />
