@@ -10,7 +10,8 @@ const { title, subtitle, variant = 'solid', class: additionalClasses = '' } = As
 
 const baseClass =
     'rounded-3xl p-6 sm:p-8 transition-shadow duration-200 backdrop-blur ' +
-    'shadow-[0_16px_40px_var(--card-shadow)] hover:shadow-[0_22px_55px_var(--card-shadow-hover)]';
+    'shadow-[0_16px_40px_var(--card-shadow)] hover:shadow-[0_22px_55px_var(--card-shadow-hover)]' +
+    'transition-transform hover:-translate-y-1';
 
 const variantClasses =
     variant === 'solid'
