@@ -23,7 +23,7 @@ const platformMap = {
 type Platform = keyof typeof platformMap;
 
 const config = platformMap[platform as Platform] ?? { baseUrl: 'https://', slug: platform };
-const href = `${config.baseUrl}${username}`;
+const href = `${config.baseUrl}`;
 const iconUrl = `https://cdn.simpleicons.org/${config.slug}/ffffff`;
 ---
 
