@@ -8,10 +8,12 @@ export interface Props {
 
 const { title, subtitle, variant = 'solid', class: additionalClasses = '' } = Astro.props;
 
-const baseClass =
-    'rounded-3xl p-6 sm:p-8 transition-shadow duration-200 backdrop-blur ' +
-    'shadow-[0_16px_40px_var(--card-shadow)] hover:shadow-[0_22px_55px_var(--card-shadow-hover)]' +
-    'transition-transform hover:-translate-y-1';
+const baseClass = [
+    'rounded-3xl p-6 sm:p-8 backdrop-blur',
+    'transition-transform transition-shadow duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]',
+    'transform-gpu shadow-[0_16px_40px_var(--card-shadow)]',
+    'hover:-translate-y-1 hover:scale-[1.01] hover:shadow-[0_24px_60px_var(--card-shadow-hover)]',
+].join(' ');
 
 const variantClasses =
     variant === 'solid'

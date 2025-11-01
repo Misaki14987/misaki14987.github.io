@@ -4,8 +4,7 @@ import Hamburger from "../Hamburger.astro";
 const links = [
 	{ href: '/', label: 'Home' },
 	{ href: '/about', label: 'About' },
-	{ href: '/blog', label: 'Blog' },
-	{ href: '/tags', label:'Tag'}
+	{ href: '/tags', label: 'Tag' },
 ];
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -21,7 +20,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 				<a
 					href={link.href}
 					aria-current={isActive ? 'page' : undefined}
-					class={`inline-flex items-center rounded-full px-3 py-1.5 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 ${
+					class={`inline-flex items-center rounded-full px-3 py-1.5 transition-colors duration-200 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-slate-700 ${
 						isActive
 							? 'bg-slate-900 text-white shadow-sm shadow-slate-900/15'
 							: 'text-slate-600 hover:bg-slate-200/80 hover:text-slate-900'

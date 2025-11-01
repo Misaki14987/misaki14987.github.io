@@ -1,14 +1,32 @@
 ---
 import Card from "./common/Card.astro";
 
-const { title, subtitle, image, link, description } = Astro.props;
+interface Props {
+	title: string;
+	subtitle?: string;
+	image?: string | { src: string };
+	link: string;
+	description: string;
+	class?: string;
+}
+
+const {
+	title,
+	subtitle,
+	image,
+	link,
+	description,
+	class: wrapperClass,
+}: Props = Astro.props;
+
 const imageSrc = typeof image === 'string' ? image : image?.src;
+const cardClass = wrapperClass ?? 'w-3.5/4 max-w-3xl mx-auto mt-10';
 ---
-<Card title={title} subtitle={subtitle} class='w-3.5/4 max-w-3xl mx-auto mt-10'>
-    {imageSrc && (
-        <a href={link}>
-            <img src={imageSrc} alt={title} class='mb-4 h-auto w-full rounded-lg' />
-        </a>
-    )}
-        <p>{description}</p>
+<Card title={title} subtitle={subtitle} class={cardClass}>
+	{imageSrc && (
+		<a href={link} class='block overflow-hidden rounded-lg'>
+			<img src={imageSrc} alt={title} class='mb-4 h-auto w-full rounded-lg transition-transform duration-200 hover:scale-[1.01]' />
+		</a>
+	)}
+	<p class='mb-4'>{description}</p>
 </Card>
