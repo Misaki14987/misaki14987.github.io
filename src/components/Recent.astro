@@ -1,7 +1,27 @@
 ---
+import BlogCard from "./BlogCard.astro";
 import Card from "./common/Card.astro";
-import recentImage from '../assets/recent.jpg';
+import blogs from "../scripts/utils";
+
+interface Props {
+	class?: string;
+}
+
+const { class: wrapperClass } = Astro.props as Props;
+const featuredBlog = blogs[0];
+const cardClass = wrapperClass ?? 'w-3.5/4 max-w-3xl mx-auto mt-10';
 ---
-<Card title="放个图片占位置" class="w-3.5/4 max-w-3xl mx-auto mt-10">
-    <img src={recentImage.src} alt="Recent Image" class="w-full h-auto rounded-lg" />
-</Card>
+{featuredBlog ? (
+	<BlogCard
+		title={featuredBlog.title}
+		subtitle={featuredBlog.subtitle}
+		image={featuredBlog.image}
+		link={featuredBlog.link}
+		description={featuredBlog.description}
+		class={cardClass}
+	/>
+) : (
+	<Card title='Featured Article' class={cardClass}>
+		<p class='text-slate-200'>暂时没有内容可显示。</p>
+	</Card>
+)}

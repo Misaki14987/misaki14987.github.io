@@ -2,14 +2,28 @@
 import Card from "./common/Card.astro";
 import blogs from "../scripts/utils";
 
-const recentBlogs = blogs.slice(0, 5);
+interface Props {
+	class?: string;
+	skip?: number;
+	limit?: number;
+}
+
+const { class: wrapperClass, skip = 0, limit = 5 } = Astro.props as Props;
+const recentBlogs = blogs.slice(skip, limit ? skip + limit : undefined);
+const cardClass = wrapperClass ?? 'w-3.5/4 max-w-3xl mx-auto mt-10';
 ---
-<Card title='Recent Articles' subtitle='Direct to Blog' class='w-3.5/4 max-w-3xl mx-auto mt-10'>
-    <ul>
-        {recentBlogs.map((blog) => (
-            <li>
-                <a class='text-pink-200 hover:underline text-2xl' href={blog.link}>{blog.title}</a>
-            </li>
-        ))}
-    </ul>
+<Card title='Recent Articles' subtitle='Direct to Blog' class={cardClass}>
+	{recentBlogs.length ? (
+		<ul class='space-y-3'>
+			{recentBlogs.map((blog) => (
+				<li>
+					<a class='text-pink-200 hover:underline text-2xl transition-colors' href={blog.link}>
+						{blog.title}
+					</a>
+				</li>
+			))}
+		</ul>
+	) : (
+		<p class='text-slate-200'>暂时没有更多文章了。</p>
+	)}
 </Card>
