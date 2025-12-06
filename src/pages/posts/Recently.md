@@ -6,8 +6,8 @@ description: '最近的一些动态和想法。'
 author: 'M1saK1'
 category: 'Diary'
 image:
-url: 'src/assets/astro.png'
-alt: 'Astro Logo'
+  url: 'src/assets/recent.jpg'
+  alt: 'recent'
 tags: ['Daily']
 ---
 
