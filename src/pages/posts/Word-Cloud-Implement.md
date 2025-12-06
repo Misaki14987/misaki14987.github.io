@@ -74,6 +74,8 @@ const intersects = (a: Placement, b: Placement) => {
 
 ---
 
+词条的大小是随着权重而改变的，而一个基准的大小还是需要决定的。可以去简单的先算平均值再插值到定义好的minFontSize和maxFontSize之间
+
 总的代码如下
 
 ```typescript
