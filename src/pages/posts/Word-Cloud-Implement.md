@@ -99,7 +99,7 @@ const mapFontSize = (
 
 ```typescript
 const sorted = [...words].sort((a, b) => b.value - a.value); //排序
-const min = Math.min(...sorted.map((w) => w.value)); 
+const min = Math.min(...sorted.map((w) => w.value));
 const max = Math.max(...sorted.map((w) => w.value));
 const isCompact = size.width < 640; //计算屏幕
 const minFont = isCompact ? 14 : 20; //最小的字
@@ -108,7 +108,7 @@ const centerX = size.width / 2; //确定容器的横轴中心
 const centerY = isCompact ? size.height * 0.5 : size.height * 0.38; //确定容器的纵轴中心
 ```
 
-然后测量文字，交替地去横着竖着排列
+然后测量文字，交替地去横着竖着螺旋排列，最后判断是否碰撞
 
 ```typescript
 const fontSize = mapFontSize(word.value, min, max, minFont, maxFont);
@@ -122,9 +122,51 @@ const textHeight = fontSize * (
 );
 const isVertical = index % 2 === 1; //交替
 const rotate = isVertical ? -90 : 0; //横着还是竖着，这是一个问题
+
+let angle = Math.random() * Math.PI * 2; //从一个随机的角度开始排列
+let radius = 0;
+let attempts = 0; //定义attempt，当词条塞不下导致程序无限循环时还能退出防止崩溃
+while (attempts < MAX_ATTEMPTS && !placedWord) {
+    const x = centerX + radius * Math.cos(angle) - textWidth / 2;
+    const y = centerY + radius * Math.sin(angle) - textHeight / 2;
+    const bounds = getRotatedBounds(x, y, textWidth, textHeight, rotate); //计算词条容器
+    const candidate: Placement = {
+          ...word,
+          fontSize,
+          x,
+          y,
+          rotate,
+          width: textWidth,
+          height: textHeight,
+          bounds,
+        }; //定义Placement的类型
+    //是否放进去了
+    const fitsInside =
+          bounds.minX >= 0 &&
+          bounds.minY >= 0 &&
+          bounds.maxX <= size.width &&
+          bounds.maxY <= size.height;
+    //放进去了就判断是否碰撞，不碰撞就可以了
+    if (
+          fitsInside &&
+          !placed.some((existing) => intersects(existing, candidate))
+        ) {
+          placedWord = candidate;
+          placed.push(candidate);
+          break;
+        }
+        angle += ANGLE_STEP; // 继续沿螺旋前进
+        radius += RADIUS_STEP * ANGLE_STEP;
+        attempts += 1;
+      }
+});
 ```
 
-> 这里的ctx是一个`cavans` 对象
+> 这里的 ctx 是一个`cavans` 对象
+
+这样一个基本的词云就完成了
+
+---
 
 总的代码如下
 
