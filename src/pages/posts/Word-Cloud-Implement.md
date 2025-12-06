@@ -16,23 +16,7 @@ tags: ['Frontend', 'Web Development']
 
 ## 设计思路
 
-接口数据示例如下
-
-```json
-{
-  "data": {
-    "keywords": [
-      { "word": "叮鸡", "weight": 1 },
-      { "word": "哈基", "weight": 2 },
-      { "word": "大狗", "weight": 3 },
-      { "word": "袋鼠", "weight": 4 },
-      { "word": "港马", "weight": 5 }
-    ]
-  }
-}
-```
-
-`weight`即为权重，根据权重来判断词语的在词云中的大小
+词云的目标是在不依赖d3的情况下，让词条位置恰当，之间不碰撞，词条的大小适中，随权重变化，并且适配移动端（\~\~在此基础上做得炫酷一点\~\~)
 
 ```tsx
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
