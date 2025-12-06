@@ -16,9 +16,56 @@ tags: ['Frontend', 'Web Development']
 
 ## 设计思路
 
-词云的目标是在不依赖d3的情况下，让词条位置恰当，之间不碰撞，词条的大小适中，随权重变化，并且适配移动端（\~\~在此基础上做得炫酷一点\~\~)
+词云的目标是在不依赖 d3 的情况下，让词条位置恰当，之间不碰撞，词条的大小适中，随权重变化，并且适配移动端（~~在此基础上做得炫酷一点~~)
 
-```tsx
+---
+
+如何让词条位置在合适的位置？这里每个词条都定义了一个外接的矩形，用于判定其位置，是否
+
+```typescript
+const BOUND_PADDING = 8;
+const getRotatedBounds = (
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  rotate: number
+): Bounds => {
+  const radians = (rotate * Math.PI) / 180; // 角度转弧度
+  const cos = Math.cos(radians);
+  const sin = Math.sin(radians);
+  const centerX = x + width / 2; // 以词的中心为参考
+  const centerY = y + height / 2;
+  // 旋转矩形的轴对齐包围盒尺寸（加绝对值避免负数）
+  const rotatedWidth = Math.abs(width * cos) + Math.abs(height * sin);
+  const rotatedHeight = Math.abs(width * sin) + Math.abs(height * cos);
+  // 生成带 padding 的最小外接矩形，后续用它来做碰撞检测
+  return {
+    minX: centerX - rotatedWidth / 2 - BOUND_PADDING,
+    maxX: centerX + rotatedWidth / 2 + BOUND_PADDING,
+    minY: centerY - rotatedHeight / 2 - BOUND_PADDING,
+    maxY: centerY + rotatedHeight / 2 + BOUND_PADDING,
+  };
+};
+
+const intersects = (a: Placement, b: Placement) => {
+  // AABB 判定：只要两个包围盒在任一轴上不分离，就视为相交
+  return !(
+    (
+      a.bounds.maxX < b.bounds.minX || // A 在 B 左侧且不重叠
+      a.bounds.minX > b.bounds.maxX || // A 在 B 右侧且不重叠
+      a.bounds.maxY < b.bounds.minY || // A 在 B 上方且不重叠
+      a.bounds.minY > b.bounds.maxY
+    ) // A 在 B 下方且不重叠
+  );
+};
+```
+
+---
+
+总的代码如下
+
+```typescript
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 
