@@ -20,7 +20,9 @@ tags: ['Frontend', 'Web Development']
 
 ---
 
-如何让词条位置在合适的位置？这里每个词条都定义了一个外接的矩形，用于判定其位置，是否
+如何让词条位置在合适的位置？这里我给每个词条都定义了一个外接的矩形，用于判定其位置，是否碰撞等等
+
+矩形是根据宽度，高度，旋转角来计算的，代码如下
 
 ```typescript
 const BOUND_PADDING = 8;
@@ -47,6 +49,15 @@ const getRotatedBounds = (
     maxY: centerY + rotatedHeight / 2 + BOUND_PADDING,
   };
 };
+```
+
+判定矩形是否相撞，这里使用了AABB算法
+
+关于碰撞检测的算法，这个视频比较短小精罕<https://youtu.be/59BTXB-kFNs>，这种碰撞算法在游戏中使用的很多啊（
+
+代码如下，还是挺简单的：）
+
+```typescript
 
 const intersects = (a: Placement, b: Placement) => {
   // AABB 判定：只要两个包围盒在任一轴上不分离，就视为相交
