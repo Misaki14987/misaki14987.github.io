@@ -20,6 +20,8 @@ tags: ['Frontend', 'Web Development']
 
 ---
 
+## 词条处理
+
 如何让词条位置在合适的位置？这里我给每个词条都定义了一个外接的矩形，用于判定其占位，是否碰撞等等
 
 矩形是根据宽度，高度，旋转角来计算的，代码如下
@@ -93,7 +95,9 @@ const mapFontSize = (
 
 ---
 
-词条已经处理好了，如何排列词条呢？思路如下
+## 词云构造
+
+词条已经处理好了，如何排列词条构成词云呢？思路如下
 
 先将词条从大到小进行一个排列，将最小和最大权重的词条挑出来，定义一些基本的量
 
@@ -165,6 +169,40 @@ while (attempts < MAX_ATTEMPTS && !placedWord) {
 > 这里的 ctx 是一个`cavans` 对象
 
 这样一个基本的词云就完成了
+
+---
+
+## 交互优化
+
+写了一个 gsap 的淡入动画，刚开始接触 gsap，动画略显粗糙简便：（
+
+```typescript
+useEffect(() => {
+  if (!containerRef.current) return;
+  gsap.fromTo(
+    containerRef.current,
+    { opacity: 0 },
+    { opacity: 1, duration: 0.6, ease: 'power2.out' } // 渐显动画
+  );
+}, [words]);
+```
+
+需要监控容器尺寸来调整词云的参数，这里使用`useLayoutEffect`来监控, `ResizeObserver`来获取容器参数
+
+```typescript
+useLayoutEffect(() => {
+  const container = containerRef.current;
+  if (!container) return;
+  const observer = new ResizeObserver((entries) => {
+    const entry = entries[0];
+    if (!entry) return;
+    const { width, height } = entry.contentRect;
+    setSize({ width, height }); // 实时记录容器尺寸，驱动布局
+  });
+  observer.observe(container);
+  return () => observer.disconnect();
+}, []);
+```
 
 ---
 
@@ -377,3 +415,5 @@ const WordCloud = ({ words }: WordCloudProps) => {
 
 export default WordCloud;
 ```
+
+第一次写这种讲解代码思路的文档，如有错误或表述不恰当的地方请务必指正，感谢
