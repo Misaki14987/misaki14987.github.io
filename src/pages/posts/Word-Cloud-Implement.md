@@ -20,7 +20,7 @@ tags: ['Frontend', 'Web Development']
 
 ---
 
-如何让词条位置在合适的位置？这里我给每个词条都定义了一个外接的矩形，用于判定其位置，是否碰撞等等
+如何让词条位置在合适的位置？这里我给每个词条都定义了一个外接的矩形，用于判定其占位，是否碰撞等等
 
 矩形是根据宽度，高度，旋转角来计算的，代码如下
 
@@ -74,7 +74,30 @@ const intersects = (a: Placement, b: Placement) => {
 
 ---
 
-词条的大小是随着权重而改变的，而一个基准的大小还是需要决定的。可以去简单的先算平均值再插值到定义好的minFontSize和maxFontSize之间
+词条的大小是随着权重而改变的，而一个基准的大小还是需要决定的。这里问了一下AI有没有什么更好的方法，代码如下
+
+```typescript
+
+const mapFontSize = (
+  value: number,
+  min: number,
+  max: number,
+  minFont: number,
+  maxFont: number
+) => {
+  if (max === min) return (minFont + maxFont) / 2; // 防止除以 0，统一给中间值
+  const span = max - min || 1;
+  return minFont + ((value - min) / span) * (maxFont - minFont); // 线性映射权重到字号
+};
+```
+
+预先定义好minFont和maxFont防止过大或过小，也能根据屏幕的大小来适配字体大小。先把权重压成 0-1 的比例 (value - min) / (max - min)，比例 0 对应最小字号，比例 1 对应最大字号。然后用这个比例在线性插值：字号 = minFont + 比例 * (maxFont - minFont)。比如权重区间 10～50、字号区间 20～60，权重 30 的比例是 0.5，算出来字号就是 40。极端情况下如果 max === min（所有权重都一样），直接取字号区间的中间值，避免除以 0
+
+---
+
+词条已经处理好了，如何排列词条呢？
+
+这里的思路是先将词条
 
 总的代码如下
 
@@ -114,6 +137,7 @@ const RADIUS_STEP = 4; // 每次迭代半径增量，用于向外扩散
 const MAX_ATTEMPTS = 1200; // 单词寻找位置的最大尝试次数，防止无限循环
 const BOUND_PADDING = 8; // 旋转包围盒的额外留白，避免边缘贴得过紧
 
+
 const mapFontSize = (
   value: number,
   min: number,
@@ -125,6 +149,7 @@ const mapFontSize = (
   const span = max - min || 1;
   return minFont + ((value - min) / span) * (maxFont - minFont); // 线性映射权重到字号
 };
+
 
 const getRotatedBounds = (
   x: number,
