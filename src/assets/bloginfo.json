@@ -12,5 +12,12 @@
     "image": "astro.png",
     "link": "/posts/Astro-Learn",
     "description": "Astro学习笔记(1)"
+  },
+  {
+    "title": "React实现简单的词云展示",
+    "subtitle": "WordCloud implement without d3.js",
+    "image": "2025.jpg",
+    "link": "/posts/Word-Cloud-Implement.md",
+    "description": " "
   }
 ]

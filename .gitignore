@@ -21,3 +21,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# octarine
+src/pages/**/.octarine/
+src/pages/**/.templates
+src/pages/**/Daily
+src/pages/**/.gitignore
