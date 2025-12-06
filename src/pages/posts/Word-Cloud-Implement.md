@@ -51,14 +51,13 @@ const getRotatedBounds = (
 };
 ```
 
-判定矩形是否相撞，这里使用了AABB算法
+判定矩形是否相撞，这里使用了 AABB 算法
 
-关于碰撞检测的算法，这个视频比较短小精罕<https://youtu.be/59BTXB-kFNs>，这种碰撞算法在游戏中使用的很多啊（
+关于碰撞检测的算法，这个视频比较短小精罕<https://youtu.be/59BTXB-kFNs>，~~这种碰撞算法在游戏中使用的很多啊，我也想做游戏了~~
 
 代码如下，还是挺简单的：）
 
 ```typescript
-
 const intersects = (a: Placement, b: Placement) => {
   // AABB 判定：只要两个包围盒在任一轴上不分离，就视为相交
   return !(
@@ -74,10 +73,9 @@ const intersects = (a: Placement, b: Placement) => {
 
 ---
 
-词条的大小是随着权重而改变的，而一个基准的大小还是需要决定的。这里问了一下AI有没有什么更好的方法，代码如下
+词条的大小是随着权重而改变的。这里问了一下 AI 有没有什么更好的方法，代码如下
 
 ```typescript
-
 const mapFontSize = (
   value: number,
   min: number,
@@ -91,13 +89,42 @@ const mapFontSize = (
 };
 ```
 
-预先定义好minFont和maxFont防止过大或过小，也能根据屏幕的大小来适配字体大小。先把权重压成 0-1 的比例 (value - min) / (max - min)，比例 0 对应最小字号，比例 1 对应最大字号。然后用这个比例在线性插值：字号 = minFont + 比例 * (maxFont - minFont)。比如权重区间 10～50、字号区间 20～60，权重 30 的比例是 0.5，算出来字号就是 40。极端情况下如果 max === min（所有权重都一样），直接取字号区间的中间值，避免除以 0
+预先定义好 minFont 和 maxFont 防止过大或过小，也能根据屏幕的大小来适配字体大小。先把权重压成 0-1 的比例  (value - min) / (max - min)，比例 0 对应最小字号，比例 1 对应最大字号。然后用这个比例在线性插值：字号 = minFont + 比例 * (maxFont - minFont)。比如权重区间 10 ～ 50、字号区间 20 ～ 60，权重 30 的比例是 0.5，算出来字号就是 40。极端情况下如果  max === min（所有权重都一样），直接取字号区间的中间值，避免除以 0
 
 ---
 
-词条已经处理好了，如何排列词条呢？
+词条已经处理好了，如何排列词条呢？思路如下
 
-这里的思路是先将词条
+先将词条从大到小进行一个排列，将最小和最大权重的词条挑出来，定义一些基本的量
+
+```typescript
+const sorted = [...words].sort((a, b) => b.value - a.value); //排序
+const min = Math.min(...sorted.map((w) => w.value)); 
+const max = Math.max(...sorted.map((w) => w.value));
+const isCompact = size.width < 640; //计算屏幕
+const minFont = isCompact ? 14 : 20; //最小的字
+const maxFont = isCompact ? 36 : 60; //最大的字
+const centerX = size.width / 2; //确定容器的横轴中心
+const centerY = isCompact ? size.height * 0.5 : size.height * 0.38; //确定容器的纵轴中心
+```
+
+然后测量文字，交替地去横着竖着排列
+
+```typescript
+const fontSize = mapFontSize(word.value, min, max, minFont, maxFont);
+ctx.font = `600 ${fontSize}px 'Inter', ...`;
+const metrics = ctx.measureText(word.text);
+const textWidth = metrics.width;
+const textHeight = fontSize * (
+  metrics.actualBoundingBoxAscent
+    ? (metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent) / fontSize
+    : 1
+);
+const isVertical = index % 2 === 1; //交替
+const rotate = isVertical ? -90 : 0; //横着还是竖着，这是一个问题
+```
+
+> 这里的ctx是一个`cavans` 对象
 
 总的代码如下
 
@@ -137,7 +164,6 @@ const RADIUS_STEP = 4; // 每次迭代半径增量，用于向外扩散
 const MAX_ATTEMPTS = 1200; // 单词寻找位置的最大尝试次数，防止无限循环
 const BOUND_PADDING = 8; // 旋转包围盒的额外留白，避免边缘贴得过紧
 
-
 const mapFontSize = (
   value: number,
   min: number,
@@ -149,7 +175,6 @@ const mapFontSize = (
   const span = max - min || 1;
   return minFont + ((value - min) / span) * (maxFont - minFont); // 线性映射权重到字号
 };
-
 
 const getRotatedBounds = (
   x: number,
