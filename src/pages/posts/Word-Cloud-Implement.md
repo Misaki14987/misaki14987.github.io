@@ -6,8 +6,8 @@ description: '不使用d3实现一个简单的无碰撞词云'
 author: 'M1saK1'
 category: 'Frontend'
 image:
-url: 'src/assets/wordcloud.png'
-alt: 'wordcloud'
+  url: 'src/assets/2025.jpg'
+  alt: 'wordcloud'
 tags: ['Frontend', 'Web Development']
 ---
 

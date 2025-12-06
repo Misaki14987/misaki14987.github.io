@@ -6,8 +6,8 @@ description: '记录学习 Astro 框架的过程和心得。1'
 author: 'M1saK1'
 category: 'Learning Notes'
 image:
-url: 'src/assets/astro.png'
-alt: 'Astro Logo'
+  url: 'src/assets/astro.png'
+  alt: 'Astro Logo'
 tags: ['Frontend', 'Astro', 'Web Development']
 ---
 
