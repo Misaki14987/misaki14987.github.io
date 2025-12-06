@@ -1,7 +1,6 @@
 ---
 import '../global.css';
 import Navigation from '../components/common/Navigation.astro';
-import Footer from '../components/common/Footer.astro';
 import Background from '../components/common/Background.astro';
 
 const {
@@ -27,18 +26,13 @@ const {
 	<body class={`relative flex min-h-screen flex-col ${bodyClass}`}>
 		{!hideBackground && <Background />}
 		{showNavigation && (
-			<header class='relative z-10 w-full'>
+			<header class='sticky top-0 z-50 w-full'>
 				<Navigation />
 			</header>
 		)}
 		<main class='relative z-10 flex-1 w-full'>
 			<slot />
 		</main>
-		{showFooter && (
-			<footer class='relative z-10 w-full'>
-				<Footer />
-			</footer>
-		)}
 	</body>
 	
 </html>

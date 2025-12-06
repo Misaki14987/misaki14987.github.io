@@ -1,6 +1,7 @@
 ---
 import Card from "./common/Card.astro";
 import avator from "../assets/taffy.jpg";
+import Social from "./Social.astro";
 
 interface Props {
 	class?: string;
@@ -16,6 +17,12 @@ const { class: wrapperClass = "max-w-3xl mx-auto mt-10" } = Astro.props as Props
     <ul class='list-disc list-inside mt-4'>    
     <li class=''>Frontend/React</li>
     <li class=''>Learning Rust</li>
+    
   </ul>
+  <div class='mt-4'>
+  	<Social platform="github" username="Misaki14987" />
+	<Social platform="x" username="LianiuMis" />
+	<Social platform="bilibili" username="M1saK1" />
+	<Social platform="rss" username="M1saK1" />
     </div>
 </Card>
