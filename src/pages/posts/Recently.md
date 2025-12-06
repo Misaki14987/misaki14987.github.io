@@ -1,8 +1,8 @@
 ---
 layout: ../../layouts/MarkdownLayout.astro
-title: 'Recently'
+title: 'My First Year in HDU'
 pubDate: 2025-09-24
-description: '最近的一些动态和想法。'
+description: ''
 author: 'M1saK1'
 category: 'Diary'
 image:
