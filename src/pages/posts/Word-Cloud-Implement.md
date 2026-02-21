@@ -2,9 +2,8 @@
 layout: ../../layouts/MarkdownLayout.astro
 title: 'React+GSAP搓一个简单的词云组件'
 pubDate: 2025-12-6
-description: '不使用d3实现一个简单的无碰撞词云'
 author: 'M1saK1'
-category: 'Frontend'
+category: '不使用d3实现一个简单的无碰撞词云'
 image:
   url: 'src/assets/2025.jpg'
   alt: 'wordcloud'
@@ -33,7 +32,7 @@ const getRotatedBounds = (
   y: number,
   width: number,
   height: number,
-  rotate: number
+  rotate: number,
 ): Bounds => {
   const radians = (rotate * Math.PI) / 180; // 角度转弧度
   const cos = Math.cos(radians);
@@ -83,7 +82,7 @@ const mapFontSize = (
   min: number,
   max: number,
   minFont: number,
-  maxFont: number
+  maxFont: number,
 ) => {
   if (max === min) return (minFont + maxFont) / 2; // 防止除以 0，统一给中间值
   const span = max - min || 1;
@@ -182,7 +181,7 @@ useEffect(() => {
   gsap.fromTo(
     containerRef.current,
     { opacity: 0 },
-    { opacity: 1, duration: 0.6, ease: 'power2.out' } // 渐显动画
+    { opacity: 1, duration: 0.6, ease: 'power2.out' }, // 渐显动画
   );
 }, [words]);
 ```
