@@ -1,12 +1,9 @@
 ---
-layout: ../../layouts/MarkdownLayout.astro
 title: 'My First Year in HDU'
 pubDate: 2025-09-24
 author: 'M1saK1'
 category: '快回你电吧你电又win了'
-image:
-  url: 'src/assets/recent.jpg'
-  alt: 'recent'
+cover: ./cover.jpg
 tags: ['Daily']
 ---
 

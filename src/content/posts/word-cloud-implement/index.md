@@ -1,12 +1,9 @@
 ---
-layout: ../../layouts/MarkdownLayout.astro
 title: 'React+GSAP搓一个简单的词云组件'
 pubDate: 2025-12-6
 author: 'M1saK1'
 category: '不使用d3实现一个简单的无碰撞词云'
-image:
-  url: 'src/assets/2025.jpg'
-  alt: 'wordcloud'
+cover: ./cover.jpg
 tags: ['Frontend', 'Web Development']
 ---
 
@@ -90,7 +87,7 @@ const mapFontSize = (
 };
 ```
 
-预先定义好 minFont 和 maxFont 防止过大或过小，也能根据屏幕的大小来适配字体大小。先把权重压成 0-1 的比例  (value - min) / (max - min)，比例 0 对应最小字号，比例 1 对应最大字号。然后用这个比例在线性插值：字号 = minFont + 比例 \* (maxFont - minFont)。比如权重区间 10 ～ 50、字号区间 20 ～ 60，权重 30 的比例是 0.5，算出来字号就是 40。极端情况下如果  max === min（所有权重都一样），直接取字号区间的中间值，避免除以 0
+预先定义好 minFont 和 maxFont 防止过大或过小，也能根据屏幕的大小来适配字体大小。先把权重压成 0-1 的比例  (value - min) / (max - min)，比例 0 对应最小字号，比例 1 对应最大字号。然后用这个比例在线性插值：字号 = minFont + 比例 \* (maxFont - minFont)。比如权重区间 10 ～ 50、字号区间 20 ～ 60，权重 30 的比例是 0.5，算出来字号就是 40。极端情况下如果  max === min（所有权重都一样），直接取字号区间的中间值，避免除以 0
 
 ---
 

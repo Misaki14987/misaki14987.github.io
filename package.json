@@ -6,7 +6,11 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "new": "node scripts/new-post.mjs"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["sharp"]
   },
   "dependencies": {
     "@astrojs/preact": "^4.1.1",
@@ -15,6 +19,7 @@
     "astro": "^5.13.9",
     "preact": "^10.27.2",
     "react-markdown": "^10.1.0",
+    "sharp": "^0.34.5",
     "stellar-solstice": "link:",
     "tailwindcss": "^4.1.13"
   }

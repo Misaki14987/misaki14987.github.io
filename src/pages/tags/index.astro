@@ -1,8 +1,10 @@
 ---
+import { getCollection } from 'astro:content';
 import Card from "../../components/common/Card.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const tags = Object.values(import.meta.glob('../posts/*.md', { eager: true })).map((post:any) => post.frontmatter.tags).flat();
+const posts = await getCollection('posts');
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
 ---
 
 <BaseLayout title='Tags'>
