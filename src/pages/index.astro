@@ -2,22 +2,23 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogList from '../components/BlogList.astro';
 import Self from '../components/Self.astro';
+import '../styles/pages/index.scss';
 ---
 
 <BaseLayout>
-	<div class='mx-auto max-w-6xl px-4 sm:px-6 '>
-		<div class='relative rounded-3xl border border-white/12 bg-slate-900/70 backdrop-blur-md shadow-2xl'>
-			<section class='mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 pb-16 pt-8 sm:px-6 lg:flex-row lg:gap-16 lg:pb-20 lg:pt-12'>
-				<div class='lg:w-[320px] xl:w-[360px] lg:pr-10'>
-					<div class='lg:sticky lg:top-1/2'>
-						<div class='lg:-translate-y-1/2 lg:transform'>
-							<Self class='w-full lg:mt-0' />
+	<div class='index-container'>
+		<div class='index-panel'>
+			<section class='index-layout'>
+				<div class='index-sidebar'>
+					<div class='index-sidebar__sticky'>
+						<div class='index-sidebar__inner'>
+							<Self class='index-sidebar__self' />
 						</div>
 					</div>
 				</div>
-				<div class='flex-1'>
-					<div class='flex h-full flex-col gap-8 pb-4'>
-						<BlogList class='space-y-8' />
+				<div class='index-content'>
+					<div class='index-content__inner'>
+						<BlogList class='index-content__list' />
 					</div>
 				</div>
 			</section>

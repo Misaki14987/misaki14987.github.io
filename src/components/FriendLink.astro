@@ -1,46 +1,47 @@
 ---
 import Card from "./common/Card.astro"
+import '../styles/components/friend-link.scss';
+
 const friends = [
     { name: 'summ2', url: 'https://summ2.link',description: 'Vidar Team Pwn, awmc', image:'https://nan0in27.cn/%E5%8F%8B%E9%93%BE/summ2.jpg' },
     { name: 'nan0in', url: 'https://nan0in27.cn', description: 'ORAYS Pwn, 向今日致以极夜为安，没有爱，就无法看见', image: 'https://nan0in27.cn/img/avatar_hu_f5c4bcf31b1d730.png' }
 ]
 ---
-<section class="mt-16">
-  <div class="mx-auto max-w-2xl px-4 text-center sm:px-6">
-    <h2 class="text-3xl font-semibold tracking-tight text-neutral-900 sm:text-4xl">以下为友链</h2>
+<section class="friend-section">
+  <div class="friend-section__header">
+    <h2 class="friend-section__title">以下为友链</h2>
   </div>
 
-  <div class="mx-auto mt-12 grid max-w-5xl gap-8 px-4 sm:grid-cols-2 sm:px-6 lg:gap-10">
+  <div class="friend-section__grid">
     {friends.map((friend) => (
       <Card
         title={friend.name}
         variant="frosted"
-        class="friend-card flex h-full flex-col items-center gap-5 text-center "
+        class="friend-card"
       >
         {friend.image && (
-          <div class="relative">
-            <div class="pointer-events-none absolute inset-0 rounded-2xl " aria-hidden="true"></div>
-            <div class="relative overflow-hidden rounded-2xl ring-1 ring-white/15 shadow-lg shadow-black/30">
+          <div class="friend-card__avatar-wrapper">
+            <div class="friend-card__avatar-frame">
               <a href={friend.url} target="_blank" rel="noopener noreferrer">
               <img
                 src={friend.image}
                 alt={friend.name}
-                class="h-24 w-24 object-cover sm:h-28 sm:w-28"
+                class="friend-card__avatar"
                 loading="lazy"
               />
               </a>
             </div>
           </div>
         )}
-        <div class="flex flex-col items-center gap-2">
+        <div class="friend-card__info">
           <a
             href={friend.url}
-            class="inline-flex items-center gap-1  sm:text-base"
+            class="friend-card__url"
           >
             <span>{friend.url}</span>
           </a>
           {friend.description && (
-            <p class="text-sm text-white/60">{friend.description}</p>
+            <p class="friend-card__description">{friend.description}</p>
           )}
         </div>
       </Card>

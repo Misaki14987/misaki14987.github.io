@@ -1,0 +1,33 @@
+.self {
+  text-align: center;
+
+  &--default {
+    max-width: 48rem;
+    margin: 2.5rem auto 0;
+  }
+
+  &__avatar {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: block;
+  }
+
+  &__name {
+    color: #f9a8d4;
+    font-weight: 700;
+    font-size: 1.5rem;
+  }
+
+  &__skills {
+    list-style: disc;
+    list-style-position: inside;
+    margin-top: 1rem;
+    padding: 0;
+  }
+
+  &__social {
+    margin-top: 1rem;
+  }
+}

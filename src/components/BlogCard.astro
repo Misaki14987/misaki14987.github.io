@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Card from "./common/Card.astro";
+import '../styles/components/blog-card.scss';
 
 interface Props {
 	title: string;
@@ -20,17 +21,17 @@ const {
 	class: wrapperClass,
 }: Props = Astro.props;
 
-const cardClass = wrapperClass ?? 'w-3.5/4 max-w-3xl mx-auto mt-10';
+const cardClass = wrapperClass ?? 'blog-card--default';
 ---
 <Card title={title} subtitle={subtitle} class={cardClass}>
 	{image && (
-		<a href={link} class='block overflow-hidden rounded-lg'>
+		<a href={link} class="blog-card__image-link">
 			{typeof image === 'string' ? (
-				<img src={image} alt={title} class='mb-4 h-auto w-full rounded-lg transition-transform duration-200 hover:scale-[1.01]' />
+				<img src={image} alt={title} class="blog-card__image" />
 			) : (
-				<Image src={image} alt={title} class='mb-4 h-auto w-full rounded-lg transition-transform duration-200 hover:scale-[1.01]' />
+				<Image src={image} alt={title} class="blog-card__image" />
 			)}
 		</a>
 	)}
-	<p class='mb-4'>{description}</p>
+	<p class="blog-card__description">{description}</p>
 </Card>

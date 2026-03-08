@@ -1,8 +1,8 @@
 ---
-import '../global.css';
 import Card from '../components/common/Card.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FriendLink from '../components/FriendLink.astro';
+import '../styles/pages/about.scss';
 
 const myInfo = {
   name: 'M1saK1',
@@ -12,10 +12,10 @@ const myInfo = {
 ---
 
 <BaseLayout>
-  <Card title=`你好我是${myInfo.name}` subtitle='About' class='w-3.5/4 max-w-3xl mx-auto mt-10'>
-    <p class='mb-4'>{myInfo.bio}</p>
-      <h3 class=' font-semibold mb-2'>兴趣爱好</h3>
-        <ul class='list-disc list-inside'>
+  <Card title=`你好我是${myInfo.name}` subtitle='About' class='about-card'>
+    <p class='about-bio'>{myInfo.bio}</p>
+      <h3 class='about-heading'>兴趣爱好</h3>
+        <ul class='about-interests'>
           {myInfo.interests.map((interest) => (
             <li>{interest}</li>
           ))}

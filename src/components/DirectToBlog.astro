@@ -1,6 +1,7 @@
 ---
 import Card from "./common/Card.astro";
 import blogs from "../scripts/utils";
+import '../styles/components/direct-to-blog.scss';
 
 interface Props {
 	class?: string;
@@ -10,20 +11,20 @@ interface Props {
 
 const { class: wrapperClass, skip = 0, limit = 5 } = Astro.props as Props;
 const recentBlogs = blogs.slice(skip, limit ? skip + limit : undefined);
-const cardClass = wrapperClass ?? 'w-3.5/4 max-w-3xl mx-auto mt-10';
+const cardClass = wrapperClass ?? 'direct-to-blog--default';
 ---
 <Card title='Recent Articles' subtitle='Direct to Blog' class={cardClass}>
 	{recentBlogs.length ? (
-		<ul class='space-y-3'>
+		<ul class='direct-to-blog__list'>
 			{recentBlogs.map((blog) => (
 				<li>
-					<a class='text-pink-200 hover:underline text-2xl transition-colors' href={blog.link}>
+					<a class='direct-to-blog__link' href={blog.link}>
 						{blog.title}
 					</a>
 				</li>
 			))}
 		</ul>
 	) : (
-		<p class='text-slate-200'>暂时没有更多文章了。</p>
+		<p class='direct-to-blog__empty'>暂时没有更多文章了。</p>
 	)}
 </Card>
