@@ -27,3 +27,5 @@ src/pages/**/.octarine/
 src/pages/**/.templates
 src/pages/**/Daily
 src/pages/**/.gitignore
+
+SPEC.md
