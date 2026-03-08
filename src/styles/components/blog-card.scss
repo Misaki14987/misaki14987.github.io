@@ -1,0 +1,29 @@
+.blog-card {
+  &--default {
+    width: 87.5%;
+    max-width: 48rem;
+    margin: 2.5rem auto 0;
+  }
+
+  &__image-link {
+    display: block;
+    overflow: hidden;
+    border-radius: 0.5rem;
+  }
+
+  &__image {
+    margin-bottom: 1rem;
+    height: auto;
+    width: 100%;
+    border-radius: 0.5rem;
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: scale(1.01);
+    }
+  }
+
+  &__description {
+    margin-bottom: 1rem;
+  }
+}

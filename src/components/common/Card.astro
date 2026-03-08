@@ -1,22 +1,12 @@
 ---
+import '../../styles/components/card.scss';
+
 const { title, subtitle, variant = 'solid', class: additionalClasses = '' } = Astro.props;
 
-const baseClass = [
-    'rounded-3xl p-6 sm:p-8 backdrop-blur',
-    'transition-transform transition-shadow duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]',
-    'transform-gpu shadow-lg',
-    'hover:-translate-y-0.5 hover:shadow-xl',
-].join(' ');
-
-const variantClasses =
-    variant === 'solid'
-        ? 'bg-[color:var(--card-bg)]'
-        : 'bg-[color:var(--card-bg)] backdrop-brightness-110';
-
-const classes = `${baseClass} ${variantClasses} ${additionalClasses}`;
+const variantClass = variant === 'solid' ? 'card--solid' : 'card--frosted';
 ---
-<section class={classes}>
-  <h2 class="text-2xl font-bold mb-2">{title}</h2>
-  {subtitle && <p class="mb-4" style="color: var(--card-subtitle);">{subtitle}</p>}
+<section class={`card ${variantClass} ${additionalClasses}`}>
+  <h2 class="card__title">{title}</h2>
+  {subtitle && <p class="card__subtitle">{subtitle}</p>}
   <slot />
 </section>

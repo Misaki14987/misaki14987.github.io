@@ -2,6 +2,7 @@
 import BlogCard from "./BlogCard.astro";
 import Card from "./common/Card.astro";
 import blogs from "../scripts/utils";
+import '../styles/components/recent.scss';
 
 interface Props {
 	class?: string;
@@ -9,7 +10,7 @@ interface Props {
 
 const { class: wrapperClass } = Astro.props as Props;
 const featuredBlog = blogs[0];
-const cardClass = wrapperClass ?? 'w-3.5/4 max-w-3xl mx-auto mt-10';
+const cardClass = wrapperClass ?? 'recent--default';
 ---
 {featuredBlog ? (
 	<BlogCard
@@ -22,6 +23,6 @@ const cardClass = wrapperClass ?? 'w-3.5/4 max-w-3xl mx-auto mt-10';
 	/>
 ) : (
 	<Card title='Featured Article' class={cardClass}>
-		<p class='text-slate-200'>暂时没有内容可显示。</p>
+		<p class='recent__empty'>暂时没有内容可显示。</p>
 	</Card>
 )}

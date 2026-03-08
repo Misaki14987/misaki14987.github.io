@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Card from '../../components/common/Card.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/pages/tag.scss';
 
 export async function getStaticPaths() {
     const allPosts = await getCollection('posts');
@@ -19,10 +20,10 @@ const { tag } = Astro.params;
 const { posts } = Astro.props;
 ---
 <BaseLayout title={tag}>
-    <div class='flex flex-row mt-4 w-1/2 mx-auto justify-center items-center flex-wrap gap-4'>
-    <p class='text-lg font-extrabold'>包含 {tag} 标签的文章</p>
+    <div class='tag-posts-container'>
+    <p class='tag-posts-title'>包含 {tag} 标签的文章</p>
         {posts.map((post: any) => (
-            <Card title={post.data.title} class='w-fit'>
+            <Card title={post.data.title} class='tag-post-card'>
                 <div>
                     <a href={`/posts/${post.id}`}>{post.data.title}</a>
                 </div>

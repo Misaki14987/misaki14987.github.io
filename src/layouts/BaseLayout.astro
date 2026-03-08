@@ -1,5 +1,6 @@
 ---
-import '../global.css';
+import '../global.scss';
+import '../styles/layouts/base-layout.scss';
 import Navigation from '../components/common/Navigation.astro';
 import Background from '../components/common/Background.astro';
 
@@ -23,16 +24,16 @@ const {
 		{description && <meta name='description' content={description} />}
 		<slot name='head' />
 	</head>
-	<body class={`relative flex min-h-screen flex-col ${bodyClass}`}>
+	<body class={`body ${bodyClass}`}>
 		{!hideBackground && <Background />}
 		{showNavigation && (
-			<header class='sticky top-0 z-50 w-full'>
+			<header class='header'>
 				<Navigation />
 			</header>
 		)}
-		<main class='relative z-10 flex-1 w-full'>
+		<main class='main'>
 			<slot />
 		</main>
 	</body>
-	
+
 </html>

@@ -1,0 +1,11 @@
+.recent {
+  &--default {
+    width: 87.5%;
+    max-width: 48rem;
+    margin: 2.5rem auto 0;
+  }
+
+  &__empty {
+    color: #cbd5e1;
+  }
+}

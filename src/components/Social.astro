@@ -1,4 +1,6 @@
 ---
+import '../styles/components/social.scss';
+
 const { platform, username } = Astro.props;
 
 const platformMap = {
@@ -31,7 +33,7 @@ const iconUrl = `https://cdn.simpleicons.org/${config.slug}/ffffff`;
 	href={href}
 	target="_blank"
 	rel="noopener noreferrer"
-	class="inline-flex items-center justify-center w-8 h-8"
+	class="social-link"
 >
 	<img src={iconUrl} alt={`${platform} icon`} width="24" height="24" loading="lazy" />
 </a>

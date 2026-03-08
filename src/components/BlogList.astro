@@ -1,13 +1,14 @@
 ---
 import BlogCard from "./BlogCard.astro";
 import blogs from "../scripts/utils";
+import '../styles/components/blog-list.scss';
 
 interface Props {
 	class?: string;
 }
 
 const { class: wrapperClass = "" } = Astro.props as Props;
-const classes = ['space-y-10', wrapperClass].filter(Boolean).join(' ');
+const classes = ['blog-list', wrapperClass].filter(Boolean).join(' ');
 ---
 <div class={classes}>
 	{blogs.map((blog) => (
@@ -17,7 +18,7 @@ const classes = ['space-y-10', wrapperClass].filter(Boolean).join(' ');
 			image={blog.image}
 			link={blog.link}
 			description={blog.description}
-			class='w-full mt-0'
+			class='blog-list__item'
 		/>
 	))}
 </div>
