@@ -26,11 +26,19 @@
 
 body {
   transition: color 0.3s, background-color 0.3s;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'LXGW WenKai', 'Segoe UI', sans-serif;
   margin: 0;
   padding: 0;
   background: var(--ui-bg);
   color: var(--ui-text);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Sora', 'LXGW WenKai', sans-serif;
+}
+
+code, pre, kbd, samp {
+  font-family: 'Fira Code', monospace;
 }
 
 .page-background {
