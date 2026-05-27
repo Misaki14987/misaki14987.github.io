@@ -15,11 +15,7 @@
   max-width: 48rem;
   margin: 0 auto;
   padding: 0 0.5rem;
-  color: #efefef;
-
-  @media (prefers-color-scheme: dark) {
-    color: #f1f5f9;
-  }
+  color: #f1f5f9;
 
   @media (min-width: 640px) {
     padding: 0;
