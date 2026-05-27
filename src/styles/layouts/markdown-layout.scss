@@ -15,7 +15,7 @@
   max-width: 48rem;
   margin: 0 auto;
   padding: 0 0.5rem;
-  color: #000;
+  color: #efefef;
 
   @media (prefers-color-scheme: dark) {
     color: #f1f5f9;
@@ -36,7 +36,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.35em;
-    color: #0f172a;
+    color: #f6f6f6;
   }
 
   &__title {
@@ -44,13 +44,13 @@
     font-size: 2.25rem;
     font-weight: 600;
     letter-spacing: -0.025em;
-    color: #64748b;
+    color: #ebebeb;
   }
 
   &__description {
     margin-top: 1rem;
     font-size: 1rem;
-    color: #475569;
+    color: #e8e9eb;
   }
 
   &__meta {
@@ -61,7 +61,7 @@
     column-gap: 1.5rem;
     row-gap: 0.75rem;
     font-size: 0.875rem;
-    color: #0f172a;
+    color: #b6bdcc;
   }
 
   &__tags {
@@ -82,7 +82,7 @@
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #0f172a;
+    color: #dee4f2;
   }
 }
 
@@ -91,7 +91,7 @@
   margin: 0 auto;
   font-size: 17px;
   line-height: 1.625;
-  color: #000;
+  color: #e5d9d9;
 
   & > * + * {
     margin-top: 1.5rem;
@@ -131,7 +131,7 @@
   }
 
   blockquote {
-    border-left: 4px solid rgba(148, 163, 184, 0.6);
+    border-left: 4px solid rgba(255, 255, 255, 0.6);
     padding-left: 1rem;
     font-style: italic;
     margin: 1.5rem 0;
