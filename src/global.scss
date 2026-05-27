@@ -5,23 +5,12 @@
 }
 
 :root {
-  --ui-bg: #f3f4f6;
-  --ui-text: #111827;
-  --card-bg: rgba(255, 255, 255, 0.92);
-  --card-subtitle: #4b5563;
-  --card-shadow: rgba(30, 64, 175, 0.1);
-  --card-shadow-hover: rgba(30, 64, 175, 0.2);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --ui-bg: #0f172a;
-    --ui-text: #e2e8f0;
-    --card-bg: rgba(15, 23, 42, 0.78);
-    --card-subtitle: #cbd5f5;
-    --card-shadow: rgba(15, 23, 42, 0.35);
-    --card-shadow-hover: rgba(59, 130, 246, 0.35);
-  }
+  --ui-bg: #0f172a;
+  --ui-text: #e2e8f0;
+  --card-bg: rgba(15, 23, 42, 0.78);
+  --card-subtitle: #cbd5f5;
+  --card-shadow: rgba(15, 23, 42, 0.35);
+  --card-shadow-hover: rgba(59, 130, 246, 0.35);
 }
 
 body {
