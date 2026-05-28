@@ -3,40 +3,59 @@
 *::after {
   box-sizing: border-box;
 }
-
 :root {
-  --ui-bg: #0f172a;
-  --ui-text: #e2e8f0;
-  --card-bg: rgba(15, 23, 42, 0.78);
-  --card-subtitle: #cbd5f5;
-  --card-shadow: rgba(15, 23, 42, 0.35);
-  --card-shadow-hover: rgba(59, 130, 246, 0.35);
+  --bg: #080B16;
+  --bg-soft: #0C1020;
+
+  --surface: #101522;
+  --surface-soft: #151B2C;
+  --surface-hover: #1A2135;
+
+  --line: rgba(255, 255, 255, 0.10);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  --text: #E8EAF2;
+  --text-soft: #B9C0D4;
+  --muted: #7F89A6;
+  --faint: #4F5870;
+
+  --pink: #FF9ACB;
+  --cyan: #7DDFFF;
+  --blue: #6B7CFF;
+  --warm: #F4D7A1;
 }
 
-body {
-  transition: color 0.3s, background-color 0.3s;
-  font-family: 'LXGW WenKai', 'Segoe UI', sans-serif;
-  margin: 0;
-  padding: 0;
-  background: var(--ui-bg);
-  color: var(--ui-text);
-}
-
+                                                                                                         
+body {                                                                                                 
+  transition: color 0.3s, background-color 0.3s;                                                       
+  font-family: 'LXGW WenKai', 'Segoe UI', sans-serif;                                                  
+  margin: 0;                                                                                           
+  padding: 0;                                                                                          
+  background:                                                                                          
+    radial-gradient(circle at 18% 12%, rgba(255, 154, 203, 0.12), transparent 28%),                    
+    radial-gradient(circle at 82% 18%, rgba(125, 223, 255, 0.10), transparent 30%),                    
+    linear-gradient(180deg, #080B16 0%, #0B1020 45%, #070A12 100%);                                    
+  color: var(--text);                                                                                  
+}                                                                                                      
+      
+body::before {                                                                                         
+  content: "";                                                                                         
+  position: fixed;                                                                                     
+  inset: 0;                                                                                            
+  pointer-events: none;                                                                                
+  z-index: 0;                                                                                          
+  opacity: 0.035;                                                                                      
+  background-image:                                                                                    
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),                                   
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);                            
+  background-size: 48px 48px;                                                                          
+}    
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Sora', 'LXGW WenKai', sans-serif;
 }
 
 code, pre, kbd, samp {
   font-family: 'Fira Code', monospace;
-}
-
-.page-background {
-  background: radial-gradient(
-    120% 120% at 15% 0%,
-    #e86aaf 0%,
-    #cb64cc 45%,
-    #e76dd3 100%
-  );
 }
 
 @keyframes spin-slow {
