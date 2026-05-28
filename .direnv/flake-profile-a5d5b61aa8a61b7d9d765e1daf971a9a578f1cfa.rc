@@ -23,7 +23,7 @@ IN_NIX_SHELL='impure'
 export IN_NIX_SHELL
 LD='ld'
 export LD
-LINENO='76'
+LINENO='80'
 MACHTYPE='x86_64-pc-linux-gnu'
 NIX_BINTOOLS='/nix/store/x7ikkplbrv5dlihy1bqq32gp6lilkval-binutils-wrapper-2.44'
 export NIX_BINTOOLS
@@ -35,13 +35,13 @@ NIX_CC='/nix/store/hb2bs5fg5wkm04x565737qd5nh2hy5nk-gcc-wrapper-15.2.0'
 export NIX_CC
 NIX_CC_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu='1'
 export NIX_CC_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu
-NIX_CFLAGS_COMPILE=' -frandom-seed=yixhskxvmm -isystem /nix/store/h2barca1k5pmvcyl9fwrzwrb4cn1b248-nodejs-22.22.2/include -isystem /nix/store/h2barca1k5pmvcyl9fwrzwrb4cn1b248-nodejs-22.22.2/include'
+NIX_CFLAGS_COMPILE=' -frandom-seed=8g6n5vz7y2 -isystem /nix/store/h2barca1k5pmvcyl9fwrzwrb4cn1b248-nodejs-22.22.2/include -isystem /nix/store/h2barca1k5pmvcyl9fwrzwrb4cn1b248-nodejs-22.22.2/include'
 export NIX_CFLAGS_COMPILE
 NIX_ENFORCE_NO_NATIVE='1'
 export NIX_ENFORCE_NO_NATIVE
 NIX_HARDENING_ENABLE='bindnow format fortify fortify3 libcxxhardeningfast pic relro stackclashprotection stackprotector strictflexarrays1 strictoverflow zerocallusedregs'
 export NIX_HARDENING_ENABLE
-NIX_LDFLAGS='-rpath /home/misaki/dev/blog/outputs/out/lib '
+NIX_LDFLAGS='-rpath /home/misaki/Projects/blog/outputs/out/lib '
 export NIX_LDFLAGS
 NIX_NO_SELF_RPATH='1'
 NIX_STORE='/nix/store'
@@ -134,7 +134,7 @@ name='nix-shell-env'
 export name
 nativeBuildInputs=''
 export nativeBuildInputs
-out='/home/misaki/dev/blog/outputs/out'
+out='/home/misaki/Projects/blog/outputs/out'
 export out
 outputBin='out'
 outputDev='out'
@@ -165,7 +165,7 @@ preConfigurePhases=' updateAutotoolsGnuConfigScriptsPhase'
 declare -a preFixupHooks=('_moveToShare' '_multioutDocs' '_multioutDevs' )
 preferLocalBuild='1'
 export preferLocalBuild
-prefix='/home/misaki/dev/blog/outputs/out'
+prefix='/home/misaki/Projects/blog/outputs/out'
 declare -a propagatedBuildDepFiles=('propagated-build-build-deps' 'propagated-native-build-inputs' 'propagated-build-target-deps' )
 propagatedBuildInputs=''
 export propagatedBuildInputs
