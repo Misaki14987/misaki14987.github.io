@@ -1,33 +1,105 @@
 .self {
   text-align: center;
+  position: relative;
+  overflow: hidden;
 
-  &--default {
-    max-width: 48rem;
-    margin: 2.5rem auto 0;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    z-index: 1;
+    pointer-events:none;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(125, 223, 255, 0.1) 20%,
+      rgba(125, 223, 255, 0.1) 50%,
+      rgba(125, 223, 255, 0.1) 80%,
+      transparent 100%,
+    );
+    box-shadow: 0 0 14px rgba(125, 233, 255, 0.46);
+    animation: terminal-scan 4.5s linear infinite;
   }
-
   &__avatar {
-    width: 8rem;
-    height: 8rem;
+    width: 5rem;
+    height: 5rem;
     border-radius: 50%;
-    margin: 0 auto 1rem;
+    margin: 0 auto 18px;
     display: block;
+    border: 1px solid var(--line-strong);
+
+    animation: avatar-pin 3s ease-out infinite;
+
+    @media (min-width: 640px) {
+      width: 8rem;
+      height: 8rem;
+    }
   }
 
   &__name {
-    color: #f9a8d4;
+    color: var(--pink);
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    margin-bottom: 24px;
+
+    &:hover {
+      animation: glitch-text 0.25s steps(3);
+    }
+
+    @media (min-width: 640px) {
+      font-size: 1.5rem;
+    }
   }
 
-  &__skills {
-    list-style: disc;
-    list-style-position: inside;
-    margin-top: 1rem;
+  &__field {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    row-gap: 8px;
+    text-align: left;
+    font-size: 12px;
+    font-family: "Fira Code", monospace;
+    margin: 0 0 20px;
     padding: 0;
-  }
 
-  &__social {
-    margin-top: 1rem;
+    dt {
+      color: var(--faint);
+      margin: 0;
+    }
+
+    dd {
+      color: var(--text-soft);
+      margin: 0;
+    }
   }
+  &__social {                                                                                                                                                                                                                 
+    display: flex;                                                                                                                                                                                                            
+    justify-content: center;                                                                                                                                                                                                  
+    gap: 12px;                                                                                                                                                                                                                
+  }      
 }
+
+@keyframes avator-pin {
+  0% { box-shadow: 0 0 0 0 rgba(125,233,255,0);}
+  8% { box-shadow: 0 0 0 6px rgba(125, 233, 255, 0.35);}
+  16% { box-shadow: 0 0 0 12px rgba(125, 233, 255, 0);}
+  100% { box-shadow: 0 0 0 12px rgba(125, 233, 255, 0);}
+}
+
+@keyframes terminal-scan {                                                                                                                                                                                                    
+    0%   { top: -2px;  opacity: 0; }                                                                                                                                                                                            
+    4%   { opacity: 1; }                                                                                                                                                                                                        
+    12%  { opacity: 1; }                                                                                                                                                                                                        
+    16%  { top: 102%;  opacity: 0; }                                                                                                                                                                                            
+    100% { top: 102%;  opacity: 0; }                                                                                                                                                                                            
+}        
+ @keyframes glitch-text {                                                                                                                                                                                                      
+    0%   { text-shadow: none; transform: none; }                                                                                                                                                                                
+    25%  { text-shadow: 1.5px 0 var(--pink), -1.5px 0 var(--cyan); }                                                                                                                                                            
+    50%  { text-shadow: -2px 0 var(--cyan), 2px 0 var(--pink); transform: translateX(-1px); }                                                                                                                                   
+    75%  { text-shadow: 1px 0 var(--pink), -1px 0 var(--cyan); transform: translateX(1px); }                                                                                                                                    
+    100% { text-shadow: none; transform: none; }                                                                                                                                                                                
+  }                                                                                                                                                                                                                             
+            
