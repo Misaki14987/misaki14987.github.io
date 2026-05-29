@@ -1,27 +1,37 @@
----
-import BaseLayout from '../layouts/BaseLayout.astro';
-import BlogList from '../components/BlogList.astro';
-import Self from '../components/Self.astro';
-import '../styles/pages/index.scss';
----
-
-<BaseLayout>
-	<div class='index-container'>
-		<div class='index-panel'>
-			<section class='index-layout'>
-				<div class='index-sidebar'>
-					<div class='index-sidebar__sticky'>
-						<div class='index-sidebar__inner'>
-							<Self class='index-sidebar__self' />
-						</div>
-					</div>
-				</div>
-				<div class='index-content'>
-					<div class='index-content__inner'>
-						<BlogList class='index-content__list' />
-					</div>
-				</div>
-			</section>
-		</div>
-	</div>
-</BaseLayout>
+                                                                                                                     
+  ---                                                                                                                
+  import BaseLayout from '../layouts/BaseLayout.astro';                                                              
+  import BlogCard from '../components/BlogCard.astro';                                                               
+  import Self from '../components/Self.astro';                                                                       
+  import blogs from '../scripts/utils';                                                                              
+  import '../styles/pages/index.scss';                                                                               
+  ---                                                                                                                
+                                                                                                                     
+  <BaseLayout>                                                                                                       
+    <div class='index-container'>                                                                                    
+      <div class='index-panel'>                                                                                      
+        <section class='index-layout'>                                                                               
+          <div class='index-sidebar'>                                                                                
+            <div class='index-sidebar__sticky'>                                                                      
+              <Self class='index-sidebar__self' />                                                                   
+            </div>                                                                                                   
+          </div>                                                                                                     
+          <div class='index-content'>                                                                                
+            <div class='index-content__inner'>                                                                       
+              {blogs.map((blog) => (                                                                                 
+                <BlogCard                                                                                            
+                  title={blog.title}                                                                                 
+                  subtitle={blog.subtitle}                                                                           
+                  image={blog.image}                                                                                 
+                  link={blog.link}                                                                                   
+                  description={blog.description}                                                                     
+                  pubDate={blog.pubDate}                                                                             
+                  class='index-content__list'                                                                        
+                />                                                                                                   
+              ))}                                                                                                    
+            </div>                                                                                                   
+          </div>                                                                                                     
+        </section>                                                                                                   
+      </div>                                                                                                         
+    </div>                                                                                                           
+  </BaseLayout>    

@@ -19,11 +19,11 @@
   }
 
   &--solid {
-    background: var(--card-bg);
+    background: var(--surface);
   }
 
   &--frosted {
-    background: var(--card-bg);
+    background: var(--surface);
     backdrop-filter: blur(12px) brightness(1.1);
   }
 
@@ -35,6 +35,6 @@
 
   &__subtitle {
     margin-bottom: 1rem;
-    color: var(--card-subtitle);
+    color: var(--muted);
   }
 }
