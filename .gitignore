@@ -30,4 +30,4 @@ src/pages/**/.gitignore
 
 SPEC.md
 *.md
-.direnv
+.direnv/
