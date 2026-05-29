@@ -15,7 +15,7 @@
   }
 
   &__link {
-    color: #f9a8d4;
+    color: var(--pink);
     font-size: 1.5rem;
     text-decoration: none;
     transition: color 0.2s;
@@ -26,6 +26,6 @@
   }
 
   &__empty {
-    color: #cbd5e1;
+    color: var(--muted);
   }
 }

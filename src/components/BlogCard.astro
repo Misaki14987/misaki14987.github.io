@@ -1,6 +1,5 @@
 ---
 import { Image } from 'astro:assets';
-import Card from "./common/Card.astro";
 import '../styles/components/blog-card.scss';
 
 interface Props {
@@ -10,6 +9,7 @@ interface Props {
 	link: string;
 	description: string;
 	class?: string;
+	pubDate?: Date
 }
 
 const {
@@ -18,20 +18,32 @@ const {
 	image,
 	link,
 	description,
+	pubDate,
 	class: wrapperClass,
 }: Props = Astro.props;
 
-const cardClass = wrapperClass ?? 'blog-card--default';
+const dateStr = pubDate ? pubDate.toISOString().slice(0,10).replace(/-/g, "."): ""
+
+const kind = subtitle ? subtitle.toUpperCase().replace(/\s/g, "_") : "POST";
 ---
-<Card title={title} subtitle={subtitle} class={cardClass}>
+
+<article class={`post-entry ${wrapperClass}`}>
+	<div class="post-meta">
+		<span class="post-kind">{kind}</span>
+		{dateStr && <span class="post-date">{dateStr}</span>}
+	</div>
+
+	<h2 class="post-title">
+		<a href={link}>{title}</a>
+	</h2>
+	{description && <p class="post-desc"> {description}</p>}
 	{image && (
-		<a href={link} class="blog-card__image-link">
+		<a href={link} class="post-cover">
 			{typeof image === 'string' ? (
-				<img src={image} alt={title} class="blog-card__image" />
-			) : (
-				<Image src={image} alt={title} class="blog-card__image" />
+				<img src={image} alt={title} />
+			): (
+				<Image src={image} alt={title} />
 			)}
 		</a>
 	)}
-	<p class="blog-card__description">{description}</p>
-</Card>
+</article>
