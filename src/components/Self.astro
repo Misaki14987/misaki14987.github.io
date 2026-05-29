@@ -1,5 +1,4 @@
 ---
-import Card from "./common/Card.astro";
 import avator from "../assets/taffy.jpg";
 import Social from "./Social.astro";
 import '../styles/components/self.scss';
@@ -8,22 +7,28 @@ interface Props {
 	class?: string;
 }
 
-const { class: wrapperClass = "self--default" } = Astro.props as Props;
+const { class: wrapperClass = "" } = Astro.props as Props;
 ---
-<Card title="" class={wrapperClass}>
-<div class="self">
-    <img src={avator.src} alt="Me" class="self__avatar" />
-    <a class='self__name'>M1saK1@localhost</a>
-    <ul class='self__skills'>
-    <li>role:  frontend/react</li>
-    <li>lang:  rust typescript</li>
-    <li>mood:  black sheep</li>
-    <li>signal:  online</li>
-  </ul>
-  <div class='self__social'>
-  	<Social platform="github" username="Misaki14987" />
-	<Social platform="x" username="LianiuMis" />
-	<Social platform="bilibili" username="M1saK1" />
-	<Social platform="rss" username="M1saK1" />
-    </div>
-</Card>
+
+<div class={`self ${wrapperClass}`}>
+  <img src={avator.src} alt="Me" class="self__avatar" />
+  <div class="self__name">M1saK1</div>
+
+  <dl class="self__field">
+    <dt>role</dt>
+    <dd>frontend/react</dd>
+    <dt>lang</dt>
+    <dd>rust learning</dd>
+    <dt>mood</dt>
+    <dd>black sheep</dd>
+    <dt>signal</dt>
+    <dd>online</dd>
+  </dl>
+
+  <div class="self__social">
+    <Social platform="github" username="Misaki14987" />
+    <Social platform="x" username="LianiuMis" />
+    <Social platform="bilibili" username="M1saK1" />
+    <Social platform="rss" username="M1saK1" />
+  </div>
+</div>

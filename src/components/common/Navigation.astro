@@ -12,7 +12,8 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 <nav class="nav">
 	<div class="nav__inner">
-		{links.map((link) => {
+		 <span class="nav__host">M1sak1 Blog — yodelist.icu</span>   
+	{links.map((link) => {
 			const normalized = link.href.replace(/\/$/, '') || '/';
 			const isActive = currentPath === normalized;
 			return (

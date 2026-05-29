@@ -21,6 +21,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+.vscode/
 
 # octarine
 src/pages/**/.octarine/
