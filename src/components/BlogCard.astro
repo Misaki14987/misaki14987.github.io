@@ -3,47 +3,61 @@ import { Image } from 'astro:assets';
 import '../styles/components/blog-card.scss';
 
 interface Props {
-	title: string;
-	subtitle?: string;
-	image?: ImageMetadata | string;
-	link: string;
-	description: string;
-	class?: string;
-	pubDate?: Date
+  title: string;
+  subtitle?: string;
+  image?: ImageMetadata | string;
+  link: string;
+  description: string;
+  class?: string;
+  pubDate?: Date;
+  tags?: string[];
+  entryId?: string;
 }
 
 const {
-	title,
-	subtitle,
-	image,
-	link,
-	description,
-	pubDate,
-	class: wrapperClass,
+  title,
+  subtitle,
+  image,
+  link,
+  description,
+  pubDate,
+  class: wrapperClass,
+  tags = [],
+  entryId = '',
 }: Props = Astro.props;
 
-const dateStr = pubDate ? pubDate.toISOString().slice(0,10).replace(/-/g, "."): ""
-
+const dateStr = pubDate ? pubDate.toISOString().slice(0, 10).replace(/-/g, ".") : "";
 const kind = subtitle ? subtitle.toUpperCase().replace(/\s/g, "_") : "POST";
 ---
 
-<article class={`post-entry ${wrapperClass}`}>
-	<div class="post-meta">
-		<span class="post-kind">{kind}</span>
-		{dateStr && <span class="post-date">{dateStr}</span>}
-	</div>
+<article class={`archive-entry ${wrapperClass}${!image ? ' archive-entry--no-cover' : ''}`}>
+  {image && (
+    <a href={link} class="entry-cover">
+      {typeof image === 'string' ? (
+        <img src={image} alt={title} />
+      ) : (
+        <Image src={image} alt={title} />
+      )}
+    </a>
+  )}
 
-	<h2 class="post-title">
-		<a href={link}>{title}</a>
-	</h2>
-	{description && <p class="post-desc"> {description}</p>}
-	{image && (
-		<a href={link} class="post-cover">
-			{typeof image === 'string' ? (
-				<img src={image} alt={title} />
-			): (
-				<Image src={image} alt={title} />
-			)}
-		</a>
-	)}
+  <div class="entry-body">
+    <div class="entry-meta">
+      {entryId && <span class="entry-id">{entryId}</span>}
+      {dateStr && <time>{dateStr}</time>}
+      <span>{kind}</span>
+    </div>
+
+    <h3 class="entry-title">
+      <a href={link}>{title}</a>
+    </h3>
+
+    {description && <p class="entry-desc">{description}</p>}
+
+    {tags.length > 0 && (
+      <div class="entry-tags">
+        {tags.map((tag) => <span>#{tag}</span>)}
+      </div>
+    )}
+  </div>
 </article>

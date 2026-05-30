@@ -1,5 +1,4 @@
 ---
-import Card from '../components/common/Card.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FriendLink from '../components/FriendLink.astro';
 import '../styles/pages/about.scss';
@@ -12,14 +11,27 @@ const myInfo = {
 ---
 
 <BaseLayout>
-  <Card title=`你好我是${myInfo.name}` subtitle='About' class='about-card'>
-    <p class='about-bio'>{myInfo.bio}</p>
-      <h3 class='about-heading'>兴趣爱好</h3>
-        <ul class='about-interests'>
-          {myInfo.interests.map((interest) => (
-            <li>{interest}</li>
-          ))}
-        </ul>
-  </Card>
-  <FriendLink />
+  <main class="dossier">
+    <section class="dossier-intro">
+      <div class="dossier-intro__label">PERSONNEL DOSSIER</div>
+      <h1>{myInfo.name}</h1>
+    </section>
+
+    <section class="dossier-panel">
+      <div class="dossier-panel__head">
+        <span class="dossier-panel__label">BIO</span>
+      </div>
+
+      <p class="dossier-bio">{myInfo.bio}</p>
+
+      <h3 class="dossier-heading">INTERESTS</h3>
+      <div class="dossier-tags">
+        {myInfo.interests.map((interest) => (
+          <span>{interest}</span>
+        ))}
+      </div>
+    </section>
+
+    <FriendLink />
+  </main>
 </BaseLayout>

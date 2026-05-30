@@ -14,8 +14,13 @@ const blogs = posts
       link: `/posts/${post.id}`,
       description: description ?? '',
       pubDate: pubDate ? new Date(pubDate) : undefined,
+      tags: tags ?? [],
     };
   })
-  .sort((a, b) => toTime(b.pubDate) - toTime(a.pubDate));
+  .sort((a, b) => toTime(b.pubDate) - toTime(a.pubDate))
+  .map((blog, i, arr) => ({
+    ...blog,
+    entryId: `[LOG-${String(arr.length - i).padStart(3, '0')}]`,
+  }));
 
 export default blogs;

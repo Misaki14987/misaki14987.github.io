@@ -1,0 +1,56 @@
+---
+import '../../styles/components/system-frame.scss';
+---
+
+<div class="system-frame" aria-hidden="true"></div>
+
+<svg class="system-ring" viewBox="0 0 200 200" aria-hidden="true">
+  <circle
+    class="system-ring__outer"
+    cx="100"
+    cy="100"
+    r="96"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="0.5"
+    stroke-dasharray="50 120 30 18 80 40"
+  />
+  <circle
+    class="system-ring__inner"
+    cx="100"
+    cy="100"
+    r="72"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="0.5"
+    stroke-dasharray="18 24"
+  />
+</svg>
+
+<svg class="system-hud" viewBox="0 0 120 120" aria-hidden="true">
+  <!-- 外环：系统心跳 -->
+  <circle
+    class="hud-outer"
+    cx="60" cy="60" r="54"
+    fill="none" stroke="currentColor" stroke-width="0.5"
+  />
+  <!-- 内环虚线：数据扫描 -->
+  <circle
+    class="hud-inner"
+    cx="60" cy="60" r="36"
+    fill="none" stroke="currentColor" stroke-width="0.5"
+    stroke-dasharray="80 30 50 10"
+  />
+  <!-- 顶部刻度 -->
+  <line class="hud-tick hud-tick--top" x1="60" y1="6" x2="60" y2="16" stroke="currentColor" stroke-width="0.5" />
+  <!-- 右侧刻度 -->
+  <line class="hud-tick hud-tick--right" x1="114" y1="60" x2="104" y2="60" stroke="currentColor" stroke-width="0.5" />
+  <!-- 中心点 -->
+  <circle class="hud-dot" cx="60" cy="60" r="2" fill="currentColor" opacity="0.4" />
+</svg>
+
+<div class="system-status" aria-hidden="true">
+  SYS_VER 1.0.0<br />
+  ARCHIVE OS<br />
+  <span class="system-status__signal">SIGNAL ONLINE</span>
+</div>

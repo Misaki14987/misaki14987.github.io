@@ -1,0 +1,171 @@
+.system-frame {
+  position: fixed;
+  inset: 12px;
+  z-index: 0;
+  pointer-events: none;
+
+  border: 1px solid rgba(54, 48, 42, 0.18);
+  border-radius: 12px;
+}
+
+.system-frame::before,
+.system-frame::after {
+  content: "";
+  position: absolute;
+  width: 46px;
+  height: 46px;
+}
+
+.system-frame::before {
+  top: 12px;
+  left: 12px;
+  border-top: 1px solid rgba(54, 48, 42, 0.38);
+  border-left: 1px solid rgba(54, 48, 42, 0.38);
+}
+
+.system-frame::after {
+  right: 12px;
+  bottom: 12px;
+  border-right: 1px solid rgba(54, 48, 42, 0.38);
+  border-bottom: 1px solid rgba(54, 48, 42, 0.38);
+}
+
+.system-ring {
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+
+  width: 520px;
+  height: 520px;
+  right: -90px;
+  top: 96px;
+
+  color: rgba(54, 48, 42, 0.11);
+
+  animation: system-ring-rotate 90s linear infinite;
+}
+
+@keyframes system-ring-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.system-hud {
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+
+  width: 180px;
+  height: 180px;
+  right: 48px;
+  top: 88px;
+
+  color: rgba(54, 48, 42, 0.16);
+
+  animation: system-ring-rotate 140s linear infinite reverse;
+}
+
+/* HUD 子元素动画 */
+
+/* 外环 — 系统心跳 */
+@keyframes hud-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+
+/* 内环虚线 — 数据扫描 */
+@keyframes hud-scan {
+  to {
+    stroke-dashoffset: -170;
+  }
+}
+
+/* 刻度线 — 状态指示闪烁 */
+@keyframes hud-tick-blink {
+  0%, 40%, 60%, 100% { opacity: 0.5; }
+  20%, 80%           { opacity: 1; }
+}
+
+/* 中心点 — 缓慢呼吸 */
+@keyframes hud-dot-breathe {
+  0%, 100% { opacity: 0.2; }
+  50%      { opacity: 0.7; }
+}
+
+/* 大环外圈虚线 — 缓慢漂移 */
+@keyframes ring-dash-drift {
+  to {
+    stroke-dashoffset: 298;
+  }
+}
+
+/* 状态信号字 — 旧终端闪烁 */
+@keyframes signal-flicker {
+  0%, 100%      { opacity: 1; }
+  92%           { opacity: 1; }
+  94%           { opacity: 0.3; }
+  96%           { opacity: 1; }
+  98%           { opacity: 0.5; }
+}
+
+.hud-outer {
+  animation: hud-pulse 4s ease-in-out infinite;
+}
+
+.hud-inner {
+  animation: hud-scan 8s linear infinite;
+}
+
+.hud-tick {
+  animation: hud-tick-blink 3s step-end infinite;
+}
+
+.hud-tick--right {
+  animation-delay: 1.5s;
+}
+
+.hud-dot {
+  animation: hud-dot-breathe 2.5s ease-in-out infinite;
+}
+
+.system-ring__outer {
+  animation: ring-dash-drift 60s linear infinite;
+}
+
+.system-ring__inner {
+  animation: hud-pulse 6s ease-in-out infinite;
+}
+
+.system-status {
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+
+  right: 96px;
+  top: 170px;
+
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.8;
+  color: rgba(54, 48, 42, 0.24);
+  text-align: right;
+}
+
+.system-status__signal {
+  animation: signal-flicker 5s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .system-ring,
+  .system-hud,
+  .hud-outer,
+  .hud-inner,
+  .hud-tick,
+  .hud-dot,
+  .system-ring__outer,
+  .system-ring__inner,
+  .system-status__signal {
+    animation: none;
+  }
+}

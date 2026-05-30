@@ -1,11 +1,9 @@
 ---
 import '../../styles/components/card.scss';
 
-const { title, subtitle, variant = 'solid', class: additionalClasses = '' } = Astro.props;
-
-const variantClass = variant === 'solid' ? 'card--solid' : 'card--frosted';
+const { title, subtitle, class: additionalClasses = '' } = Astro.props;
 ---
-<section class={`card ${variantClass} ${additionalClasses}`}>
+<section class={`card ${additionalClasses}`}>
   <h2 class="card__title">{title}</h2>
   {subtitle && <p class="card__subtitle">{subtitle}</p>}
   <slot />
