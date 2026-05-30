@@ -2,9 +2,9 @@
 import '../../styles/components/system-frame.scss';
 ---
 
-<div class="system-frame" aria-hidden="true"></div>
+<div class="system-frame" aria-hidden="true" transition:persist></div>
 
-<svg class="system-ring" viewBox="0 0 200 200" aria-hidden="true">
+<svg class="system-ring" viewBox="0 0 200 200" aria-hidden="true" transition:persist>
   <circle
     class="system-ring__outer"
     cx="100"
@@ -27,7 +27,7 @@ import '../../styles/components/system-frame.scss';
   />
 </svg>
 
-<svg class="system-hud" viewBox="0 0 120 120" aria-hidden="true">
+<svg class="system-hud" viewBox="0 0 120 120" aria-hidden="true" transition:persist>
   <!-- 外环：系统心跳 -->
   <circle
     class="hud-outer"
@@ -49,7 +49,7 @@ import '../../styles/components/system-frame.scss';
   <circle class="hud-dot" cx="60" cy="60" r="2" fill="currentColor" opacity="0.4" />
 </svg>
 
-<div class="system-status" aria-hidden="true">
+<div class="system-status" aria-hidden="true" transition:persist>
   SYS_VER 1.0.0<br />
   ARCHIVE OS<br />
   <span class="system-status__signal">SIGNAL ONLINE</span>

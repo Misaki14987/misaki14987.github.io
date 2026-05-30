@@ -97,3 +97,23 @@
   border-radius: var(--radius-xs);
   background: rgba(184, 111, 134, 0.08);
 }
+
+.archive-entry {
+  animation: entry-reveal 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.archive-entry:nth-of-type(1) { animation-delay: 120ms; }
+.archive-entry:nth-of-type(2) { animation-delay: 180ms; }
+.archive-entry:nth-of-type(3) { animation-delay: 240ms; }
+.archive-entry:nth-of-type(4) { animation-delay: 300ms; }
+
+@keyframes entry-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
