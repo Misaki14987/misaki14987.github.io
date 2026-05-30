@@ -1,9 +1,10 @@
 ---
 import '../global.scss';
 import '../styles/layouts/base-layout.scss';
+import '../styles/components/archive-loader.scss'; 
 import Navigation from '../components/common/Navigation.astro';
 import SystemFrame from '../components/common/SystemFrame.astro';
-
+import { ClientRouter } from 'astro:transitions';
 const {
     title = 'M1saK1 Blog',
     description,
@@ -11,7 +12,6 @@ const {
     showNavigation = true,
 } = Astro.props;
 ---
-
 <html lang='zh-cn'>
   <head>
     <meta charset='UTF-8' />
@@ -23,16 +23,42 @@ const {
     <link href='https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap' rel='stylesheet' />
     <link href='https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css' rel='stylesheet' />
     <title>{title}</title>
+    <ClientRouter/>
     {description && <meta name='description' content={description} />}
     <slot name='head' />
   </head>
+
   <body class={`body ${bodyClass}`}>
     <SystemFrame />
-
+    <div class="archive-loader" transition:persist aria-hidden="true">                                                                                                                                                                                                             
+      <div class="archive-loader__line"></div>                                                                                                                                                                                                                                     
+      <div class="archive-loader__text">LOADING ARCHIVE...</div>                                                                                                                                                                                                                   
+    </div>   
     {showNavigation && <Navigation />}
 
     <main class='main'>
       <slot />
     </main>
+  <script>
+    const root = document.documentElement;
+    let navStart = 0;
+
+    document.addEventListener("astro:before-preparation", () => {
+      navStart = performance.now();
+      root.classList.add("is-routing");
+    });
+
+    document.addEventListener("astro:after-swap", () => {
+      window.scrollTo(0, 0);
+    });
+
+    document.addEventListener("astro:page-load", () => {
+      const elapsed = performance.now() - navStart;
+      const wait = Math.max(0, 420 - elapsed);
+      setTimeout(() => {
+        root.classList.remove("is-routing");
+      }, wait);
+    });
+  </script>
   </body>
 </html>
