@@ -1,37 +1,55 @@
-                                                                                                                     
-  ---                                                                                                                
-  import BaseLayout from '../layouts/BaseLayout.astro';                                                              
-  import BlogCard from '../components/BlogCard.astro';                                                               
-  import Self from '../components/Self.astro';                                                                       
-  import blogs from '../scripts/utils';                                                                              
-  import '../styles/pages/index.scss';                                                                               
-  ---                                                                                                                
-                                                                                                                     
-  <BaseLayout>                                                                                                       
-    <div class='index-container'>                                                                                    
-      <div class='index-panel'>                                                                                      
-        <section class='index-layout'>                                                                               
-          <div class='index-sidebar'>                                                                                
-            <div class='index-sidebar__sticky'>                                                                      
-              <Self class='index-sidebar__self' />                                                                   
-            </div>                                                                                                   
-          </div>                                                                                                     
-          <div class='index-content'>                                                                                
-            <div class='index-content__inner'>                                                                       
-              {blogs.map((blog) => (                                                                                 
-                <BlogCard                                                                                            
-                  title={blog.title}                                                                                 
-                  subtitle={blog.subtitle}                                                                           
-                  image={blog.image}                                                                                 
-                  link={blog.link}                                                                                   
-                  description={blog.description}                                                                     
-                  pubDate={blog.pubDate}                                                                             
-                  class='index-content__list'                                                                        
-                />                                                                                                   
-              ))}                                                                                                    
-            </div>                                                                                                   
-          </div>                                                                                                     
-        </section>                                                                                                   
-      </div>                                                                                                         
-    </div>                                                                                                           
-  </BaseLayout>    
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogCard from '../components/BlogCard.astro';
+import Self from '../components/Self.astro';
+import blogs from '../scripts/utils';
+import '../styles/pages/index.scss';
+---
+
+<BaseLayout>
+  <main class="home">
+    <!-- Intro 横跨两列 -->
+    <section class="home-intro">
+      <div class="home-intro__label">ARCHIVE TERMINAL / HOME</div>
+
+      <h1>M1sak1 Personal Archive Terminal</h1>
+
+      <p>status: learning rust / writing notes / staying online</p>
+
+      <div class="home-intro__status">
+        <span>SYS_VER 1.0.0</span>
+        <span>ARCHIVE COUNT {String(blogs.length).padStart(3, '0')}</span>
+        <span>SIGNAL ONLINE</span>
+      </div>
+    </section>
+
+    <!-- 左侧 Identity Pass -->
+    <aside>
+      <Self />
+    </aside>
+
+    <!-- 右侧 Log Stream -->
+    <section class="log-stream">
+      <header class="log-head">
+        <div>
+          <h2>LOG STREAM</h2>
+          <span>entries from /notes</span>
+        </div>
+        <span>ARCHIVE COUNT: {String(blogs.length).padStart(3, '0')}</span>
+      </header>
+
+      {blogs.map((blog) => (
+        <BlogCard
+          title={blog.title}
+          subtitle={blog.subtitle}
+          image={blog.image}
+          link={blog.link}
+          description={blog.description}
+          pubDate={blog.pubDate}
+          tags={blog.tags}
+          entryId={blog.entryId}
+        />
+      ))}
+    </section>
+  </main>
+</BaseLayout>

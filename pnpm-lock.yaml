@@ -29,9 +29,6 @@ importers:
       sharp:
         specifier: ^0.34.5
         version: 0.34.5
-      stellar-solstice:
-        specifier: 'link:'
-        version: 'link:'
 
 packages:
 

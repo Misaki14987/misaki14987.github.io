@@ -4,48 +4,104 @@
   box-sizing: border-box;
 }
 :root {
-  --bg: #D8D2C4;
-  --bg-soft: #E7E1D5;
-  --surface: #C9C1B2;
-  --surface-soft: #D5CEC1;
+  --bg: #d8d2c4;
+  --bg-soft: #e4ded1;
+  --bg-deep: #c7beae;
 
-  --line: rgba(58, 52, 46, 0.16);
-  --line-strong: rgba(58, 52, 46, 0.28);
+  --paper: #ddd6c8;
+  --paper-light: #ebe5da;
+  --paper-dark: #c8bead;
 
-  --text: #2F2A26;
-  --text-soft: #4B443D;
-  --muted: #6E665D;
-  --faint: #938A7E;
+  --surface: rgba(219, 211, 197, 0.68);
+  --surface-soft: rgba(232, 225, 213, 0.48);
+  --surface-strong: rgba(196, 185, 168, 0.62);
 
-  --accent: #8B7E6A;
-  --accent-2: #A6977C;
-  --danger: #6C5C50;
+  --surface-dark: rgba(54, 49, 43, 0.82);
+  --surface-dark-soft: rgba(54, 49, 43, 0.64);
+
+  --line: rgba(54, 48, 42, 0.18);
+  --line-soft: rgba(54, 48, 42, 0.09);
+  --line-strong: rgba(54, 48, 42, 0.32);
+
+  --line-light: rgba(255, 255, 255, 0.18);
+
+  --text: #29241f;
+  --text-soft: #4b433b;
+  --muted: #6e655a;
+  --faint: #958a7a;
+
+  --text-invert: #e8e1d4;
+  --muted-invert: rgba(232, 225, 212, 0.58);
+
+  --accent: #7f715f;
+  --accent-strong: #5f5246;
+  --accent-soft: #a3947c;
+
+  --personal: #b86f86;
+  --personal-soft: rgba(184, 111, 134, 0.16);
+  --personal-line: rgba(184, 111, 134, 0.36);
+
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --container: 1360px;
+  --header-height: 46px;
+
+  --font-body:
+    "LXGW WenKai",
+    "Noto Serif SC",
+    "Source Han Serif SC",
+    serif;
+
+  --font-mono:
+    "Fira Code",
+    "JetBrains Mono",
+    "SFMono-Regular",
+    Consolas,
+    monospace;
 }
 
-                                                                                                         
+html {
+  min-height: 100%;
+  background: var(--bg);
+}
+
 body {                                                                                                 
-  transition: color 0.3s, background-color 0.3s;                                                       
-  font-family: 'LXGW WenKai', 'Segoe UI', sans-serif;                                                  
-  margin: 0;                                                                                           
-  padding: 0;                                                                                          
-  background: linear-gradient(180deg, #ddd7ca 0%, #d3cbbe 55%, #c9c1b2 100%);
-  color: var(--text);                                                                                  
+  margin: 0;
+  min-height: 100vh;
+
+  color: var(--text);
+  font-family: var(--font-body);
+
+  background:
+    radial-gradient(circle at 16% 12%, rgba(255, 255, 255, 0.24), transparent 28%),
+    radial-gradient(circle at 82% 20%, rgba(82, 73, 63, 0.13), transparent 32%),
+    linear-gradient(180deg, #ded8cc 0%, #d4cbba 52%, #c6bca9 100%);
+
+  overflow-x: hidden;                                                                             
 }                                                                                                      
 
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: -2;
   pointer-events: none;
 
-  opacity: 0.08;
+  opacity: 0.09;
 
   background-image:
-    linear-gradient(rgba(58, 52, 46, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(58, 52, 46, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(54, 48, 42, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(54, 48, 42, 0.07) 1px, transparent 1px),
+    radial-gradient(rgba(54, 48, 42, 0.12) 1px, transparent 1px);
 
-  background-size: 48px 48px;
+  background-size:
+    48px 48px,
+    48px 48px,
+    8px 8px;
+
   mix-blend-mode: multiply;
 }
 
@@ -57,18 +113,19 @@ body::after {
   pointer-events: none;
 
   background:
-    radial-gradient(circle at center, transparent 45%, rgba(47, 42, 38, 0.18) 100%);
-}
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Sora', 'LXGW WenKai', sans-serif;
+    radial-gradient(circle at center, transparent 48%, rgba(38, 32, 27, 0.18) 100%);
 }
 
-code, pre, kbd, samp {
-  font-family: 'Fira Code', monospace;
+::selection {
+  color: var(--text-invert);
+  background: var(--accent-strong);
 }
 
-@keyframes spin-slow {
-  to {
-    transform: rotate(360deg);
-  }
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
 }

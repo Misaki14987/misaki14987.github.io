@@ -1,50 +1,45 @@
 ---
-import Card from "./common/Card.astro"
 import '../styles/components/friend-link.scss';
 
 const friends = [
-    { name: 'summ2', url: 'https://summ2.link',description: 'Vidar Team Pwn, awmc', image:'https://nan0in27.cn/%E5%8F%8B%E9%93%BE/summ2.jpg' },
+    { name: 'summ2', url: 'https://summ2.link', description: 'Vidar Team Pwn, awmc', image: 'https://nan0in27.cn/%E5%8F%8B%E9%93%BE/summ2.jpg' },
     { name: 'nan0in', url: 'https://nan0in27.cn', description: 'ORAYS Pwn, 向今日致以极夜为安，没有爱，就无法看见', image: 'https://nan0in27.cn/img/avatar_hu_f5c4bcf31b1d730.png' }
 ]
 ---
+
 <section class="friend-section">
-  <div class="friend-section__header">
-    <h2 class="friend-section__title">以下为友链</h2>
+  <div class="friend-section__head">
+    <span class="friend-section__label">CONTACT REGISTRY</span>
+    <span class="friend-section__count">ENTRIES: {String(friends.length).padStart(2, '0')}</span>
   </div>
 
-  <div class="friend-section__grid">
+  <div class="friend-section__list">
     {friends.map((friend) => (
-      <Card
-        title={friend.name}
-        variant="frosted"
-        class="friend-card"
-      >
+      <article class="friend-entry">
         {friend.image && (
-          <div class="friend-card__avatar-wrapper">
-            <div class="friend-card__avatar-frame">
-              <a href={friend.url} target="_blank" rel="noopener noreferrer">
-              <img
-                src={friend.image}
-                alt={friend.name}
-                class="friend-card__avatar"
-                loading="lazy"
-              />
-              </a>
-            </div>
-          </div>
-        )}
-        <div class="friend-card__info">
-          <a
-            href={friend.url}
-            class="friend-card__url"
-          >
-            <span>{friend.url}</span>
+          <a href={friend.url} target="_blank" rel="noopener noreferrer" class="friend-entry__avatar">
+            <img
+              src={friend.image}
+              alt={friend.name}
+              loading="lazy"
+            />
           </a>
+        )}
+
+        <div class="friend-entry__body">
+          <h3 class="friend-entry__name">
+            <a href={friend.url} target="_blank" rel="noopener noreferrer">{friend.name}</a>
+          </h3>
+
+          <div class="friend-entry__meta">
+            <span class="friend-entry__url">{friend.url}</span>
+          </div>
+
           {friend.description && (
-            <p class="friend-card__description">{friend.description}</p>
+            <p class="friend-entry__desc">{friend.description}</p>
           )}
         </div>
-      </Card>
+      </article>
     ))}
   </div>
 </section>

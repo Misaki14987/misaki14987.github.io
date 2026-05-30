@@ -1,30 +1,17 @@
 ---
 import '../../styles/components/navigation.scss';
-
-const links = [
-	{ href: '/', label: '/home_' },
-	{ href: '/about', label: '/about.me' },
-	{ href: '/tags', label: '/tags' },
-];
-
-const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
-<nav class="nav">
-	<div class="nav__inner">
-		 <span class="nav__host">M1sak1 Blog — yodelist.icu</span>   
-	{links.map((link) => {
-			const normalized = link.href.replace(/\/$/, '') || '/';
-			const isActive = currentPath === normalized;
-			return (
-				<a
-					href={link.href}
-					aria-current={isActive ? 'page' : undefined}
-					class={`nav__link ${isActive ? 'nav__link--active' : ''}`}
-				>
-					{link.label}
-				</a>
-			);
-		})}
-	</div>
-</nav>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="site-title" href="/">
+      M1sak1 Blog — yodelist.icu
+    </a>
+
+    <nav class="nav">
+      <a class="active" href="/">/home</a>
+      <a href="/about">/about.me</a>
+      <a href="/tags">/tags</a>
+    </nav>
+  </div>
+</header>

@@ -1,20 +1,122 @@
-.about-card {
-  width: 87.5%;
-  max-width: 48rem;
-  margin: 2.5rem auto 0;
+.dossier {
+  position: relative;
+  z-index: 2;
+
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 86px 28px 120px;
 }
 
-.about-bio {
-  margin-bottom: 1rem;
+/* Intro */
+
+.dossier-intro {
+  margin-bottom: 48px;
+  padding-bottom: 24px;
+
+  border-bottom: 1px solid var(--line);
 }
 
-.about-heading {
+.dossier-intro__label {
+  margin-bottom: 12px;
+
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+}
+
+.dossier-intro h1 {
+  margin: 0;
+
+  font-family: var(--font-mono);
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+/* Panel */
+
+.dossier-panel {
+  padding: 28px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(226, 219, 206, 0.72),
+      rgba(202, 192, 175, 0.42)
+    );
+
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.35) inset;
+}
+
+.dossier-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 14px;
+  margin-bottom: 24px;
+
+  border-bottom: 1px solid var(--line);
+}
+
+.dossier-panel__label {
+  font-family: var(--font-mono);
+  font-size: 12px;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  letter-spacing: 0.08em;
+  color: var(--accent-strong);
 }
 
-.about-interests {
-  list-style: disc;
-  list-style-position: inside;
-  padding: 0;
+.dossier-bio {
+  margin: 0 0 28px;
+
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-soft);
+}
+
+.dossier-heading {
+  margin: 0 0 12px;
+
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--accent-strong);
+}
+
+.dossier-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dossier-tags span {
+  padding: 3px 10px;
+
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-strong);
+
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+@media (max-width: 640px) {
+  .dossier {
+    padding-inline: 18px;
+    padding-bottom: 90px;
+  }
+
+  .dossier-panel {
+    padding: 20px 18px;
+  }
 }

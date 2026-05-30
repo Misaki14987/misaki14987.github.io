@@ -1,20 +1,27 @@
 ---
 import avator from "../assets/taffy.jpg";
-import Social from "./Social.astro";
 import '../styles/components/self.scss';
 
 interface Props {
-	class?: string;
+  class?: string;
 }
 
 const { class: wrapperClass = "" } = Astro.props as Props;
 ---
 
-<div class={`self ${wrapperClass}`}>
-  <img src={avator.src} alt="Me" class="self__avatar" />
-  <div class="self__name">M1saK1</div>
+<div class={`identity ${wrapperClass}`}>
+  <div class="identity__head">
+    <div class="identity__label">IDENTITY / 001</div>
+    <div class="identity__menu">...</div>
+  </div>
 
-  <dl class="self__field">
+  <div class="identity__avatar">
+    <img src={avator.src} alt="M1sak1 avatar" />
+  </div>
+
+  <div class="identity__name">M1saK1</div>
+
+  <dl class="identity-fields">
     <dt>role</dt>
     <dd>frontend/react</dd>
     <dt>lang</dt>
@@ -22,13 +29,13 @@ const { class: wrapperClass = "" } = Astro.props as Props;
     <dt>mood</dt>
     <dd>black sheep</dd>
     <dt>signal</dt>
-    <dd>online</dd>
+    <dd><span class="online">online</span></dd>
   </dl>
 
-  <div class="self__social">
-    <Social platform="github" username="Misaki14987" />
-    <Social platform="x" username="LianiuMis" />
-    <Social platform="bilibili" username="M1saK1" />
-    <Social platform="rss" username="M1saK1" />
+  <div class="identity-links">
+    <a href="https://github.com/Misaki14987" target="_blank" rel="noopener noreferrer">[github]</a>
+    <a href="https://x.com/LianiuMis" target="_blank" rel="noopener noreferrer">[x]</a>
+    <a href="https://space.bilibili.com/M1saK1" target="_blank" rel="noopener noreferrer">[bili]</a>
+    <a href="/rss.xml">[rss]</a>
   </div>
 </div>

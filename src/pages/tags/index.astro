@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import Card from "../../components/common/Card.astro";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import '../../styles/pages/tags.scss';
 
 const posts = await getCollection('posts');
@@ -9,14 +8,20 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
 ---
 
 <BaseLayout title='Tags'>
-    <div class='tags-container'>
-        <p class='tags-title'>所有标签</p>
-        {tags.map((tag) => (
-            <Card title={tag} class='tags-card'>
-                <a href={`/tags/${tag}`} class='tag'>
-                    {tag}
-                </a>
-            </Card>
-        ))}
+  <main class="tag-index">
+    <section class="tag-index__head">
+      <div class="tag-index__label">TAG INDEX</div>
+      <h1>All Tags</h1>
+      <span class="tag-index__count">TOTAL: {String(tags.length).padStart(2, '0')}</span>
+    </section>
+
+    <div class="tag-index__grid">
+      {tags.map((tag) => (
+        <a href={`/tags/${tag}`} class="tag-index__item">
+          <span class="tag-index__hash">#</span>
+          {tag}
+        </a>
+      ))}
     </div>
+  </main>
 </BaseLayout>

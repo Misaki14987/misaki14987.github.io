@@ -20,7 +20,6 @@
     "preact": "^10.27.2",
     "react-markdown": "^10.1.0",
     "sass": "^1.89.0",
-    "sharp": "^0.34.5",
-    "stellar-solstice": "link:"
+    "sharp": "^0.34.5"
   }
 }
