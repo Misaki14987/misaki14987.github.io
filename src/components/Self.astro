@@ -1,5 +1,6 @@
 ---
-import avator from "../assets/taffy.jpg";
+import { Image } from 'astro:assets';
+import avatar from "../assets/taffy.jpg";
 import '../styles/components/self.scss';
 
 interface Props {
@@ -16,7 +17,14 @@ const { class: wrapperClass = "" } = Astro.props as Props;
   </div>
 
   <div class="identity__avatar">
-    <img src={avator.src} alt="M1sak1 avatar" />
+    <Image
+      src={avatar}
+      alt="M1sak1 avatar"
+      width={108}
+      height={108}
+      widths={[108, 216]}
+      sizes="108px"
+    />
   </div>
 
   <div class="identity__name">M1saK1</div>

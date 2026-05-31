@@ -10,8 +10,11 @@ const myInfo = {
 };
 ---
 
-<BaseLayout>
-  <main class="dossier">
+<BaseLayout
+  title="About | M1saK1 Blog"
+  description="M1saK1 的个人介绍、兴趣和联系方式。"
+>
+  <div class="dossier">
     <section class="dossier-intro">
       <div class="dossier-intro__label">PERSONNEL DOSSIER</div>
       <h1>{myInfo.name}</h1>
@@ -33,5 +36,5 @@ const myInfo = {
     </section>
 
     <FriendLink />
-  </main>
+  </div>
 </BaseLayout>

@@ -2,7 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import '../styles/layouts/markdown-layout.scss';
 
-const { frontmatter } = Astro.props;
+const { frontmatter, canonical, seoDescription } = Astro.props;
 const {
     title,
     description,
@@ -10,16 +10,36 @@ const {
     author = 'M1saK1',
     tags = [],
     category,
+    cover,
 } = frontmatter;
+const pageDescription = seoDescription ?? description;
 
-const formattedDate = pubDate
-    ? new Intl.DateTimeFormat('zh-CN', { dateStyle: 'long' }).format(new Date(pubDate))
-    : undefined;
+const formatPostDate = (date: Date) => {
+    const parts = new Intl.DateTimeFormat('zh-CN', {
+        timeZone: 'Asia/Shanghai',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+    }).formatToParts(date);
+    const values = Object.fromEntries(parts.map(({ type, value }) => [type, value]));
+    return {
+        display: `${values.year}年${values.month}月${values.day}日`,
+        machine: `${values.year}-${values.month}-${values.day}`,
+    };
+};
+
+const formattedDate = pubDate ? formatPostDate(new Date(pubDate)) : undefined;
 ---
 
 <BaseLayout
     title={`${title} | M1saK1 Blog`}
-    description={description}
+    description={pageDescription}
+    canonical={canonical}
+    ogType='article'
+    ogImage={cover?.src}
+    ogImageAlt={title}
+    publishedTime={pubDate}
+    tags={tags}
     bodyClass='bg-transparent'
 >
     <section class='post-section'>
@@ -30,7 +50,7 @@ const formattedDate = pubDate
                 {description && <p class='post-header__description'>{description}</p>}
                 <div class='post-header__meta'>
                     {author && <span>{author}</span>}
-                    {formattedDate && <time datetime={pubDate}>{formattedDate}</time>}
+                    {formattedDate && <time datetime={formattedDate.machine}>{formattedDate.display}</time>}
                 </div>
                 {tags.length > 0 && (
                     <ul class='post-header__tags'>

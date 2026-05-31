@@ -4,11 +4,16 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import '../../styles/pages/tags.scss';
 
 const posts = await getCollection('posts');
-const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =>
+  a.localeCompare(b, 'zh-CN')
+);
 ---
 
-<BaseLayout title='Tags'>
-  <main class="tag-index">
+<BaseLayout
+  title='Tags | M1saK1 Blog'
+  description='M1saK1 Blog 的标签索引。'
+>
+  <div class="tag-index">
     <section class="tag-index__head">
       <div class="tag-index__label">TAG INDEX</div>
       <h1>All Tags</h1>
@@ -23,5 +28,5 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
         </a>
       ))}
     </div>
-  </main>
+  </div>
 </BaseLayout>

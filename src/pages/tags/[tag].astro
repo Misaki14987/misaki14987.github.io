@@ -5,10 +5,13 @@ import BlogCard from '../../components/BlogCard.astro';
 import '../../styles/pages/tag.scss';
 
 export async function getStaticPaths() {
+    const toTime = (value: Date) => (value ? new Date(value).getTime() : 0);
     const allPosts = await getCollection('posts');
     const uniqueTags = [...new Set(allPosts.flatMap((post) => post.data.tags))];
     return uniqueTags.map((tag) => {
-        const filteredPosts = allPosts.filter((post) => post.data.tags.includes(tag));
+        const filteredPosts = allPosts
+            .filter((post) => post.data.tags.includes(tag))
+            .sort((a, b) => toTime(b.data.pubDate) - toTime(a.data.pubDate));
         return {
             params: { tag },
             props: { posts: filteredPosts },
@@ -20,8 +23,11 @@ const { tag } = Astro.params;
 const { posts } = Astro.props;
 ---
 
-<BaseLayout title={tag}>
-  <main class="tag-stream">
+<BaseLayout
+  title={`${tag} | M1saK1 Blog`}
+  description={`M1saK1 Blog 中带有 ${tag} 标签的文章列表。`}
+>
+  <div class="tag-stream">
     <section class="tag-stream__head">
       <div class="tag-stream__label">
         <span>FILTERED BY</span>
@@ -43,5 +49,5 @@ const { posts } = Astro.props;
         />
       ))}
     </div>
-  </main>
+  </div>
 </BaseLayout>

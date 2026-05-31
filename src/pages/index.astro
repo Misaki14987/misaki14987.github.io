@@ -6,8 +6,11 @@ import blogs from '../scripts/utils';
 import '../styles/pages/index.scss';
 ---
 
-<BaseLayout>
-  <main class="home">
+<BaseLayout
+  title="M1saK1 Blog"
+  description="M1saK1 的个人博客首页，归档 Web 开发、Rust 学习、数学笔记和日常记录。"
+>
+  <div class="home">
     <!-- Intro 横跨两列 -->
     <section class="home-intro page-reveal">
       <div class="home-intro__label">ARCHIVE TERMINAL / HOME</div>
@@ -38,7 +41,7 @@ import '../styles/pages/index.scss';
         <span>ARCHIVE COUNT: {String(blogs.length).padStart(3, '0')}</span>
       </header>
 
-      {blogs.map((blog) => (
+      {blogs.map((blog, i) => (
         <BlogCard
           title={blog.title}
           subtitle={blog.subtitle}
@@ -48,8 +51,9 @@ import '../styles/pages/index.scss';
           pubDate={blog.pubDate}
           tags={blog.tags}
           entryId={blog.entryId}
+          priority={i === 0}
         />
       ))}
     </section>
-  </main>
+  </div>
 </BaseLayout>
