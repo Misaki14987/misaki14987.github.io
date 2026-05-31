@@ -1,5 +1,22 @@
 ---
 import '../../styles/components/navigation.scss';
+
+const normalizePath = (path: string) => {
+  if (path === '/') return '/';
+  return path.endsWith('/') ? path : `${path}/`;
+};
+
+const currentPath = normalizePath(Astro.url.pathname);
+const links = [
+  { href: '/', label: '/home' },
+  { href: '/about/', label: '/about.me' },
+  { href: '/tags/', label: '/tags' },
+];
+
+const isActive = (href: string) => {
+  if (href === '/') return currentPath === '/';
+  return currentPath === href || currentPath.startsWith(href);
+};
 ---
 
 <header class="site-header" transition:persist>
@@ -9,9 +26,47 @@ import '../../styles/components/navigation.scss';
     </a>
 
     <nav class="nav">
-      <a class="active" href="/">/home</a>
-      <a href="/about">/about.me</a>
-      <a href="/tags">/tags</a>
+      {links.map((link) => (
+        <a
+          class:list={{ active: isActive(link.href) }}
+          href={link.href}
+          data-nav-link
+          aria-current={isActive(link.href) ? 'page' : undefined}
+        >
+          {link.label}
+        </a>
+      ))}
     </nav>
   </div>
 </header>
+
+<script>
+  if (!window.__siteNavigationBound) {
+    window.__siteNavigationBound = true;
+
+    const normalizePath = (path) => {
+      if (path === "/") return "/";
+      return path.endsWith("/") ? path : `${path}/`;
+    };
+
+    const updateNavigation = () => {
+      const currentPath = normalizePath(window.location.pathname);
+      document.querySelectorAll("[data-nav-link]").forEach((link) => {
+        const href = normalizePath(link.getAttribute("href") || "/");
+        const active =
+          href === "/" ? currentPath === "/" : currentPath === href || currentPath.startsWith(href);
+
+        link.classList.toggle("active", active);
+        if (active) {
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    };
+
+    document.addEventListener("astro:page-load", updateNavigation);
+    document.addEventListener("astro:after-swap", updateNavigation);
+    updateNavigation();
+  }
+</script>

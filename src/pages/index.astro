@@ -47,13 +47,13 @@ const blogs = getPostCards(await getPublishedPosts());
         <BlogCard
           title={blog.title}
           subtitle={blog.subtitle}
-          image={blog.image}
           link={blog.link}
           description={blog.description}
           pubDate={blog.pubDate}
           tags={blog.tags}
           entryId={blog.entryId}
           priority={i === 0}
+          class="archive-entry--compact"
         />
       ))}
     </section>
