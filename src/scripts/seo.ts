@@ -1,6 +1,6 @@
 export const SITE_TITLE = 'M1saK1 Blog';
 export const DEFAULT_DESCRIPTION =
-  'M1saK1 的个人博客，记录 Web 开发、Rust 学习、数学笔记和日常想法。';
+  'M1saK1 的个人博客'
 
 const TRAILING_SLASH_FILE_RE = /\.[a-z0-9]+$/i;
 
@@ -47,10 +47,10 @@ export const excerpt = (value = '', maxLength = 160) => {
 };
 
 export const entryDescription = (
-  entry: { data?: { description?: string }; body?: string },
+  entry: { data?: { description?: string; summary?: string }; body?: string },
   fallback = DEFAULT_DESCRIPTION
 ) => {
-  const explicit = entry.data?.description?.trim();
+  const explicit = entry.data?.description?.trim() || entry.data?.summary?.trim();
   if (explicit) return explicit;
 
   const generated = excerpt(textFromMarkdown(entry.body), 160);

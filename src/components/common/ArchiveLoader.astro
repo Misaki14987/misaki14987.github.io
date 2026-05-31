@@ -1,0 +1,50 @@
+<div class="archive-loader" transition:persist aria-hidden="true">
+  <div class="archive-loader__line"></div>
+  <div class="archive-loader__text">LOADING ARCHIVE...</div>
+</div>
+
+<script>
+  if (!window.__archiveLoaderBoundV2) {
+    window.__archiveLoaderBoundV2 = true;
+
+    const minVisibleMs = 720;
+    let navStart = 0;
+    let navId = 0;
+    let hideTimer;
+    const getLoader = () => document.querySelector(".archive-loader");
+
+    document.addEventListener("astro:before-preparation", () => {
+      const loader = getLoader();
+      if (!loader) return;
+
+      navId += 1;
+      navStart = performance.now();
+      window.clearTimeout(hideTimer);
+      loader.classList.add("is-routing");
+    });
+
+    document.addEventListener("astro:after-swap", () => {
+      window.scrollTo(0, 0);
+    });
+
+    document.addEventListener("astro:page-load", () => {
+      const loader = getLoader();
+      if (!loader?.classList.contains("is-routing")) return;
+
+      const currentNavId = navId;
+      const elapsed = performance.now() - navStart;
+      const wait = Math.max(0, minVisibleMs - elapsed);
+
+      window.clearTimeout(hideTimer);
+      hideTimer = window.setTimeout(() => {
+        if (currentNavId !== navId) return;
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            getLoader()?.classList.remove("is-routing");
+          });
+        });
+      }, wait);
+    });
+  }
+</script>

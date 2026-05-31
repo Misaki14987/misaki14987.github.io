@@ -11,14 +11,13 @@
     "new": "node scripts/new-post.mjs"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["sharp"]
+    "onlyBuiltDependencies": [
+      "sharp"
+    ]
   },
   "dependencies": {
-    "@astrojs/preact": "^4.1.1",
     "@astrojs/rss": "^4.0.12",
     "astro": "^5.13.9",
-    "preact": "^10.27.2",
-    "react-markdown": "^10.1.0",
     "sass": "^1.89.0",
     "sharp": "^0.34.5"
   }

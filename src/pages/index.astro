@@ -2,8 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogCard from '../components/BlogCard.astro';
 import Self from '../components/Self.astro';
-import blogs from '../scripts/utils';
+import { getPostCards, getPublishedPosts } from '../scripts/publication';
 import '../styles/pages/index.scss';
+
+const blogs = getPostCards(await getPublishedPosts());
 ---
 
 <BaseLayout

@@ -7,9 +7,12 @@ const posts = defineCollection({
     z.object({
       title: z.string(),
       pubDate: z.coerce.date(),
+      updatedDate: z.coerce.date().optional(),
+      draft: z.boolean().default(false),
       author: z.string().default('M1saK1'),
       category: z.string().optional(),
       description: z.string().default(''),
+      summary: z.string().optional(),
       cover: image().optional(),
       tags: z.array(z.string()).default([]),
     }),

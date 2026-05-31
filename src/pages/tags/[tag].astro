@@ -1,17 +1,18 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogCard from '../../components/BlogCard.astro';
+import {
+    getAllTags,
+    getPostCards,
+    getPostsByTag,
+    getPublishedPosts,
+} from '../../scripts/publication';
 import '../../styles/pages/tag.scss';
 
 export async function getStaticPaths() {
-    const toTime = (value: Date) => (value ? new Date(value).getTime() : 0);
-    const allPosts = await getCollection('posts');
-    const uniqueTags = [...new Set(allPosts.flatMap((post) => post.data.tags))];
-    return uniqueTags.map((tag) => {
-        const filteredPosts = allPosts
-            .filter((post) => post.data.tags.includes(tag))
-            .sort((a, b) => toTime(b.data.pubDate) - toTime(a.data.pubDate));
+    const allPosts = await getPublishedPosts();
+    return getAllTags(allPosts).map((tag) => {
+        const filteredPosts = getPostCards(getPostsByTag(allPosts, tag));
         return {
             params: { tag },
             props: { posts: filteredPosts },
@@ -39,13 +40,14 @@ const { posts } = Astro.props;
     <div class="tag-stream__list">
       {posts.map((post: any) => (
         <BlogCard
-          title={post.data.title}
-          subtitle={post.data.category ?? (post.data.tags?.length ? post.data.tags[0] : '')}
-          image={post.data.cover}
-          link={`/posts/${post.id}`}
-          description={post.data.description ?? ''}
-          pubDate={post.data.pubDate ? new Date(post.data.pubDate) : undefined}
-          tags={post.data.tags ?? []}
+          title={post.title}
+          subtitle={post.subtitle}
+          image={post.image}
+          link={post.link}
+          description={post.description}
+          pubDate={post.pubDate}
+          tags={post.tags}
+          entryId={post.entryId}
         />
       ))}
     </div>
