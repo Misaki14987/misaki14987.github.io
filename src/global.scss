@@ -50,10 +50,9 @@
   --header-height: 46px;
 
   --font-body:
-    "LXGW WenKai",
-    "Noto Serif SC",
-    "Source Han Serif SC",
-    serif;
+    system-ui,
+    -apple-system,
+    sans-serif;
 
   --font-mono:
     "Fira Code",
