@@ -1,8 +1,5 @@
-import { getCollection } from 'astro:content';
-import { absoluteUrl, escapeXml } from '../scripts/seo';
-
-const staticPages = ['/', '/about/', '/tags/'];
-const toTime = (value) => (value ? new Date(value).getTime() : 0);
+import { getPublishedPosts, getSitemapEntries } from '../scripts/publication';
+import { escapeXml } from '../scripts/seo';
 
 const urlEntry = ({ loc, lastmod, changefreq, priority }) => [
   '  <url>',
@@ -15,28 +12,7 @@ const urlEntry = ({ loc, lastmod, changefreq, priority }) => [
 
 export async function GET(context) {
   const site = context.site;
-  const posts = (await getCollection('posts'))
-    .sort((a, b) => toTime(b.data.pubDate) - toTime(a.data.pubDate));
-  const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
-
-  const urls = [
-    ...staticPages.map((path) => ({
-      loc: absoluteUrl(path, site),
-      changefreq: path === '/' ? 'weekly' : 'monthly',
-      priority: path === '/' ? '1.0' : '0.6',
-    })),
-    ...tags.map((tag) => ({
-      loc: absoluteUrl(`/tags/${encodeURIComponent(tag)}/`, site),
-      changefreq: 'monthly',
-      priority: '0.5',
-    })),
-    ...posts.map((post) => ({
-      loc: absoluteUrl(`/posts/${post.id}/`, site),
-      lastmod: post.data.pubDate,
-      changefreq: 'monthly',
-      priority: '0.8',
-    })),
-  ];
+  const urls = getSitemapEntries(await getPublishedPosts(), site);
 
   const body = [
     '<?xml version="1.0" encoding="UTF-8"?>',

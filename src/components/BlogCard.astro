@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import { formatPostDate } from '../scripts/publication';
 import '../styles/components/blog-card.scss';
 
 interface Props {
@@ -27,20 +28,6 @@ const {
   entryId = '',
   priority = false,
 }: Props = Astro.props;
-
-const formatPostDate = (date: Date) => {
-  const parts = new Intl.DateTimeFormat('zh-CN', {
-    timeZone: 'Asia/Shanghai',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).formatToParts(date);
-  const values = Object.fromEntries(parts.map(({ type, value }) => [type, value]));
-  return {
-    display: `${values.year}.${values.month}.${values.day}`,
-    machine: `${values.year}-${values.month}-${values.day}`,
-  };
-};
 
 const formattedDate = pubDate ? formatPostDate(pubDate) : undefined;
 const kind = subtitle ? subtitle.toUpperCase().replace(/\s/g, "_") : "POST";

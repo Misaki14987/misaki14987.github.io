@@ -16,12 +16,12 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://blog.yodelist.icu/tags/Daily/</loc>
+    <loc>https://blog.yodelist.icu/tags/%E6%95%B0%E5%AD%A6/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://blog.yodelist.icu/tags/%E6%95%B0%E5%AD%A6/</loc>
+    <loc>https://blog.yodelist.icu/tags/Daily/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

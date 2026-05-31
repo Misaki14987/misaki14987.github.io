@@ -1,12 +1,9 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getAllTags, getPublishedPosts, tagPath } from '../../scripts/publication';
 import '../../styles/pages/tags.scss';
 
-const posts = await getCollection('posts');
-const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =>
-  a.localeCompare(b, 'zh-CN')
-);
+const tags = getAllTags(await getPublishedPosts());
 ---
 
 <BaseLayout
@@ -22,7 +19,7 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =
 
     <div class="tag-index__grid">
       {tags.map((tag) => (
-        <a href={`/tags/${tag}`} class="tag-index__item">
+        <a href={tagPath(tag)} class="tag-index__item">
           <span class="tag-index__hash">#</span>
           {tag}
         </a>
