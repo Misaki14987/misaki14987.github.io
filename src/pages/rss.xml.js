@@ -8,7 +8,7 @@ export async function GET(context) {
 
   return rss({
     title: SITE_TITLE,
-    description: 'M1saK1 Blog 全文订阅，包含文章正文、标签和作者信息。',
+    description: 'M1saK1 Blog 全文订阅',
     site,
     xmlns: {
       atom: 'http://www.w3.org/2005/Atom',
