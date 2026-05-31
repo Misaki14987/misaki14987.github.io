@@ -8,8 +8,6 @@ cover: ./cover.png
 tags: ['数学']
 ---
 
-# 3B1B 《线性代数的本质》笔记
-
 视频链接如下
 
 [Youtube](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab) [bilibili](https://www.bilibili.com/video/BV1Ys411k7yQ?spm_id_from=333.788.recommend_more_video.0&trackid=web_related_0.router-related-2481894-htv68.1771507338097.680&vd_source=0d037e0350406ccf01acfcaf8643e66e)
@@ -56,8 +54,6 @@ tags: ['数学']
 
 矩阵与向量相乘，就是将向量应用与这个线性变换
 
-![image-20260221101601801](/home/misa/snap/typora/110/.config/Typora/typora-user-images/image-20260221101601801.png)
-
 这里就是将原本的坐标系中的向量中的每个元素，都应用与线性变换后的基向量相乘，就是线性变换后的向量了
 
 矩阵对应的线性变换就是将**原基向量张成的空间**映射到**变换后基向量张成的空间**。如果矩阵的各列是线性相关的，说明在线性变换后，基向量是共线的。在二维的情况下，就是将平面压缩成一维直线。
@@ -67,8 +63,6 @@ tags: ['数学']
 依次应用多个线性变换为**复合变换**，也就是多个矩阵相乘
 
 一个向量依次经历两个矩阵的线性变换得到的结果，等价于其经过一个复合变换的结果
-
-![image-20260221102214601](/home/misa/snap/typora/110/.config/Typora/typora-user-images/image-20260221102214601.png)
 
 注意，如果将矩阵的乘法看成是两个相继的线性变换，则需要 **从右往左** 阅读，即被作用的向量是先经历靠右矩阵的变换，然后经历靠左矩阵的变换。这类似函数的嵌套，即 f(g(x))。
 
@@ -120,7 +114,7 @@ v和w的叉积在数值上等于v和w形成的平行四边形的面积
 
 二维空间中叉积的结果就是一个值，就是计算v和w两个向量形成的行列式（代表着面积（不严谨的说））
 
-三维空间中叉积的结果是一个向量![image-20260226165605505](/home/misa/snap/typora/110/.config/Typora/typora-user-images/image-20260226165605505.png)
+三维空间中叉积的结果是一个向量
 
 这个向量的方向垂直于v和w所构成的平面（由右手定则决定），长度等于v和w形成的平行四边形的面积
 

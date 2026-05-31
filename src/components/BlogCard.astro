@@ -12,6 +12,7 @@ interface Props {
   pubDate?: Date;
   tags?: string[];
   entryId?: string;
+  priority?: boolean;
 }
 
 const {
@@ -24,19 +25,53 @@ const {
   class: wrapperClass,
   tags = [],
   entryId = '',
+  priority = false,
 }: Props = Astro.props;
 
-const dateStr = pubDate ? pubDate.toISOString().slice(0, 10).replace(/-/g, ".") : "";
+const formatPostDate = (date: Date) => {
+  const parts = new Intl.DateTimeFormat('zh-CN', {
+    timeZone: 'Asia/Shanghai',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map(({ type, value }) => [type, value]));
+  return {
+    display: `${values.year}.${values.month}.${values.day}`,
+    machine: `${values.year}-${values.month}-${values.day}`,
+  };
+};
+
+const formattedDate = pubDate ? formatPostDate(pubDate) : undefined;
 const kind = subtitle ? subtitle.toUpperCase().replace(/\s/g, "_") : "POST";
+const cardClass = [
+  'archive-entry',
+  wrapperClass,
+  !image && 'archive-entry--no-cover',
+].filter(Boolean).join(' ');
 ---
 
-<article class={`archive-entry ${wrapperClass}${!image ? ' archive-entry--no-cover' : ''}`}>
+<article class={cardClass}>
   {image && (
     <a href={link} class="entry-cover">
       {typeof image === 'string' ? (
-        <img src={image} alt={title} />
+        <img
+          src={image}
+          alt={title}
+          loading={priority ? 'eager' : 'lazy'}
+          decoding="async"
+          fetchpriority={priority ? 'high' : 'auto'}
+        />
       ) : (
-        <Image src={image} alt={title} />
+        <Image
+          src={image}
+          alt={title}
+          widths={[320, 480, 640]}
+          sizes="(max-width: 1024px) calc(100vw - 84px), 300px"
+          loading={priority ? 'eager' : 'lazy'}
+          decoding="async"
+          fetchpriority={priority ? 'high' : 'auto'}
+        />
       )}
     </a>
   )}
@@ -44,7 +79,7 @@ const kind = subtitle ? subtitle.toUpperCase().replace(/\s/g, "_") : "POST";
   <div class="entry-body">
     <div class="entry-meta">
       {entryId && <span class="entry-id">{entryId}</span>}
-      {dateStr && <time>{dateStr}</time>}
+      {formattedDate && <time datetime={formattedDate.machine}>{formattedDate.display}</time>}
       <span>{kind}</span>
     </div>
 
