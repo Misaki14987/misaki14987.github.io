@@ -140,10 +140,16 @@
   min-width: 0;
 }
 
-.entry-tags span {
+.entry-tags a {
   color: var(--muted);
   font-family: var(--font-mono);
   font-size: 9px;
+  text-decoration: none;
+}
+
+.entry-tags a:hover,
+.entry-tags a:focus-visible {
+  color: var(--tone);
 }
 
 .entry-jump {
