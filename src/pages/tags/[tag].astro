@@ -27,17 +27,18 @@ const { posts } = Astro.props;
 <BaseLayout
   title={`${tag} | M1saK1 Blog`}
   description={`M1saK1 Blog 中带有 ${tag} 标签的文章列表。`}
+  ogImage="/images/vn-blog-hero.png"
 >
   <div class="tag-stream">
-    <section class="tag-stream__head">
-      <div class="tag-stream__label">
-        <span>FILTERED BY</span>
-        <span class="tag-stream__filter">#{tag}</span>
+    <section class="tag-stream__head page-reveal">
+      <div>
+        <span class="tag-stream__label">标签</span>
+        <h1>#{tag}</h1>
       </div>
-      <span class="tag-stream__count">ENTRIES: {String(posts.length).padStart(2, '0')}</span>
+      <span class="tag-stream__count">{String(posts.length).padStart(2, '0')} notes</span>
     </section>
 
-    <div class="tag-stream__list">
+    <div class="tag-stream__list page-reveal page-reveal--delay-1">
       {posts.map((post: any) => (
         <BlogCard
           title={post.title}

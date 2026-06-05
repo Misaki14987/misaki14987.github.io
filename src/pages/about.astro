@@ -5,32 +5,54 @@ import '../styles/pages/about.scss';
 
 const myInfo = {
   name: 'M1saK1',
-  bio: 'From 杭州电子科技大学，学习Web开发中...',
+  bio: 'From 杭州电子科技大学，学习 Web 开发中...',
   interests: ['Coding', 'Rhythm Game', 'TCG', 'Idol'],
 };
+
+const profileStats = [
+  ['base', 'Hangzhou / HDU'],
+  ['practice', 'Frontend systems'],
+  ['learning', 'Rust / GNOME / Math'],
+  ['outside', 'Rhythm game / TCG / Idol'],
+];
 ---
 
 <BaseLayout
   title="About | M1saK1 Blog"
   description="M1saK1 的个人介绍、兴趣和联系方式。"
+  ogImage="/images/vn-blog-hero.png"
 >
-  <div class="dossier">
-    <section class="dossier-intro">
-      <div class="dossier-intro__label">PERSONNEL DOSSIER</div>
-      <h1>{myInfo.name}</h1>
-    </section>
-
-    <section class="dossier-panel">
-      <div class="dossier-panel__head">
-        <span class="dossier-panel__label">BIO</span>
+  <div class="profile-page">
+    <section class="profile-stage page-reveal">
+      <div class="profile-stage__index" aria-hidden="true">
+        <strong>02</strong>
       </div>
 
-      <p class="dossier-bio">{myInfo.bio}</p>
+      <div class="profile-stage__panel">
+        <h1>{myInfo.name}</h1>
+        <p>{myInfo.bio}</p>
 
-      <h3 class="dossier-heading">INTERESTS</h3>
+        <dl class="profile-stats">
+          {profileStats.map(([term, value]) => (
+            <>
+              <dt>{term}</dt>
+              <dd>{value}</dd>
+            </>
+          ))}
+        </dl>
+      </div>
+
+    </section>
+
+    <section class="dossier-panel page-reveal page-reveal--delay-1">
+      <div class="dossier-panel__head">
+        <span class="dossier-panel__label">兴趣</span>
+        <span class="dossier-panel__count">{String(myInfo.interests.length).padStart(2, '0')}</span>
+      </div>
+
       <div class="dossier-tags">
-        {myInfo.interests.map((interest) => (
-          <span>{interest}</span>
+        {myInfo.interests.map((interest, index) => (
+          <span><b>{String(index + 1).padStart(2, '0')}</b>{interest}</span>
         ))}
       </div>
     </section>

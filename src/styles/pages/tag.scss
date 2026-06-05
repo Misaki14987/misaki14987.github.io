@@ -1,68 +1,62 @@
 .tag-stream {
   position: relative;
   z-index: 2;
-
-  max-width: var(--container);
+  width: min(calc(100% - 48px), var(--container));
   margin: 0 auto;
-  padding: 86px 28px 120px;
-
-  &__head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-
-    margin-bottom: 36px;
-    padding-bottom: 18px;
-
-    border-bottom: 1px solid var(--line);
-  }
-
-  &__label {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    color: var(--muted);
-  }
-
-  &__filter {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    color: var(--personal);
-  }
-
-  &__count {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  &__list {
-    padding: 24px 28px 32px;
-
-    background:
-      linear-gradient(
-        180deg,
-        rgba(226, 219, 206, 0.46),
-        rgba(202, 192, 175, 0.28)
-      );
-
-    border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
-  }
+  padding: 52px 0 120px;
 }
 
-@media (max-width: 640px) {
-  .tag-stream {
-    padding-inline: 18px;
-    padding-bottom: 90px;
+.tag-stream__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 22px;
+  padding: 48px 0 30px var(--rail);
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--line-strong);
+}
 
-    &__list {
-      padding: 20px 18px;
-    }
+.tag-stream__label,
+.tag-stream__count {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+
+.tag-stream__label {
+  color: var(--blue);
+}
+
+.tag-stream h1 {
+  margin: 12px 0 0;
+  font-family: var(--font-ui);
+  font-size: clamp(42px, 6vw, 68px);
+  letter-spacing: -0.055em;
+  overflow-wrap: anywhere;
+}
+
+.tag-stream__list {
+  margin-left: var(--rail);
+  padding-left: 56px;
+  border-left: 1px solid var(--line);
+}
+
+@media (max-width: 760px) {
+  .tag-stream {
+    width: min(calc(100% - 28px), var(--container));
+    padding-top: 28px;
+  }
+
+  .tag-stream__head {
+    align-items: flex-start;
+    flex-direction: column;
+    padding-left: 0;
+  }
+
+  .tag-stream__list {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: 0;
   }
 }
