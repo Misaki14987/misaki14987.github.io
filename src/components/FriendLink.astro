@@ -9,13 +9,14 @@ const friends = [
 
 <section class="friend-section">
   <div class="friend-section__head">
-    <span class="friend-section__label">CONTACT REGISTRY</span>
-    <span class="friend-section__count">ENTRIES: {String(friends.length).padStart(2, '0')}</span>
+    <span class="friend-section__label">友链</span>
+    <span class="friend-section__count">{String(friends.length).padStart(2, '0')} links</span>
   </div>
 
   <div class="friend-section__list">
-    {friends.map((friend) => (
+    {friends.map((friend, index) => (
       <article class="friend-entry">
+        <span class="friend-entry__index">{String(index + 1).padStart(2, '0')}</span>
         {friend.image && (
           <a href={friend.url} target="_blank" rel="noopener noreferrer" class="friend-entry__avatar">
             <img

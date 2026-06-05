@@ -9,19 +9,21 @@ const tags = getAllTags(await getPublishedPosts());
 <BaseLayout
   title='Tags | M1saK1 Blog'
   description='M1saK1 Blog 的标签索引。'
+  ogImage="/images/vn-blog-hero.png"
 >
   <div class="tag-index">
-    <section class="tag-index__head">
-      <div class="tag-index__label">TAG INDEX</div>
-      <h1>All Tags</h1>
-      <span class="tag-index__count">TOTAL: {String(tags.length).padStart(2, '0')}</span>
+    <section class="tag-index__head page-reveal">
+      <span class="tag-index__label">{String(tags.length).padStart(2, '0')} TAGS</span>
+      <h1>内容索引</h1>
     </section>
 
-    <div class="tag-index__grid">
-      {tags.map((tag) => (
+    <div class="tag-index__list page-reveal page-reveal--delay-1">
+      {tags.map((tag, index) => (
         <a href={tagPath(tag)} class="tag-index__item">
-          <span class="tag-index__hash">#</span>
-          {tag}
+          <span class="tag-index__number">{String(index + 1).padStart(2, '0')}</span>
+          <strong>{tag}</strong>
+          <span class="tag-index__line" aria-hidden="true"></span>
+          <span>查看 ↗</span>
         </a>
       ))}
     </div>

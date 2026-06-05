@@ -8,42 +8,50 @@ interface Props {
 }
 
 const { class: wrapperClass = "" } = Astro.props as Props;
+
+const subjects = ['Frontend', 'Rust', 'Math', 'Daily'];
 ---
 
-<div class={`identity ${wrapperClass}`}>
+<section class={`identity ${wrapperClass}`}>
   <div class="identity__head">
-    <div class="identity__label">IDENTITY / 001</div>
-    <div class="identity__menu">...</div>
+    <div>
+      <h2>M1saK1</h2>
+    </div>
+    <span class="identity__chapter">杭州电子科技大学</span>
   </div>
 
-  <div class="identity__avatar">
-    <Image
-      src={avatar}
-      alt="M1sak1 avatar"
-      width={108}
-      height={108}
-      widths={[108, 216]}
-      sizes="108px"
-    />
+  <div class="identity__portrait-row">
+    <div class="identity__avatar">
+      <Image
+        src={avatar}
+        alt="M1saK1 avatar"
+        width={112}
+        height={112}
+        widths={[112, 224]}
+        sizes="112px"
+      />
+    </div>
   </div>
-
-  <div class="identity__name">M1saK1</div>
 
   <dl class="identity-fields">
-    <dt>role</dt>
-    <dd>frontend/react</dd>
-    <dt>lang</dt>
-    <dd>rust learning</dd>
-    <dt>mood</dt>
-    <dd>black sheep</dd>
-    <dt>signal</dt>
-    <dd><span class="online">online</span></dd>
+    <dt>focus</dt>
+    <dd>frontend systems</dd>
+    <dt>learning</dt>
+    <dd>rust / gnome / math</dd>
+    <dt>off-screen</dt>
+    <dd>rhythm game / tcg / idol</dd>
   </dl>
 
-  <div class="identity-links">
-    <a href="https://github.com/Misaki14987" target="_blank" rel="noopener noreferrer">[github]</a>
-    <a href="https://x.com/LianiuMis" target="_blank" rel="noopener noreferrer">[x]</a>
-    <a href="https://space.bilibili.com/M1saK1" target="_blank" rel="noopener noreferrer">[bili]</a>
-    <a href="/rss.xml">[rss]</a>
+  <div class="identity-routes" aria-label="Writing subjects">
+    {subjects.map((subject, index) => (
+      <span><b>{String(index + 1).padStart(2, '0')}</b>{subject}</span>
+    ))}
   </div>
-</div>
+
+  <div class="identity-links">
+    <a href="https://github.com/Misaki14987" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="https://x.com/LianiuMis" target="_blank" rel="noopener noreferrer">X</a>
+    <a href="https://space.bilibili.com/M1saK1" target="_blank" rel="noopener noreferrer">Bili</a>
+    <a href="/rss.xml">RSS</a>
+  </div>
+</section>
