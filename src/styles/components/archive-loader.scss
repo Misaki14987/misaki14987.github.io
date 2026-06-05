@@ -7,95 +7,61 @@
   place-items: center;
   opacity: 0;
   visibility: hidden;
-  background: linear-gradient(
-    180deg,
-    rgba(222, 216, 204, 0.72),
-    rgba(198, 188, 169, 0.58)
-  );
+  background: rgba(241, 239, 232, 0.82);
   backdrop-filter: blur(4px);
-  transition:
-    opacity 220ms ease,
-    visibility 0s linear 220ms;
+  transition: opacity 180ms ease, visibility 0s linear 180ms;
 }
 
-.archive-loader__line {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(54, 48, 42, 0.18),
-    rgba(54, 48, 42, 0.5),
-    rgba(54, 48, 42, 0.18),
-    transparent
-  );
-  opacity: 0;
-  transform: scaleX(0);
+.archive-loader__record {
+  width: min(360px, calc(100vw - 48px));
+  padding: 16px 0;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--line);
 }
 
 .archive-loader__text {
   font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: rgba(54, 48, 42, 0.52);
-  opacity: 0;
-  transform: translateY(6px);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+
+.archive-loader__line {
+  height: 2px;
+  margin: 12px 0 8px;
+  overflow: hidden;
+  background: var(--line-soft);
+}
+
+.archive-loader__line::before {
+  content: "";
+  display: block;
+  width: 38%;
+  height: 100%;
+  background: var(--blue);
+  transform: translateX(-110%);
+}
+
+.archive-loader__text {
+  color: var(--muted);
+  text-align: right;
 }
 
 .archive-loader.is-routing {
   visibility: visible;
   opacity: 1;
-  transition:
-    opacity 160ms ease,
-    visibility 0s;
+  transition: opacity 140ms ease, visibility 0s;
 }
 
-.archive-loader.is-routing .archive-loader__line {
-  animation: archive-loader-line 720ms cubic-bezier(0.22, 1, 0.36, 1) infinite;
-}
-
-.archive-loader.is-routing .archive-loader__text {
-  animation: archive-loader-text 720ms ease infinite;
+.archive-loader.is-routing .archive-loader__line::before {
+  animation: archive-loader-line 680ms cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
 
 @keyframes archive-loader-line {
   0% {
-    transform: scaleX(0);
-    opacity: 0;
+    transform: translateX(-110%);
   }
-
-  20% {
-    opacity: 1;
-  }
-
-  55% {
-    transform: scaleX(1);
-    opacity: 1;
-  }
-
+  64%,
   100% {
-    transform: scaleX(1);
-    opacity: 0;
-  }
-}
-
-@keyframes archive-loader-text {
-  0% {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-
-  25%,
-  72% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateY(0);
+    transform: translateX(270%);
   }
 }
