@@ -46,5 +46,11 @@ const {
     <main class='main'>
       <slot />
     </main>
+
+    <script>
+      import { initializeSiteRuntime } from "../scripts/client/site-runtime";
+
+      initializeSiteRuntime();
+    </script>
   </body>
 </html>

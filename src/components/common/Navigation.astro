@@ -1,28 +1,24 @@
 ---
 import '../../styles/components/navigation.scss';
+import { isNavigationPathActive } from '../../scripts/navigation';
 
-const normalizePath = (path: string) => {
-  if (path === '/') return '/';
-  return path.endsWith('/') ? path : `${path}/`;
-};
-
-const currentPath = normalizePath(Astro.url.pathname);
+const currentPath = Astro.url.pathname;
 const links = [
-  { href: '/', label: '/home' },
-  { href: '/about/', label: '/about.me' },
-  { href: '/tags/', label: '/tags' },
+  { href: '/', index: '01', label: 'Notes' },
+  { href: '/about/', index: '02', label: 'Profile' },
+  { href: '/tags/', index: '03', label: 'Index' },
 ];
 
-const isActive = (href: string) => {
-  if (href === '/') return currentPath === '/';
-  return currentPath === href || currentPath.startsWith(href);
-};
+const isActive = (href: string) => isNavigationPathActive(currentPath, href);
 ---
 
 <header class="site-header" transition:persist>
   <div class="header-inner">
     <a class="site-title" href="/">
-      M1sak1 Blog — yodelist.icu
+      <span class="site-title__mark" aria-hidden="true">M1</span>
+      <span>
+        <strong>M1saK1</strong>
+      </span>
     </a>
 
     <nav class="nav">
@@ -33,40 +29,10 @@ const isActive = (href: string) => {
           data-nav-link
           aria-current={isActive(link.href) ? 'page' : undefined}
         >
+          <span aria-hidden="true">{link.index}</span>
           {link.label}
         </a>
       ))}
     </nav>
   </div>
 </header>
-
-<script>
-  if (!window.__siteNavigationBound) {
-    window.__siteNavigationBound = true;
-
-    const normalizePath = (path) => {
-      if (path === "/") return "/";
-      return path.endsWith("/") ? path : `${path}/`;
-    };
-
-    const updateNavigation = () => {
-      const currentPath = normalizePath(window.location.pathname);
-      document.querySelectorAll("[data-nav-link]").forEach((link) => {
-        const href = normalizePath(link.getAttribute("href") || "/");
-        const active =
-          href === "/" ? currentPath === "/" : currentPath === href || currentPath.startsWith(href);
-
-        link.classList.toggle("active", active);
-        if (active) {
-          link.setAttribute("aria-current", "page");
-        } else {
-          link.removeAttribute("aria-current");
-        }
-      });
-    };
-
-    document.addEventListener("astro:page-load", updateNavigation);
-    document.addEventListener("astro:after-swap", updateNavigation);
-    updateNavigation();
-  }
-</script>
