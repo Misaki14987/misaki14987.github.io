@@ -90,6 +90,21 @@ export const initializeNoteTools = (root: HTMLElement): Cleanup | void => {
   tag.addEventListener("change", apply, { signal });
   sort.addEventListener("change", apply, { signal });
   form.addEventListener("submit", (event) => event.preventDefault(), { signal });
+  list.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const tagLink = target.closest<HTMLAnchorElement>("[data-card-tag]");
+    if (!tagLink || !list.contains(tagLink)) return;
+
+    const selectedTag = tagLink.dataset.cardTag || "";
+    if (!Array.from(tag.options).some((option) => option.value === selectedTag)) return;
+
+    event.preventDefault();
+    tag.value = selectedTag;
+    apply();
+    tag.focus({ preventScroll: true });
+  }, { signal });
 
   reset?.addEventListener("click", () => {
     form.reset();

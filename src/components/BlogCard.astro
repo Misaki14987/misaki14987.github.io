@@ -96,7 +96,15 @@ const cardClass = [
     <div class="entry-foot">
       {tags.length > 0 && (
         <div class="entry-tags">
-          {tags.slice(0, 4).map((tag) => <span>#{tag}</span>)}
+          {tags.slice(0, 4).map((tag) => (
+            <a
+              href={`/?view=articles&tag=${encodeURIComponent(tag)}`}
+              data-card-tag={tag}
+              aria-label={`按 ${tag} 标签筛选文章`}
+            >
+              #{tag}
+            </a>
+          ))}
         </div>
       )}
       <a class="entry-jump" href={link}>
