@@ -12,14 +12,21 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 const description = postDescription(post);
+const posts = await getPublishedPosts();
+const postIndex = posts.findIndex((entry) => entry.id === post.id);
+const previousPost = postIndex >= 0 ? posts[postIndex + 1] : undefined;
+const nextPost = postIndex > 0 ? posts[postIndex - 1] : undefined;
 ---
 
 <MarkdownLayout
   frontmatter={post.data}
   canonical={postPath(post)}
   seoDescription={description}
+  headings={headings}
+  previousPost={previousPost}
+  nextPost={nextPost}
 >
   <Content />
 </MarkdownLayout>
