@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { formatPostDate } from '../scripts/publication';
+import { formatPostDate, postTone, type PostTone } from '../scripts/publication';
 import '../styles/components/blog-card.scss';
 
 interface Props {
@@ -14,6 +14,7 @@ interface Props {
   tags?: string[];
   entryId?: string;
   priority?: boolean;
+  tone?: PostTone;
 }
 
 const {
@@ -27,10 +28,16 @@ const {
   tags = [],
   entryId = '',
   priority = false,
+  tone: providedTone,
 }: Props = Astro.props;
 
+const tone = providedTone ?? postTone({ title, subtitle, tags });
 const formattedDate = pubDate ? formatPostDate(pubDate) : undefined;
-const kind = subtitle ? subtitle.toUpperCase().replace(/\s/g, "_") : "POST";
+const kind = subtitle || tags[0] || 'Diary';
+const searchableText = [title, subtitle, description, ...tags]
+  .filter(Boolean)
+  .join(' ')
+  .toLocaleLowerCase('zh-CN');
 const cardClass = [
   'archive-entry',
   wrapperClass,
@@ -38,9 +45,20 @@ const cardClass = [
 ].filter(Boolean).join(' ');
 ---
 
-<article class={cardClass}>
+<article
+  class={cardClass}
+  data-tone={tone}
+  data-search={searchableText}
+  data-tags={tags.join('|').toLocaleLowerCase('zh-CN')}
+  data-date={pubDate?.getTime() ?? 0}
+>
+  <div class="entry-index" aria-hidden="true">
+    <span>{entryId?.replace('SCENE-', '') || '—'}</span>
+    <i></i>
+  </div>
+
   {image && (
-    <a href={link} class="entry-cover">
+    <a href={link} class="entry-cover" aria-label={`Read ${title}`}>
       {typeof image === 'string' ? (
         <img
           src={image}
@@ -65,9 +83,8 @@ const cardClass = [
 
   <div class="entry-body">
     <div class="entry-meta">
-      {entryId && <span class="entry-id">{entryId}</span>}
       {formattedDate && <time datetime={formattedDate.machine}>{formattedDate.display}</time>}
-      <span>{kind}</span>
+      {kind && <span>{kind}</span>}
     </div>
 
     <h3 class="entry-title">
@@ -76,10 +93,16 @@ const cardClass = [
 
     {description && <p class="entry-desc">{description}</p>}
 
-    {tags.length > 0 && (
-      <div class="entry-tags">
-        {tags.map((tag) => <span>#{tag}</span>)}
-      </div>
-    )}
+    <div class="entry-foot">
+      {tags.length > 0 && (
+        <div class="entry-tags">
+          {tags.slice(0, 4).map((tag) => <span>#{tag}</span>)}
+        </div>
+      )}
+      <a class="entry-jump" href={link}>
+        阅读
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
   </div>
 </article>

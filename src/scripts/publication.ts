@@ -8,6 +8,7 @@ import {
 } from './seo';
 
 export type PostEntry = CollectionEntry<'posts'>;
+export type PostTone = 'build' | 'theory' | 'personal';
 
 export const staticPagePaths = ['/', '/about/', '/tags/'] as const;
 
@@ -34,6 +35,22 @@ export const postSubtitle = (post: PostEntry) =>
   post.data.category ?? post.data.tags[0] ?? '';
 
 export const postDescription = (post: PostEntry) => entryDescription(post);
+
+export const postTone = ({
+  title,
+  subtitle = '',
+  tags = [],
+}: {
+  title: string;
+  subtitle?: string;
+  tags?: string[];
+}): PostTone => {
+  const subject = `${subtitle} ${tags.join(' ')} ${title}`.toLowerCase();
+
+  if (/daily|生活|随笔|日常/.test(subject)) return 'personal';
+  if (/数学|math|linear|algebra|理论/.test(subject)) return 'theory';
+  return 'build';
+};
 
 export const formatPostDate = (
   date: Date | string,
@@ -72,7 +89,7 @@ export const toPostCard = (
   const { index, total } = options;
   const entryId =
     typeof index === 'number' && typeof total === 'number'
-      ? `[LOG-${String(total - index).padStart(3, '0')}]`
+      ? `SCENE-${String(total - index).padStart(3, '0')}`
       : undefined;
 
   return {
@@ -84,6 +101,11 @@ export const toPostCard = (
     pubDate: post.data.pubDate ? new Date(post.data.pubDate) : undefined,
     tags: post.data.tags,
     entryId,
+    tone: postTone({
+      title: post.data.title,
+      subtitle: postSubtitle(post),
+      tags: post.data.tags,
+    }),
   };
 };
 

@@ -2,60 +2,150 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogCard from '../components/BlogCard.astro';
 import Self from '../components/Self.astro';
-import { getPostCards, getPublishedPosts } from '../scripts/publication';
+import { formatPostDate, getPostCards, getPublishedPosts } from '../scripts/publication';
 import '../styles/pages/index.scss';
 
 const blogs = getPostCards(await getPublishedPosts());
+const latest = blogs[0];
+const latestDate = latest?.pubDate ? formatPostDate(latest.pubDate) : undefined;
+const tags = [...new Set(blogs.flatMap((blog) => blog.tags ?? []))]
+  .filter(Boolean)
+  .sort((a, b) => a.localeCompare(b, 'zh-CN'));
 ---
 
 <BaseLayout
   title="M1saK1 Blog"
   description="M1saK1 的个人博客首页"
+  ogImage="/images/vn-blog-hero.png"
 >
-  <div class="home">
-    <!-- Intro 横跨两列 -->
-    <section class="home-intro page-reveal">
-      <div class="home-intro__label">ARCHIVE TERMINAL / HOME</div>
-
-      <h1>M1sak1@localhost</h1>
-
-      <p>status: learning rust / writing notes / staying online</p>
-
-      <div class="home-intro__status">
-        <span>SYS_VER 1.0.0</span>
-        <span>ARCHIVE COUNT {String(blogs.length).padStart(3, '0')}</span>
-        <span>SIGNAL ONLINE</span>
+  <div class="home" data-home-scenes data-active-scene="intro">
+    <nav class="scene-switcher" aria-label="首页场景">
+      <div class="scene-switcher__tabs">
+        <button type="button" data-scene-target="intro" aria-pressed="true">
+          <span>01</span>
+          首页
+        </button>
+        <button type="button" data-scene-target="articles" aria-pressed="false">
+          <span>02</span>
+          文章
+        </button>
       </div>
-    </section>
+      <div class="scene-switcher__arrows">
+        <button type="button" data-scene-step="-1" aria-label="上一个场景">←</button>
+        <button type="button" data-scene-step="1" aria-label="下一个场景">→</button>
+      </div>
+    </nav>
 
-    <!-- 左侧 Identity Pass -->
-    <aside class="page-reveal page-reveal--delay-1">
-      <Self />
-    </aside>
+    <div class="scene-viewport">
+    <section class="opening home-scene page-reveal is-active" data-scene="intro">
+      <div class="opening__folio" aria-hidden="true">
+        <strong>001—{String(blogs.length).padStart(3, '0')}</strong>
+      </div>
 
-    <!-- 右侧 Log Stream -->
-    <section class="log-stream  page-reveal page-reveal--delay-2 ">
-      <header class="log-head">
-        <div>
-          <h2>LOG STREAM</h2>
-          <span>entries from /notes</span>
+      <div class="opening__statement">
+        <h1>M1saK1 Blog</h1>
+        <p>学习 Rust，写一些技术笔记和日常。</p>
+        <div class="opening__coordinates">
+          <span>{String(blogs.length).padStart(2, '0')} notes</span>
+          <span>{String(tags.length).padStart(2, '0')} subjects</span>
         </div>
-        <span>ARCHIVE COUNT: {String(blogs.length).padStart(3, '0')}</span>
-      </header>
+        <button class="opening__switch" type="button" data-scene-target="articles">
+          查看全部文章
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
 
-      {blogs.map((blog, i) => (
-        <BlogCard
-          title={blog.title}
-          subtitle={blog.subtitle}
-          link={blog.link}
-          description={blog.description}
-          pubDate={blog.pubDate}
-          tags={blog.tags}
-          entryId={blog.entryId}
-          priority={i === 0}
-          class="archive-entry--compact"
-        />
-      ))}
+      {latest && (
+        <a class="current-note" href={latest.link}>
+          <span class="current-note__date">{latestDate?.display}</span>
+          <strong>{latest.title}</strong>
+          <p>{latest.description || latest.subtitle || '查看最新文章。'}</p>
+          <span class="current-note__action">阅读最新文章 ↗</span>
+        </a>
+      )}
     </section>
+
+    <section class="notebook home-scene" data-scene="articles" hidden>
+      <aside class="notebook__margin page-reveal page-reveal--delay-1">
+        <Self />
+      </aside>
+
+      <section class="note-ledger page-reveal page-reveal--delay-2">
+        <header class="note-ledger__head">
+          <div>
+            <h2>文章</h2>
+          </div>
+          <a href="/tags/">查看标签 ↗</a>
+        </header>
+
+        <form class="note-tools" data-note-tools>
+          <label class="note-search">
+            <span>搜索</span>
+            <input
+              type="search"
+              name="q"
+              placeholder="标题、摘要或标签"
+              autocomplete="off"
+              data-note-search
+            />
+            <kbd>/</kbd>
+          </label>
+
+          <label class="note-select">
+            <span>标签</span>
+            <select name="tag" data-note-tag>
+              <option value="">全部</option>
+              {tags.map((tag) => <option value={tag}>{tag}</option>)}
+            </select>
+          </label>
+
+          <label class="note-select">
+            <span>排序</span>
+            <select name="sort" data-note-sort>
+              <option value="newest">最新优先</option>
+              <option value="oldest">最早优先</option>
+            </select>
+          </label>
+
+          <div class="tone-filter" role="group" aria-label="文章类型">
+            <button type="button" data-tone-filter="" aria-pressed="true">全部</button>
+            <button type="button" data-tone-filter="build" aria-pressed="false">技术</button>
+            <button type="button" data-tone-filter="theory" aria-pressed="false">理论</button>
+            <button type="button" data-tone-filter="personal" aria-pressed="false">日常</button>
+          </div>
+        </form>
+
+        <div class="note-results" aria-live="polite">
+          <span data-note-count>{blogs.length} 篇</span>
+          <button type="button" data-note-reset hidden>清除筛选</button>
+        </div>
+
+        <div class="note-ledger__list">
+          {blogs.map((blog, i) => (
+            <BlogCard
+              title={blog.title}
+              subtitle={blog.subtitle}
+              image={blog.image}
+              link={blog.link}
+              description={blog.description}
+              pubDate={blog.pubDate}
+              tags={blog.tags}
+              entryId={blog.entryId}
+              tone={blog.tone}
+              priority={i === 0}
+              class="archive-entry--compact"
+            />
+          ))}
+        </div>
+        <p class="note-empty" data-note-empty hidden>没有符合条件的文章。</p>
+      </section>
+    </section>
+    </div>
   </div>
 </BaseLayout>
+
+<script>
+  import { mountHomePage } from "../scripts/client/home";
+
+  mountHomePage();
+</script>
