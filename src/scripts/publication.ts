@@ -6,6 +6,7 @@ import {
   escapeXml,
   withTrailingSlash,
 } from './seo';
+import { ENCRYPTED_PLACEHOLDER, isEncrypted } from './encrypted';
 
 export type PostEntry = CollectionEntry<'posts'>;
 export type PostTone = 'build' | 'theory' | 'personal';
@@ -34,7 +35,8 @@ export const getPublishedPosts = async () =>
 export const postSubtitle = (post: PostEntry) =>
   post.data.category ?? post.data.tags[0] ?? '';
 
-export const postDescription = (post: PostEntry) => entryDescription(post);
+export const postDescription = (post: PostEntry) =>
+  isEncrypted(post) ? ENCRYPTED_PLACEHOLDER : entryDescription(post);
 
 export const postTone = ({
   title,
@@ -118,7 +120,11 @@ export const toRssItem = (post: PostEntry, site: string | URL) => ({
   title: post.data.title,
   pubDate: post.data.pubDate,
   description: postDescription(post),
-  content: post.rendered?.html ? absolutizeHtml(post.rendered.html, site) : undefined,
+  content: isEncrypted(post)
+    ? undefined
+    : post.rendered?.html
+      ? absolutizeHtml(post.rendered.html, site)
+      : undefined,
   link: postPath(post),
   categories: post.data.tags,
   customData: `<dc:creator>${escapeXml(post.data.author)}</dc:creator>`,

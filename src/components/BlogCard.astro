@@ -15,6 +15,8 @@ interface Props {
   entryId?: string;
   priority?: boolean;
   tone?: PostTone;
+  encrypted?: boolean;
+  encryptedVerify?: { salt: string; iv: string; verify: string; iterations: number } | null;
 }
 
 const {
@@ -29,6 +31,8 @@ const {
   entryId = '',
   priority = false,
   tone: providedTone,
+  encrypted = false,
+  encryptedVerify = null,
 }: Props = Astro.props;
 
 const tone = providedTone ?? postTone({ title, subtitle, tags });
@@ -42,7 +46,11 @@ const cardClass = [
   'archive-entry',
   wrapperClass,
   !image && 'archive-entry--no-cover',
+  encrypted && 'archive-entry--locked',
 ].filter(Boolean).join(' ');
+const encryptedMeta = encrypted && encryptedVerify
+  ? JSON.stringify({ slug: link.replace(/^\/posts\//, '').replace(/\/$/, ''), link, ...encryptedVerify })
+  : '';
 ---
 
 <article
@@ -51,6 +59,9 @@ const cardClass = [
   data-search={searchableText}
   data-tags={tags.join('|').toLocaleLowerCase('zh-CN')}
   data-date={pubDate?.getTime() ?? 0}
+  data-encrypted={encrypted ? 'true' : 'false'}
+  data-encrypted-meta={encryptedMeta || undefined}
+  data-encrypted-title={title}
 >
   <div class="entry-index" aria-hidden="true">
     <span>{entryId?.replace('SCENE-', '') || '—'}</span>
@@ -58,7 +69,12 @@ const cardClass = [
   </div>
 
   {image && (
-    <a href={link} class="entry-cover" aria-label={`Read ${title}`}>
+    <a
+      href={encrypted ? '#' : link}
+      class="entry-cover"
+      aria-label={`Read ${title}`}
+      data-encrypted-link={encrypted ? 'true' : undefined}
+    >
       {typeof image === 'string' ? (
         <img
           src={image}
@@ -85,10 +101,22 @@ const cardClass = [
     <div class="entry-meta">
       {formattedDate && <time datetime={formattedDate.machine}>{formattedDate.display}</time>}
       {kind && <span>{kind}</span>}
+      {encrypted && (
+        <span class="entry-lock" aria-label="已加密" title="已加密">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="4.5" y="10.5" width="15" height="10" rx="1.2" />
+            <path d="M7.8 10.5V7.5a4.2 4.2 0 0 1 8.4 0v3" />
+          </svg>
+          加密
+        </span>
+      )}
     </div>
 
     <h3 class="entry-title">
-      <a href={link}>{title}</a>
+      <a
+        href={encrypted ? '#' : link}
+        data-encrypted-link={encrypted ? 'true' : undefined}
+      >{title}</a>
     </h3>
 
     {description && <p class="entry-desc">{description}</p>}
@@ -107,8 +135,12 @@ const cardClass = [
           ))}
         </div>
       )}
-      <a class="entry-jump" href={link}>
-        阅读
+      <a
+        class="entry-jump"
+        href={encrypted ? '#' : link}
+        data-encrypted-link={encrypted ? 'true' : undefined}
+      >
+        {encrypted ? '解锁' : '阅读'}
         <span aria-hidden="true">↗</span>
       </a>
     </div>

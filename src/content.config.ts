@@ -15,6 +15,7 @@ const posts = defineCollection({
       summary: z.string().optional(),
       cover: image().optional(),
       tags: z.array(z.string()).default([]),
+      password: z.boolean().default(false),
     }),
 });
 
