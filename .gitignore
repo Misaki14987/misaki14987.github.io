@@ -30,6 +30,5 @@ src/pages/**/Daily
 src/pages/**/.gitignore
 
 SPEC.md
-*.md
 .direnv/
 dist/
