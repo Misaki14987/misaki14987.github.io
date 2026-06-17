@@ -4,20 +4,28 @@ import { initializeFootnotes } from "./footnotes";
 import { initializeHeadingNavigation } from "./heading-navigation";
 import { initializeReadingControls } from "./reading-controls";
 
+export const initializePostContent = (article: HTMLElement, signal: AbortSignal) => {
+  initializeReadingControls(article, signal);
+  const disconnectHeadingObserver = initializeHeadingNavigation(article, signal);
+  initializeCodeBlocks(article, signal);
+  const removeFootnotePreviews = initializeFootnotes(article, signal);
+
+  return () => {
+    disconnectHeadingObserver?.();
+    removeFootnotePreviews?.();
+  };
+};
+
 export const mountPostPage = () => {
   mountPageModule<HTMLElement>("[data-article-content]", (article) => {
     const controller = new AbortController();
     const { signal } = controller;
 
-    initializeReadingControls(article, signal);
-    const disconnectHeadingObserver = initializeHeadingNavigation(article, signal);
-    initializeCodeBlocks(article, signal);
-    const removeFootnotePreviews = initializeFootnotes(article, signal);
+    const cleanup = initializePostContent(article, signal);
 
     return () => {
       controller.abort();
-      disconnectHeadingObserver?.();
-      removeFootnotePreviews();
+      cleanup();
     };
   });
 };

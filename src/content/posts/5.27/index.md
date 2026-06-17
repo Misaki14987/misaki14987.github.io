@@ -5,6 +5,7 @@ author: 'M1saK1'
 category: ''
 cover: ./cover.jpg
 tags: ['Daily']
+password: true
 ---
 
 一晃眼又好久没写博客了，感叹自己实在是好懒啊，明明有很多有意思的技术想分享，有好多写好的项目可以拿来说，可就是没有打开编辑器敲键盘的心情。每天打开终端对着claude和codex，看着ai吐出来的token变成文字，变成代码，我好像忘记了自己内心的那份理想，好像是吧，大概，可能...

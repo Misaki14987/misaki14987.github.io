@@ -16,6 +16,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# encrypted post passwords (local only; CI uses BLOG_POST_PASSWORDS secret)
+src/content/passwords.json
+
 # macOS-specific files
 .DS_Store
 

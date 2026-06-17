@@ -2,6 +2,7 @@
 import { render } from 'astro:content';
 import MarkdownLayout from '../../layouts/MarkdownLayout.astro';
 import { getPublishedPosts, postDescription, postPath } from '../../scripts/publication';
+import { encryptContent } from '../../scripts/encrypted';
 
 export async function getStaticPaths() {
   const posts = await getPublishedPosts();
@@ -12,21 +13,60 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content, headings } = await render(post);
 const description = postDescription(post);
 const posts = await getPublishedPosts();
 const postIndex = posts.findIndex((entry) => entry.id === post.id);
 const previousPost = postIndex >= 0 ? posts[postIndex + 1] : undefined;
 const nextPost = postIndex > 0 ? posts[postIndex - 1] : undefined;
+
+const isEncrypted = Boolean(post.data.password);
+const { Content, headings } = await render(post);
+const encryptedPayload = isEncrypted
+  ? await encryptContent(post, post.rendered?.html ?? '')
+  : null;
+const encryptedJson = encryptedPayload
+  ? JSON.stringify({ slug: post.id, ...encryptedPayload })
+  : '';
 ---
 
 <MarkdownLayout
   frontmatter={post.data}
   canonical={postPath(post)}
   seoDescription={description}
-  headings={headings}
+  headings={isEncrypted ? [] : headings}
   previousPost={previousPost}
   nextPost={nextPost}
+  encrypted={isEncrypted}
 >
-  <Content />
+  {isEncrypted ? (
+    <div slot="encrypted-gate">
+      <div class="encrypted-gate" data-encrypted-gate>
+        <div class="encrypted-gate__lock" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4.5" y="10.5" width="15" height="10" rx="1.2" />
+            <path d="M7.8 10.5V7.5a4.2 4.2 0 0 1 8.4 0v3" />
+            <circle cx="12" cy="15.2" r="1.3" fill="currentColor" stroke="none" />
+          </svg>
+        </div>
+        <p class="encrypted-gate__label">这篇日记已加密</p>
+        <p class="encrypted-gate__hint">输入密码以阅读全文</p>
+        <form class="encrypted-gate__form" data-encrypted-form autocomplete="off">
+          <input
+            type="password"
+            name="password"
+            class="encrypted-gate__input"
+            placeholder="密码"
+            autocomplete="off"
+            data-encrypted-input
+          />
+          <button type="submit" class="encrypted-gate__submit">解锁</button>
+        </form>
+        <p class="encrypted-gate__error" data-encrypted-error hidden>密码不对，再试一次</p>
+      </div>
+      <div class="encrypted-content" data-encrypted-content hidden></div>
+      <script type="application/json" data-encrypted-payload set:html={encryptedJson} />
+    </div>
+  ) : (
+    <Content />
+  )}
 </MarkdownLayout>
