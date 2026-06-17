@@ -1,18 +1,20 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogCard from '../../components/BlogCard.astro';
+import EncryptedModal from '../../components/EncryptedModal.astro';
 import {
     getAllTags,
     getPostCards,
     getPostsByTag,
     getPublishedPosts,
 } from '../../scripts/publication';
+import { encryptVerify, isEncrypted, ENCRYPTED_PLACEHOLDER } from '../../scripts/encrypted';
 import '../../styles/pages/tag.scss';
 
 export async function getStaticPaths() {
     const allPosts = await getPublishedPosts();
     return getAllTags(allPosts).map((tag) => {
-        const filteredPosts = getPostCards(getPostsByTag(allPosts, tag));
+        const filteredPosts = getPostsByTag(allPosts, tag);
         return {
             params: { tag },
             props: { posts: filteredPosts },
@@ -22,35 +24,61 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.params;
 const { posts } = Astro.props;
+const baseCards = getPostCards(posts);
+const cards = await Promise.all(
+    baseCards.map(async (card, i) => {
+        const post = posts[i];
+        if (isEncrypted(post)) {
+            const verify = await encryptVerify(post);
+            return {
+                ...card,
+                description: ENCRYPTED_PLACEHOLDER,
+                encrypted: true,
+                encryptedVerify: verify,
+            };
+        }
+        return { ...card, encrypted: false, encryptedVerify: null };
+    }),
+);
 ---
 
 <BaseLayout
-  title={`${tag} | M1saK1 Blog`}
-  description={`M1saK1 Blog 中带有 ${tag} 标签的文章列表。`}
-  ogImage="/images/vn-blog-hero.png"
+    title={`${tag} | M1saK1 Blog`}
+    description={`M1saK1 Blog 中带有 ${tag} 标签的文章列表。`}
+    ogImage="/images/vn-blog-hero.png"
 >
-  <div class="tag-stream">
-    <section class="tag-stream__head page-reveal">
-      <div>
-        <span class="tag-stream__label">标签</span>
-        <h1>#{tag}</h1>
-      </div>
-      <span class="tag-stream__count">{String(posts.length).padStart(2, '0')} notes</span>
-    </section>
+    <div class="tag-stream">
+        <section class="tag-stream__head page-reveal">
+            <div>
+                <span class="tag-stream__label">标签</span>
+                <h1>#{tag}</h1>
+            </div>
+            <span class="tag-stream__count">{String(cards.length).padStart(2, '0')} notes</span>
+        </section>
 
-    <div class="tag-stream__list page-reveal page-reveal--delay-1">
-      {posts.map((post: any) => (
-        <BlogCard
-          title={post.title}
-          subtitle={post.subtitle}
-          image={post.image}
-          link={post.link}
-          description={post.description}
-          pubDate={post.pubDate}
-          tags={post.tags}
-          entryId={post.entryId}
-        />
-      ))}
+        <div class="tag-stream__list page-reveal page-reveal--delay-1">
+            {cards.map((post: any) => (
+                <BlogCard
+                    title={post.title}
+                    subtitle={post.subtitle}
+                    image={post.image}
+                    link={post.link}
+                    description={post.description}
+                    pubDate={post.pubDate}
+                    tags={post.tags}
+                    entryId={post.entryId}
+                    encrypted={post.encrypted}
+                    encryptedVerify={post.encryptedVerify}
+                />
+            ))}
+        </div>
+
+        <EncryptedModal />
     </div>
-  </div>
 </BaseLayout>
+
+<script>
+  import { mountEncryptedModal } from "../../scripts/client/encrypted-modal";
+
+  mountEncryptedModal();
+</script>
