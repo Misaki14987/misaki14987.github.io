@@ -37,7 +37,7 @@ export const mountEncryptedModal = () => {
     const open = (meta: CardMeta, title: string) => {
       current = meta;
       lastFocused = document.activeElement as HTMLElement;
-      hint.textContent = `输入密码以阅读「${title || '全文'}」`;
+      hint.textContent = '输入密码以阅读'
       error.hidden = true;
       input.value = '';
       modal.hidden = false;
@@ -72,7 +72,7 @@ export const mountEncryptedModal = () => {
       open(meta, title);
     };
 
-    document.addEventListener('click', onCardClick);
+    document.addEventListener('click', onCardClick, { capture: true });
     backdrop.addEventListener('click', close);
     closeBtn.addEventListener('click', close);
     document.addEventListener('keydown', (event) => {
@@ -95,7 +95,7 @@ export const mountEncryptedModal = () => {
         } catch {
           /* sessionStorage 不可用 */
         }
-        hint.textContent = '已解锁，正在跳转…';
+        hint.textContent = 'ああああああああああ';
         form.hidden = true;
         const target = current.link;
         window.setTimeout(() => {
@@ -108,13 +108,13 @@ export const mountEncryptedModal = () => {
         window.setTimeout(() => modal.classList.remove('is-error'), 420);
         input.value = '';
         form.hidden = false;
-        hint.textContent = '密码不对，再试一次';
+        hint.textContent = '叮不到咚鸡吗';
         input.focus();
       }
     });
 
     return () => {
-      document.removeEventListener('click', onCardClick);
+      document.removeEventListener('click', onCardClick, { capture: true } as EventListenerOptions);
     };
   });
 };
