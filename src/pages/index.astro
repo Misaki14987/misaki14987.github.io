@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogCard from '../components/BlogCard.astro';
 import Self from '../components/Self.astro';
 import EncryptedModal from '../components/EncryptedModal.astro';
-import { formatPostDate, getPostCards, getPublishedPosts } from '../scripts/publication';
+import { formatPostDate, getAllTags, getPostCards, getPublishedPosts } from '../scripts/publication';
 import { encryptVerify, isEncrypted, ENCRYPTED_PLACEHOLDER } from '../scripts/encrypted';
 import '../styles/pages/index.scss';
 
@@ -26,9 +26,7 @@ const blogs = await Promise.all(
 );
 const latest = blogs[0];
 const latestDate = latest?.pubDate ? formatPostDate(latest.pubDate) : undefined;
-const tags = [...new Set(blogs.flatMap((blog) => blog.tags ?? []))]
-  .filter(Boolean)
-  .sort((a, b) => a.localeCompare(b, 'zh-CN'));
+const tags = getAllTags(posts);
 ---
 
 <BaseLayout
