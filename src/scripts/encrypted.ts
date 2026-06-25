@@ -1,31 +1,13 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { CollectionEntry } from 'astro:content';
-
-/**
- * 构建时加密工具。Web Crypto API，Node 与浏览器通用。
- * 每篇文章独立 salt + 派生密钥（PBKDF2 / SHA-256 / 100k 轮），AES-GCM 256。
- *
- * 密码不写在 frontmatter 里（frontmatter 只用 password: true 标记）。
- * 真实密码从两个来源读取，环境变量优先，找不到则构建报错：
- *   1. 环境变量 BLOG_POST_PASSWORDS：JSON 字符串 { "post-id": "password" }，CI 部署时注入。
- *   2. 本地文件 src/content/passwords.json：同样结构，已被 .gitignore 排除，仅本地构建用。
- */
+import { toBase64 } from './base64';
 
 const ITERATIONS = 100_000;
 const SALT_BYTES = 16;
 const IV_BYTES = 12;
 
 const encoder = new TextEncoder();
-
-const toBase64 = (buf: ArrayBuffer | Uint8Array) => {
-  const bytes = buf instanceof Uint8Array ? buf : new Uint8Array(buf);
-  let binary = '';
-  for (let i = 0; i < bytes.length; i += 1) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return btoa(binary);
-};
 
 const isEncrypted = (post: { data?: { password?: boolean } }) =>
   Boolean(post.data?.password);
@@ -49,7 +31,6 @@ const loadPasswordMap = (): PasswordMap => {
     }
   }
 
-  // 本地构建：读 src/content/passwords.json（相对项目根目录）
   const localPath = resolve(process.cwd(), 'src/content/passwords.json');
   try {
     const raw = readFileSync(localPath, 'utf-8');
@@ -121,7 +102,6 @@ export interface EncryptedVerify {
   iterations: number;
 }
 
-/** 加密正文 HTML，用于文章页。同一篇文章在本次构建中复用 salt 与派生密钥。 */
 export const encryptContent = async (
   post: CollectionEntry<'posts'>,
   html: string,
@@ -141,7 +121,6 @@ export const encryptContent = async (
   };
 };
 
-/** 加密一个校验令牌，用于列表页模态框验密码。不暴露正文密文。 */
 export const encryptVerify = async (
   post: CollectionEntry<'posts'>,
 ): Promise<EncryptedVerify> => {

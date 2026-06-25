@@ -1,6 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import {
-  absoluteUrl,
   absolutizeHtml,
   entryDescription,
   escapeXml,
@@ -10,8 +9,6 @@ import { ENCRYPTED_PLACEHOLDER, isEncrypted } from './encrypted';
 
 export type PostEntry = CollectionEntry<'posts'>;
 export type PostTone = 'build' | 'theory' | 'personal';
-
-export const staticPagePaths = ['/', '/about/', '/tags/'] as const;
 
 const toTime = (value: Date | string | undefined) =>
   value ? new Date(value).getTime() : 0;
@@ -129,22 +126,3 @@ export const toRssItem = (post: PostEntry, site: string | URL) => ({
   categories: post.data.tags,
   customData: `<dc:creator>${escapeXml(post.data.author)}</dc:creator>`,
 });
-
-export const getSitemapEntries = (posts: PostEntry[], site: string | URL) => [
-  ...staticPagePaths.map((path) => ({
-    loc: absoluteUrl(path, site),
-    changefreq: path === '/' ? 'weekly' : 'monthly',
-    priority: path === '/' ? '1.0' : '0.6',
-  })),
-  ...getAllTags(posts).map((tag) => ({
-    loc: absoluteUrl(tagPath(tag), site),
-    changefreq: 'monthly',
-    priority: '0.5',
-  })),
-  ...posts.map((post) => ({
-    loc: absoluteUrl(postPath(post), site),
-    lastmod: post.data.updatedDate ?? post.data.pubDate,
-    changefreq: 'monthly',
-    priority: '0.8',
-  })),
-];

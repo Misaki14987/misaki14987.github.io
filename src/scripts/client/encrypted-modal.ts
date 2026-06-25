@@ -4,6 +4,7 @@ import {
   deriveKey,
   exportRawKey,
 } from "./encrypted-crypto";
+import { shakeAndReset, writePostKey } from "./post-key";
 
 type CardMeta = {
   slug: string;
@@ -13,8 +14,6 @@ type CardMeta = {
   verify: string;
   iterations: number;
 };
-
-const STORAGE_PREFIX = 'post-key:';
 
 export const mountEncryptedModal = () => {
   mountPageModule<HTMLElement>('[data-encrypted-modal]', (modal) => {
@@ -90,11 +89,7 @@ export const mountEncryptedModal = () => {
         const ok = await decryptString(key, current.iv, current.verify);
         if (ok !== 'OK') throw new Error('mismatch');
         const raw = await exportRawKey(key);
-        try {
-          sessionStorage.setItem(`${STORAGE_PREFIX}${current.slug}`, raw);
-        } catch {
-          /* sessionStorage 不可用 */
-        }
+        writePostKey(current.slug, raw);
         hint.textContent = 'ああああああああああ';
         form.hidden = true;
         const target = current.link;
@@ -104,12 +99,9 @@ export const mountEncryptedModal = () => {
       } catch {
         busy = false;
         error.hidden = false;
-        modal.classList.add('is-error');
-        window.setTimeout(() => modal.classList.remove('is-error'), 420);
-        input.value = '';
         form.hidden = false;
         hint.textContent = '叮不到咚鸡吗';
-        input.focus();
+        shakeAndReset(modal, input);
       }
     });
 
