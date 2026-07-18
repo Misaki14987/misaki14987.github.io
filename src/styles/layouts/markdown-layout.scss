@@ -73,7 +73,13 @@
   overflow: hidden;
   background: var(--tone-soft);
   border: 1px solid var(--line);
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%);
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 22px),
+    calc(100% - 22px) 100%,
+    0 100%
+  );
 }
 
 .post-cover img {
@@ -195,7 +201,9 @@
   font-weight: 400;
   text-decoration: none;
   opacity: 0;
-  transition: opacity 150ms ease, color 150ms ease;
+  transition:
+    opacity 150ms ease,
+    color 150ms ease;
 }
 
 .article-content h2:hover .heading-anchor,
@@ -518,7 +526,9 @@
   opacity: 0;
   pointer-events: none;
   transform: translateY(8px);
-  transition: opacity 160ms ease, transform 160ms ease;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
 }
 
 .back-to-top.is-visible {

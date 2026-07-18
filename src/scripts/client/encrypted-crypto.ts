@@ -1,4 +1,4 @@
-import { fromBase64, toBase64 } from '../base64';
+import { fromBase64, toBase64 } from "../base64";
 
 const ITERATIONS = 100_000;
 
@@ -12,18 +12,18 @@ export const deriveKey = async (
 ): Promise<CryptoKey> => {
   const salt = fromBase64(saltB64);
   const baseKey = await crypto.subtle.importKey(
-    'raw',
+    "raw",
     encoder.encode(password),
-    'PBKDF2',
+    "PBKDF2",
     false,
-    ['deriveKey'],
+    ["deriveKey"],
   );
   return crypto.subtle.deriveKey(
-    { name: 'PBKDF2', salt, iterations, hash: 'SHA-256' },
+    { name: "PBKDF2", salt, iterations, hash: "SHA-256" },
     baseKey,
-    { name: 'AES-GCM', length: 256 },
+    { name: "AES-GCM", length: 256 },
     true,
-    ['decrypt'],
+    ["decrypt"],
   );
 };
 
@@ -34,22 +34,26 @@ export const decryptString = async (
 ): Promise<string> => {
   const iv = fromBase64(ivB64);
   const ciphertext = fromBase64(ciphertextB64);
-  const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
+  const plain = await crypto.subtle.decrypt(
+    { name: "AES-GCM", iv },
+    key,
+    ciphertext,
+  );
   return decoder.decode(plain);
 };
 
 export const exportRawKey = async (key: CryptoKey): Promise<string> => {
-  const raw = await crypto.subtle.exportKey('raw', key);
+  const raw = await crypto.subtle.exportKey("raw", key);
   return toBase64(raw);
 };
 
 export const importRawKey = async (rawB64: string): Promise<CryptoKey> => {
   const raw = fromBase64(rawB64);
   return crypto.subtle.importKey(
-    'raw',
+    "raw",
     raw,
-    { name: 'AES-GCM', length: 256 },
+    { name: "AES-GCM", length: 256 },
     false,
-    ['decrypt'],
+    ["decrypt"],
   );
 };

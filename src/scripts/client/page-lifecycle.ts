@@ -4,7 +4,7 @@ const mountedSelectors = new Set<string>();
 
 export const mountPageModule = <Root extends Element>(
   selector: string,
-  initialize: (root: Root) => Cleanup | void
+  initialize: (root: Root) => Cleanup | void,
 ) => {
   if (mountedSelectors.has(selector)) return;
   mountedSelectors.add(selector);

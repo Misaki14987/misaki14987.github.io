@@ -1,3 +1,8 @@
+.post-reading:has([data-encrypted-stage]) {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 900px;
+}
+
 .encrypted-gate {
   --gate-tone: var(--ink);
   display: flex;
@@ -9,14 +14,15 @@
   padding: 48px 24px;
   text-align: center;
   color: var(--ink);
-  transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+  transition:
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
     transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.post-article[data-tone='theory'] .encrypted-gate {
+.post-article[data-tone="theory"] .encrypted-gate {
   --gate-tone: var(--green);
 }
-.post-article[data-tone='personal'] .encrypted-gate {
+.post-article[data-tone="personal"] .encrypted-gate {
   --gate-tone: var(--red);
 }
 
@@ -64,7 +70,9 @@
   width: min(360px, 100%);
   border: 1px solid var(--line-strong);
   background: var(--paper);
-  transition: border-color 200ms ease, box-shadow 200ms ease;
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease;
 }
 
 .encrypted-gate__input {
@@ -131,7 +139,8 @@
 .encrypted-content {
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 420ms cubic-bezier(0.22, 1, 0.36, 1) 80ms,
+  transition:
+    opacity 420ms cubic-bezier(0.22, 1, 0.36, 1) 80ms,
     transform 420ms cubic-bezier(0.22, 1, 0.36, 1) 80ms;
 }
 
@@ -141,18 +150,44 @@
 }
 
 @keyframes gate-lock-pulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 6px 18px rgba(23, 32, 51, 0.06); }
-  50% { transform: scale(1.04); box-shadow: 0 10px 26px rgba(23, 32, 51, 0.1); }
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 6px 18px rgba(23, 32, 51, 0.06);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 10px 26px rgba(23, 32, 51, 0.1);
+  }
 }
 
 @keyframes gate-shake {
-  10%, 90% { transform: translateX(-1px); }
-  20%, 80% { transform: translateX(2px); }
-  30%, 50%, 70% { transform: translateX(-4px); }
-  40%, 60% { transform: translateX(4px); }
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-4px);
+  }
+  40%,
+  60% {
+    transform: translateX(4px);
+  }
 }
 
 @keyframes gate-error-in {
-  from { opacity: 0; transform: translateY(-2px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
