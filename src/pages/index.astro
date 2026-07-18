@@ -1,173 +1,133 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import BlogCard from '../components/BlogCard.astro';
-import Self from '../components/Self.astro';
-import EncryptedModal from '../components/EncryptedModal.astro';
-import { formatPostDate, getAllTags, getPostCards, getPublishedPosts } from '../scripts/publication';
-import { encryptVerify, isEncrypted, ENCRYPTED_PLACEHOLDER } from '../scripts/encrypted';
+import UnitsShell from '../components/common/UnitsShell.astro';
+import FriendLink from '../components/FriendLink.astro';
+import { formatPostDate, getAllTags, getPostCards, getPublishedPosts, tagPath } from '../scripts/publication';
 import '../styles/pages/index.scss';
 
 const posts = await getPublishedPosts();
-const baseCards = getPostCards(posts);
-const blogs = await Promise.all(
-  baseCards.map(async (card, i) => {
-    const post = posts[i];
-    if (isEncrypted(post)) {
-      const verify = await encryptVerify(post);
-      return {
-        ...card,
-        description: ENCRYPTED_PLACEHOLDER,
-        encrypted: true,
-        encryptedVerify: verify,
-      };
-    }
-    return { ...card, encrypted: false, encryptedVerify: null };
-  }),
-);
-const latest = blogs[0];
-const latestDate = latest?.pubDate ? formatPostDate(latest.pubDate) : undefined;
-const tags = getAllTags(posts);
+const blogs = getPostCards(posts);
+const featured = blogs[0];
+const tags = getAllTags(posts).slice(0, 10);
+const featuredDate = featured?.pubDate ? formatPostDate(featured.pubDate) : null;
+const profileStats = [
+  ['base', 'Hangzhou / HDU'],
+  ['practice', 'Frontend systems'],
+  ['learning', 'Rust / GNOME / Math'],
+  ['outside', 'Rhythm game / TCG / Idol'],
+];
+const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
 ---
 
 <BaseLayout
   title="M1saK1 Blog"
   description="M1saK1 的个人博客首页"
   ogImage="/images/vn-blog-hero.png"
+  bodyClass="units-body"
+  showNavigation={false}
 >
-  <div class="home" data-home-scenes data-active-scene="intro">
-    <nav class="scene-switcher" aria-label="首页场景">
-      <div class="scene-switcher__tabs">
-        <button type="button" data-scene-target="intro" aria-pressed="true">
-          <span>01</span>
-          首页
-        </button>
-        <button type="button" data-scene-target="articles" aria-pressed="false">
-          <span>02</span>
-          文章
-        </button>
-      </div>
-      <div class="scene-switcher__arrows">
-        <button type="button" data-scene-step="-1" aria-label="上一个场景">←</button>
-        <button type="button" data-scene-step="1" aria-label="下一个场景">→</button>
-      </div>
-    </nav>
-
-    <div class="scene-viewport">
-    <section class="opening home-scene page-reveal is-active" data-scene="intro">
-      <div class="opening__folio" aria-hidden="true">
-        <strong>001—{String(blogs.length).padStart(3, '0')}</strong>
-      </div>
-
-      <div class="opening__statement">
-        <h1>M1saK1 Blog</h1>
-        <p>我爱喝无糖怡泉</p>
-        <div class="opening__coordinates">
-          <span>{String(blogs.length).padStart(2, '0')} notes</span>
-          <span>{String(tags.length).padStart(2, '0')} subjects</span>
-        </div>
-        <button class="opening__switch" type="button" data-scene-target="articles">
-          查看全部文章
-          <span aria-hidden="true">→</span>
-        </button>
-      </div>
-
-      {latest && (
-        <a class="current-note" href={latest.link}>
-          <span class="current-note__date">{latestDate?.display}</span>
-          <strong>{latest.title}</strong>
-          <p>{latest.description || latest.subtitle || '查看最新文章。'}</p>
-          <span class="current-note__action">阅读最新文章 ↗</span>
+  <UnitsShell active="home">
+    {featured && (
+      <section class="units-hero" id="latest">
+        <a class="units-hero__media" href={featured.link} aria-label={`阅读 ${featured.title}`}>
+          {featured.image ? (
+            typeof featured.image === 'string' ? (
+              <img src={featured.image} alt={featured.title} loading="eager" decoding="async" />
+            ) : (
+              <Image
+                src={featured.image}
+                alt={featured.title}
+                widths={[720, 1040, 1440]}
+                sizes="(max-width: 920px) calc(100vw - 20px), calc(100vw - 188px)"
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
+              />
+            )
+          ) : (
+            <div class="units-hero__fallback" aria-hidden="true"></div>
+          )}
         </a>
-      )}
-    </section>
 
-    <section class="notebook home-scene" data-scene="articles" hidden>
-      <aside class="notebook__margin page-reveal page-reveal--delay-1">
-        <Self />
-      </aside>
-
-      <section class="note-ledger page-reveal page-reveal--delay-2">
-        <header class="note-ledger__head">
-          <div>
-            <h2>文章</h2>
-          </div>
-          <a href="/tags/">查看标签 ↗</a>
-        </header>
-
-        <form class="note-tools" data-note-tools>
-          <label class="note-search">
-            <span>搜索</span>
-            <input
-              type="search"
-              name="q"
-              placeholder="标题、摘要或标签"
-              autocomplete="off"
-              data-note-search
-            />
-            <kbd>/</kbd>
-          </label>
-
-          <label class="note-select">
-            <span>标签</span>
-            <select name="tag" data-note-tag>
-              <option value="">全部</option>
-              {tags.map((tag) => <option value={tag}>{tag}</option>)}
-            </select>
-          </label>
-
-          <label class="note-select">
-            <span>排序</span>
-            <select name="sort" data-note-sort>
-              <option value="newest">最新优先</option>
-              <option value="oldest">最早优先</option>
-            </select>
-          </label>
-
-          <div class="tone-filter" role="group" aria-label="文章类型">
-            <button type="button" data-tone-filter="" aria-pressed="true">全部</button>
-            <button type="button" data-tone-filter="build" aria-pressed="false">技术</button>
-            <button type="button" data-tone-filter="theory" aria-pressed="false">理论</button>
-            <button type="button" data-tone-filter="personal" aria-pressed="false">日常</button>
-          </div>
-        </form>
-
-        <div class="note-results" aria-live="polite">
-          <span data-note-count>{blogs.length} 篇</span>
-          <button type="button" data-note-reset hidden>清除筛选</button>
+        <div class="units-hero__copy">
+          <p>{featuredDate?.display ?? 'Latest'}</p>
+          <h1>{featured.title}</h1>
+          <span>{featured.description}</span>
+          <a href={featured.link}>Read the note ↗</a>
         </div>
-
-        <div class="note-ledger__list">
-          {blogs.map((blog, i) => (
-            <BlogCard
-              title={blog.title}
-              subtitle={blog.subtitle}
-              image={blog.image}
-              link={blog.link}
-              description={blog.description}
-              pubDate={blog.pubDate}
-              tags={blog.tags}
-              entryId={blog.entryId}
-              tone={blog.tone}
-              priority={i === 0}
-              class="archive-entry--compact"
-              encrypted={blog.encrypted}
-              encryptedVerify={blog.encryptedVerify}
-            />
-          ))}
-        </div>
-        <p class="note-empty" data-note-empty hidden>没有符合条件的文章。</p>
       </section>
+    )}
+
+    <section class="units-panel units-panel--yellow" id="archive">
+      <header class="units-panel__head">
+        <span>02</span>
+        <h2>Archive, but louder.</h2>
+        <a href="/tags/">All tags ↗</a>
+      </header>
+
+      <div class="units-posts">
+        {blogs.slice(0, 6).map((blog, index) => {
+          const date = blog.pubDate ? formatPostDate(blog.pubDate) : null;
+          return (
+            <a class={`units-post units-post--${index % 4}`} href={blog.link}>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <strong>{blog.title}</strong>
+              <p>{blog.description}</p>
+              <small>{date?.display ?? blog.subtitle}</small>
+            </a>
+          );
+        })}
+      </div>
     </section>
-    </div>
 
-    <EncryptedModal />
-  </div>
+    <section class="units-panel units-panel--green" id="about">
+      <header class="units-panel__head">
+        <span>04</span>
+        <h2>AboutMe</h2>
+        <a href="/about/">Full profile ↗</a>
+      </header>
+
+      <div class="units-about">
+        <div>
+          <h3>M1saK1</h3>
+          <p>From 杭州电子科技大学，学习 Web 开发中...</p>
+        </div>
+        <dl>
+          {profileStats.map(([term, value]) => (
+            <>
+              <dt>{term}</dt>
+              <dd>{value}</dd>
+            </>
+          ))}
+        </dl>
+      </div>
+
+      <div class="units-chips">
+        {interests.map((interest, index) => (
+          <span><b>{String(index + 1).padStart(2, '0')}</b>{interest}</span>
+        ))}
+      </div>
+    </section>
+
+    <section class="units-panel units-panel--orange" id="subjects">
+      <header class="units-panel__head">
+        <span>03</span>
+        <h2>Subjects</h2>
+      </header>
+
+      <div class="units-tags">
+        {tags.map((tag, index) => (
+          <a href={tagPath(tag)}>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            {tag}
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="units-panel units-panel--white">
+      <FriendLink />
+    </section>
+  </UnitsShell>
 </BaseLayout>
-
-<script>
-  import { mountHomePage } from "../scripts/client/home";
-  import { mountEncryptedModal } from "../scripts/client/encrypted-modal";
-
-  mountHomePage();
-  mountEncryptedModal();
-</script>
