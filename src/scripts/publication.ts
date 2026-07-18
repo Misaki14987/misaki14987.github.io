@@ -21,9 +21,6 @@ export const postPath = (postOrId: PostEntry | string) => {
   return withTrailingSlash(`/posts/${id}`);
 };
 
-export const tagPath = (tag: string) =>
-  withTrailingSlash(`/tags/${encodeURIComponent(tag)}`);
-
 export const getPublishedPosts = async () =>
   (await getCollection('posts'))
     .filter((post) => !post.data.draft)
