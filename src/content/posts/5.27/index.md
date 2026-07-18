@@ -1,10 +1,10 @@
 ---
-title: '5.27 黑色的焦躁'
+title: "5.27 黑色的焦躁"
 pubDate: 2026-05-27
-author: 'M1saK1'
-category: ''
+author: "M1saK1"
+category: ""
 cover: ./cover.jpg
-tags: ['Daily']
+tags: ["Daily"]
 password: true
 ---
 

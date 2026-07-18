@@ -3,7 +3,6 @@ import BaseLayout from './BaseLayout.astro';
 import UnitsShell from '../components/common/UnitsShell.astro';
 import { Image } from 'astro:assets';
 import {
-    formatPostDate,
     postPath,
     postTone,
     type PostEntry,
@@ -34,14 +33,12 @@ const {
     description,
     pubDate,
     updatedDate,
-    author = 'M1saK1',
     tags = [],
     category,
     cover,
 } = frontmatter;
 const pageDescription = seoDescription ?? description;
 
-const formattedDate = pubDate ? formatPostDate(pubDate, 'han') : undefined;
 const tone = postTone({ title, subtitle: category, tags });
 const tocHeadings = encrypted
     ? []
@@ -79,22 +76,14 @@ const next = adjacentPost(nextPost);
         <section class='post-section'>
             <article class='post-article' data-tone={tone}>
                 <header class='post-header'>
-                    <div class='post-header__rail'>
-                        <span>{category || tags[0] || 'POST'}</span>
-                        <strong>{formattedDate?.machine.replaceAll('-', ' / ')}</strong>
-                    </div>
                     <div class='post-header__main'>
                         <h1 class='post-header__title'>{title}</h1>
                         {description && <p class='post-header__description'>{description}</p>}
-                        <div class='post-header__meta'>
-                            {author && <span>by {author}</span>}
-                            {formattedDate && <time datetime={formattedDate.machine}>{formattedDate.display}</time>}
-                        </div>
                         {tags.length > 0 && (
                             <ul class='post-header__tags'>
-                                {tags.map((tag:string, index:number) => (
+                                {tags.map((tag:string) => (
                                     <li class='post-header__tag'>
-                                        <b>{String(index + 1).padStart(2, '0')}</b>{tag}
+                                        {tag}
                                     </li>
                                 ))}
                             </ul>
