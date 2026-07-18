@@ -1,5 +1,3 @@
-# build output
-
 # generated types
 .astro/
 
@@ -35,3 +33,5 @@ src/pages/**/.gitignore
 SPEC.md
 .direnv/
 dist/
+
+.runs

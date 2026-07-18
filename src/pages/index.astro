@@ -27,40 +27,65 @@ const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
   bodyClass="units-body"
 >
   <UnitsShell active="home">
-    {featured && (
-      <section class="units-hero" id="latest">
-        <a class="units-hero__media" href={featured.link} aria-label={`阅读 ${featured.title}`}>
-          {featured.image ? (
-            typeof featured.image === 'string' ? (
-              <img src={featured.image} alt={featured.title} loading="eager" decoding="async" />
+    <div class="units-home" data-home-motion>
+      {featured && (
+        <section class="units-hero" id="latest" data-home-hero>
+          <a class="units-hero__media" href={featured.link} aria-label={`阅读 ${featured.title}`}>
+            {featured.image ? (
+              typeof featured.image === 'string' ? (
+                <img src={featured.image} alt="" loading="eager" decoding="async" />
+              ) : (
+                <Image
+                  src={featured.image}
+                  alt=""
+                  widths={[720, 1040, 1440]}
+                  sizes="(max-width: 920px) calc(100vw - 20px), calc(100vw - 188px)"
+                  loading="eager"
+                  decoding="async"
+                  fetchpriority="high"
+                />
+              )
             ) : (
-              <Image
-                src={featured.image}
-                alt={featured.title}
-                widths={[720, 1040, 1440]}
-                sizes="(max-width: 920px) calc(100vw - 20px), calc(100vw - 188px)"
-                loading="eager"
-                decoding="async"
-                fetchpriority="high"
-              />
-            )
-          ) : (
-            <div class="units-hero__fallback" aria-hidden="true"></div>
-          )}
-        </a>
+              <div class="units-hero__fallback" aria-hidden="true"></div>
+            )}
+          </a>
 
-        <div class="units-hero__copy">
-          <p>{featuredDate?.display ?? 'Latest'}</p>
-          <h1>{featured.title}</h1>
-          <span>{featured.description}</span>
-          <a href={featured.link}>Read the note ↗</a>
-        </div>
-      </section>
-    )}
+          <div class="units-hero__registration">
+            <div class="units-hero__plates" aria-hidden="true">
+              <span>DESIGN</span>
+              <span>CODE</span>
+              <span>PLAY</span>
+            </div>
+            <h1>
+              <button type="button" data-author-mark aria-label="M1saK1，连续点击三次查看印刷批次">
+                <span class="units-author units-author--blue" aria-hidden="true">M1saK1</span>
+                <span class="units-author units-author--orange" aria-hidden="true">M1saK1</span>
+                <span class="units-author units-author--yellow" aria-hidden="true">M1saK1</span>
+                <span class="units-author units-author--key">M1saK1</span>
+              </button>
+            </h1>
+          </div>
 
-    <section class="units-panel units-panel--yellow" id="archive">
+          <div class="units-batch-stamp" data-batch-stamp aria-hidden="true">
+            <span>LOT 14987</span>
+            <strong>ZERO SUGAR</strong>
+          </div>
+
+          <div class="units-hero__copy">
+            <p>01 / LATEST · {featuredDate?.display ?? 'NOW'}</p>
+            <h2>{featured.title}</h2>
+            <span>{featured.description}</span>
+            <a href={featured.link}>Read the note <i aria-hidden="true">↗</i></a>
+          </div>
+        </section>
+      )}
+
+      <section class="units-panel units-panel--yellow" id="archive" data-print-section>
       <header class="units-panel__head">
-        <h2 data-i18n data-zh="文章归档" data-en="Archive, but louder.">文章归档</h2>
+        <div>
+          <span>02 / PROOF</span>
+          <h2 data-i18n data-zh="文章归档" data-en="Archive">文章归档</h2>
+        </div>
         <a href="#subjects" data-i18n data-zh="主题索引 ↗" data-en="Subjects ↗">主题索引 ↗</a>
       </header>
 
@@ -68,17 +93,41 @@ const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
         {blogs.map((blog, index) => {
           return (
             <a class={`units-post units-post--${index % 4}`} href={blog.link}>
-              <strong>{blog.title}</strong>
-              <p>{blog.description}</p>
+              <span class="units-post__cover">
+                {blog.image ? (
+                  typeof blog.image === 'string' ? (
+                    <img src={blog.image} alt="" loading="lazy" decoding="async" />
+                  ) : (
+                    <Image
+                      src={blog.image}
+                      alt=""
+                      widths={[320, 560, 760]}
+                      sizes="(max-width: 920px) calc(100vw - 64px), 30vw"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )
+                ) : (
+                  <i aria-hidden="true"></i>
+                )}
+              </span>
+              <span class="units-post__copy">
+                <small>{String(index + 1).padStart(2, '0')} / {blog.subtitle || 'NOTE'}</small>
+                <strong>{blog.title}</strong>
+                <p>{blog.description}</p>
+              </span>
             </a>
           );
         })}
       </div>
-    </section>
+      </section>
 
-    <section class="units-panel units-panel--green" id="about">
+      <section class="units-panel units-panel--green" id="about" data-print-section>
       <header class="units-panel__head">
-        <h2 data-i18n data-zh="关于我" data-en="AboutMe">关于我</h2>
+        <div>
+          <span>03 / PLATES</span>
+          <h2 data-i18n data-zh="关于我" data-en="About Me">关于我</h2>
+        </div>
       </header>
 
       <div class="units-about">
@@ -96,16 +145,19 @@ const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
         </dl>
       </div>
 
-      <div class="units-chips">
-        {interests.map((interest) => (
-          <span>{interest}</span>
+      <div class="units-chips" aria-label="Interests">
+        {interests.map((interest, index) => (
+          <span><i>{String(index + 1).padStart(2, '0')}</i>{interest}</span>
         ))}
       </div>
-    </section>
+      </section>
 
-    <section class="units-panel units-panel--orange" id="subjects">
+      <section class="units-panel units-panel--orange" id="subjects" data-print-section>
       <header class="units-panel__head">
-        <h2 data-i18n data-zh="主题索引" data-en="Subjects">主题索引</h2>
+        <div>
+          <span>04 / TYPE CASE</span>
+          <h2 data-i18n data-zh="主题索引" data-en="Subjects">主题索引</h2>
+        </div>
       </header>
 
       <div class="units-tags">
@@ -115,10 +167,18 @@ const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
           </a>
         ))}
       </div>
-    </section>
+      </section>
 
-    <section class="units-panel units-panel--white" id="friends">
-      <FriendLink />
-    </section>
+      <section class="units-panel units-panel--white" id="friends" data-print-section>
+        <span class="units-panel__label">05 / EXCHANGE</span>
+        <FriendLink />
+      </section>
+    </div>
   </UnitsShell>
 </BaseLayout>
+
+<script>
+  import { initializeHomeMotion } from '../scripts/client/home/home-motion';
+
+  initializeHomeMotion();
+</script>

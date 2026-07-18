@@ -1,7 +1,7 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-import type { CollectionEntry } from 'astro:content';
-import { toBase64 } from './base64';
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import type { CollectionEntry } from "astro:content";
+import { toBase64 } from "./base64";
 
 const ITERATIONS = 100_000;
 const SALT_BYTES = 16;
@@ -31,9 +31,9 @@ const loadPasswordMap = (): PasswordMap => {
     }
   }
 
-  const localPath = resolve(process.cwd(), 'src/content/passwords.json');
+  const localPath = resolve(process.cwd(), "src/content/passwords.json");
   try {
-    const raw = readFileSync(localPath, 'utf-8');
+    const raw = readFileSync(localPath, "utf-8");
     passwordMapCache = JSON.parse(raw) as PasswordMap;
     return passwordMapCache;
   } catch {
@@ -57,27 +57,30 @@ const getPostPassword = (postId: string): string => {
   return password;
 };
 
-const deriveKey = async (password: string, salt: Uint8Array): Promise<CryptoKey> => {
+const deriveKey = async (
+  password: string,
+  salt: Uint8Array,
+): Promise<CryptoKey> => {
   const baseKey = await crypto.subtle.importKey(
-    'raw',
+    "raw",
     encoder.encode(password),
-    'PBKDF2',
+    "PBKDF2",
     false,
-    ['deriveKey'],
+    ["deriveKey"],
   );
   return crypto.subtle.deriveKey(
-    { name: 'PBKDF2', salt, iterations: ITERATIONS, hash: 'SHA-256' },
+    { name: "PBKDF2", salt, iterations: ITERATIONS, hash: "SHA-256" },
     baseKey,
-    { name: 'AES-GCM', length: 256 },
+    { name: "AES-GCM", length: 256 },
     true,
-    ['encrypt', 'decrypt'],
+    ["encrypt", "decrypt"],
   );
 };
 
 type KeyEntry = { salt: Uint8Array; key: CryptoKey };
 const keyCache = new Map<string, KeyEntry>();
 
-const getKey = async (post: CollectionEntry<'posts'>): Promise<KeyEntry> => {
+const getKey = async (post: CollectionEntry<"posts">): Promise<KeyEntry> => {
   const cached = keyCache.get(post.id);
   if (cached) return cached;
   const password = getPostPassword(post.id);
@@ -96,13 +99,13 @@ export interface EncryptedContent {
 }
 
 export const encryptContent = async (
-  post: CollectionEntry<'posts'>,
+  post: CollectionEntry<"posts">,
   html: string,
 ): Promise<EncryptedContent> => {
   const { salt, key } = await getKey(post);
   const iv = crypto.getRandomValues(new Uint8Array(IV_BYTES));
   const ciphertext = await crypto.subtle.encrypt(
-    { name: 'AES-GCM', iv },
+    { name: "AES-GCM", iv },
     key,
     encoder.encode(html),
   );
@@ -114,6 +117,6 @@ export const encryptContent = async (
   };
 };
 
-export const ENCRYPTED_PLACEHOLDER = '这篇日记已加密。';
+export const ENCRYPTED_PLACEHOLDER = "这篇日记已加密。";
 
 export { isEncrypted };
