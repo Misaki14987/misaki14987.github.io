@@ -5,8 +5,8 @@ import { isNavigationPathActive } from '../../scripts/navigation';
 const currentPath = Astro.url.pathname;
 const links = [
   { href: '/', index: '01', label: 'Notes' },
-  { href: '/about/', index: '02', label: 'Profile' },
-  { href: '/tags/', index: '03', label: 'Index' },
+  { href: '/#about', index: '02', label: 'Profile' },
+  { href: '/#subjects', index: '03', label: 'Index' },
 ];
 
 const isActive = (href: string) => isNavigationPathActive(currentPath, href);

@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import UnitsShell from '../components/common/UnitsShell.astro';
 import FriendLink from '../components/FriendLink.astro';
-import { formatPostDate, getAllTags, getPostCards, getPublishedPosts, tagPath } from '../scripts/publication';
+import { formatPostDate, getAllTags, getPostCards, getPublishedPosts } from '../scripts/publication';
 import '../styles/pages/index.scss';
 
 const posts = await getPublishedPosts();
@@ -63,11 +63,11 @@ const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
       <header class="units-panel__head">
         <span>02</span>
         <h2>Archive, but louder.</h2>
-        <a href="/tags/">All tags ↗</a>
+        <a href="#subjects">Subjects ↗</a>
       </header>
 
       <div class="units-posts">
-        {blogs.slice(0, 6).map((blog, index) => {
+        {blogs.map((blog, index) => {
           const date = blog.pubDate ? formatPostDate(blog.pubDate) : null;
           return (
             <a class={`units-post units-post--${index % 4}`} href={blog.link}>
@@ -85,7 +85,6 @@ const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
       <header class="units-panel__head">
         <span>04</span>
         <h2>AboutMe</h2>
-        <a href="/about/">Full profile ↗</a>
       </header>
 
       <div class="units-about">
@@ -118,7 +117,7 @@ const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
 
       <div class="units-tags">
         {tags.map((tag, index) => (
-          <a href={tagPath(tag)}>
+          <a href="#archive">
             <span>{String(index + 1).padStart(2, '0')}</span>
             {tag}
           </a>
