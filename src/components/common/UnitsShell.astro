@@ -7,10 +7,15 @@ interface Props {
 
 const { active = 'home' } = Astro.props;
 const items = [
-  { key: 'home', id: '01', label: 'Latest Notes', href: '/', tone: 'blue' },
-  { key: 'archive', id: '02', label: 'Archive', href: '/#archive', tone: 'yellow' },
-  { key: 'subjects', id: '03', label: 'Subjects', href: '/#subjects', tone: 'orange' },
-  { key: 'about', id: '04', label: 'About', href: '/#about', tone: 'green' },
+  { key: 'home', id: '01', zh: '最新文章', en: 'Latest Notes', href: '/', tone: 'blue' },
+  { key: 'archive', id: '02', zh: '文章归档', en: 'Archive', href: '/#archive', tone: 'yellow' },
+  { key: 'subjects', id: '03', zh: '主题索引', en: 'Subjects', href: '/#subjects', tone: 'orange' },
+  { key: 'about', id: '04', zh: '关于我', en: 'About', href: '/#about', tone: 'green' },
+];
+const socials = [
+  { label: 'GH', href: 'https://github.com/Misaki14987', title: 'GitHub' },
+  { label: 'Bili', href: 'https://space.bilibili.com/M1saK1', title: 'Bilibili' },
+  { label: 'RSS', href: '/rss.xml', title: 'RSS Feed' },
 ];
 ---
 
@@ -20,13 +25,27 @@ const items = [
       <strong>m1sak1.</strong>
       <span>PERSONAL SYSTEM NOTES</span>
     </a>
-    <a class="units-mobile-cta" href="/#about">About</a>
+    <a class="units-mobile-cta" href="/#about" data-i18n data-zh="关于我" data-en="About">关于我</a>
     <a class="units-menu" href="/#subjects" aria-label="打开标签索引">
       <span></span>
       <span></span>
       <span></span>
     </a>
   </header>
+
+  <div class="units-mobile-tools">
+    <div class="units-locale" aria-label="语言切换">
+      <button type="button" data-locale="zh" aria-pressed="true">中文</button>
+      <button type="button" data-locale="en" aria-pressed="false">EN</button>
+    </div>
+    <nav class="units-socials" aria-label="社交媒体">
+      {socials.map((social) => (
+        <a href={social.href} title={social.title} aria-label={social.title} target={social.href.startsWith('http') ? '_blank' : undefined} rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
+          {social.label}
+        </a>
+      ))}
+    </nav>
+  </div>
 
   <aside class="units-rail" aria-label="站点导航">
     <a class="units-brand" href="/">
@@ -42,19 +61,50 @@ const items = [
           aria-current={active === item.key ? 'page' : undefined}
         >
           <span>{item.id}</span>
-          <b>{item.label}</b>
+          <b data-i18n data-zh={item.zh} data-en={item.en}>{item.zh}</b>
           <i aria-hidden="true">↗</i>
         </a>
       ))}
     </nav>
 
     <a class="units-tile units-tile--purple units-tile--cta" href="/#about">
-      <b>Who is M1saK1</b>
+      <b data-i18n data-zh="M1saK1 是谁" data-en="Who is M1saK1">M1saK1 是谁</b>
     </a>
-    <a class="units-language" href="/rss.xml">RSS Feed</a>
+
+    <div class="units-locale" aria-label="语言切换">
+      <button type="button" data-locale="zh" aria-pressed="true">中文</button>
+      <button type="button" data-locale="en" aria-pressed="false">EN</button>
+    </div>
+
+    <nav class="units-socials" aria-label="社交媒体">
+      {socials.map((social) => (
+        <a href={social.href} title={social.title} aria-label={social.title} target={social.href.startsWith('http') ? '_blank' : undefined} rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
+          {social.label}
+        </a>
+      ))}
+    </nav>
   </aside>
 
   <main class="units-main">
     <slot />
   </main>
 </div>
+
+<script>
+  const applyLocale = (locale: "zh" | "en") => {
+    document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
+    localStorage.setItem("site-locale", locale);
+    document.querySelectorAll<HTMLElement>("[data-i18n]").forEach((node) => {
+      node.textContent = node.dataset[locale] || node.textContent;
+    });
+    document.querySelectorAll<HTMLButtonElement>("[data-locale]").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.locale === locale));
+    });
+  };
+
+  document.querySelectorAll<HTMLButtonElement>("[data-locale]").forEach((button) => {
+    button.addEventListener("click", () => applyLocale(button.dataset.locale === "en" ? "en" : "zh"));
+  });
+
+  applyLocale(localStorage.getItem("site-locale") === "en" ? "en" : "zh");
+</script>
