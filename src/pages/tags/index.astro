@@ -1,31 +1,34 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import UnitsShell from '../../components/common/UnitsShell.astro';
 import { getAllTags, getPublishedPosts, tagPath } from '../../scripts/publication';
-import '../../styles/pages/tags.scss';
 
 const tags = getAllTags(await getPublishedPosts());
 ---
 
 <BaseLayout
-  title='Tags | M1saK1 Blog'
-  description='M1saK1 Blog 的标签索引。'
+  title="Tags | M1saK1 Blog"
+  description="M1saK1 Blog 的标签索引。"
   ogImage="/images/vn-blog-hero.png"
+  bodyClass="units-body"
+  showNavigation={false}
 >
-  <div class="tag-index">
-    <section class="tag-index__head page-reveal">
-      <span class="tag-index__label">{String(tags.length).padStart(2, '0')} TAGS</span>
-      <h1>Index/Tag</h1>
-    </section>
+  <UnitsShell active="subjects">
+    <section class="units-panel units-panel--orange">
+      <header class="units-panel__head">
+        <span>{String(tags.length).padStart(2, '0')}</span>
+        <h1>Subjects</h1>
+        <a href="/">Home ↗</a>
+      </header>
 
-    <div class="tag-index__list page-reveal page-reveal--delay-1">
-      {tags.map((tag, index) => (
-        <a href={tagPath(tag)} class="tag-index__item">
-          <span class="tag-index__number">{String(index + 1).padStart(2, '0')}</span>
-          <strong>{tag}</strong>
-          <span class="tag-index__line" aria-hidden="true"></span>
-          <span>查看 ↗</span>
-        </a>
-      ))}
-    </div>
-  </div>
+      <div class="units-tags">
+        {tags.map((tag, index) => (
+          <a href={tagPath(tag)}>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            {tag}
+          </a>
+        ))}
+      </div>
+    </section>
+  </UnitsShell>
 </BaseLayout>
