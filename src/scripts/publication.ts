@@ -75,40 +75,18 @@ export const getAllTags = (posts: PostEntry[]) =>
     .filter(Boolean)
     .sort((a, b) => a.localeCompare(b, 'zh-CN'));
 
-export const getPostsByTag = (posts: PostEntry[], tag: string) =>
-  posts.filter((post) => post.data.tags.includes(tag));
-
-export const toPostCard = (
-  post: PostEntry,
-  options: { index?: number; total?: number } = {}
-) => {
-  const { index, total } = options;
-  const entryId =
-    typeof index === 'number' && typeof total === 'number'
-      ? `SCENE-${String(total - index).padStart(3, '0')}`
-      : undefined;
-
-  return {
-    title: post.data.title,
-    subtitle: postSubtitle(post),
-    image: post.data.cover,
-    link: postPath(post),
-    description: postDescription(post),
-    pubDate: post.data.pubDate ? new Date(post.data.pubDate) : undefined,
-    tags: post.data.tags,
-    entryId,
-    tone: postTone({
-      title: post.data.title,
-      subtitle: postSubtitle(post),
-      tags: post.data.tags,
-    }),
-  };
-};
+export const toPostCard = (post: PostEntry) => ({
+  title: post.data.title,
+  subtitle: postSubtitle(post),
+  image: post.data.cover,
+  link: postPath(post),
+  description: postDescription(post),
+  pubDate: post.data.pubDate ? new Date(post.data.pubDate) : undefined,
+  tags: post.data.tags,
+});
 
 export const getPostCards = (posts: PostEntry[]) =>
-  posts.map((post, index, allPosts) =>
-    toPostCard(post, { index, total: allPosts.length })
-  );
+  posts.map(toPostCard);
 
 export const toRssItem = (post: PostEntry, site: string | URL) => ({
   title: post.data.title,

@@ -95,13 +95,6 @@ export interface EncryptedContent {
   iterations: number;
 }
 
-export interface EncryptedVerify {
-  salt: string;
-  iv: string;
-  verify: string;
-  iterations: number;
-}
-
 export const encryptContent = async (
   post: CollectionEntry<'posts'>,
   html: string,
@@ -117,24 +110,6 @@ export const encryptContent = async (
     salt: toBase64(salt),
     iv: toBase64(iv),
     ciphertext: toBase64(ciphertext),
-    iterations: ITERATIONS,
-  };
-};
-
-export const encryptVerify = async (
-  post: CollectionEntry<'posts'>,
-): Promise<EncryptedVerify> => {
-  const { salt, key } = await getKey(post);
-  const iv = crypto.getRandomValues(new Uint8Array(IV_BYTES));
-  const verify = await crypto.subtle.encrypt(
-    { name: 'AES-GCM', iv },
-    key,
-    encoder.encode('OK'),
-  );
-  return {
-    salt: toBase64(salt),
-    iv: toBase64(iv),
-    verify: toBase64(verify),
     iterations: ITERATIONS,
   };
 };

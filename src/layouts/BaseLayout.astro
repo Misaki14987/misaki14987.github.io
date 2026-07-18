@@ -1,18 +1,13 @@
 ---
 import '../global.scss';
 import '../styles/layouts/base-layout.scss';
-import '../styles/components/archive-loader.scss';
-import ArchiveLoader from '../components/common/ArchiveLoader.astro';
-import Navigation from '../components/common/Navigation.astro';
 import SiteHead from '../components/common/SiteHead.astro';
-import SystemFrame from '../components/common/SystemFrame.astro';
 import { SITE_TITLE } from '../scripts/seo';
 
 const {
     title = SITE_TITLE,
     description,
     bodyClass = '',
-    showNavigation = true,
     canonical,
     ogType = 'website',
     ogImage,
@@ -39,10 +34,6 @@ const {
   </head>
 
   <body class={`body ${bodyClass}`}>
-    <SystemFrame />
-    <ArchiveLoader />
-    {showNavigation && <Navigation />}
-
     <main class='main'>
       <slot />
     </main>
