@@ -60,20 +60,16 @@ const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
 
     <section class="units-panel units-panel--yellow" id="archive">
       <header class="units-panel__head">
-        <span>02</span>
         <h2 data-i18n data-zh="文章归档" data-en="Archive, but louder.">文章归档</h2>
         <a href="#subjects" data-i18n data-zh="主题索引 ↗" data-en="Subjects ↗">主题索引 ↗</a>
       </header>
 
       <div class="units-posts">
         {blogs.map((blog, index) => {
-          const date = blog.pubDate ? formatPostDate(blog.pubDate) : null;
           return (
             <a class={`units-post units-post--${index % 4}`} href={blog.link}>
-              <span>{String(index + 1).padStart(2, '0')}</span>
               <strong>{blog.title}</strong>
               <p>{blog.description}</p>
-              <small>{date?.display ?? blog.subtitle}</small>
             </a>
           );
         })}
@@ -82,14 +78,13 @@ const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
 
     <section class="units-panel units-panel--green" id="about">
       <header class="units-panel__head">
-        <span>04</span>
         <h2 data-i18n data-zh="关于我" data-en="AboutMe">关于我</h2>
       </header>
 
       <div class="units-about">
         <div>
           <h3>M1saK1</h3>
-          <p>From 杭州电子科技大学，学习 Web 开发中...</p>
+          <p>From HDU, I LOVE Schweppes</p>
         </div>
         <dl>
           {profileStats.map(([term, value]) => (
@@ -102,29 +97,27 @@ const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
       </div>
 
       <div class="units-chips">
-        {interests.map((interest, index) => (
-          <span><b>{String(index + 1).padStart(2, '0')}</b>{interest}</span>
+        {interests.map((interest) => (
+          <span>{interest}</span>
         ))}
       </div>
     </section>
 
     <section class="units-panel units-panel--orange" id="subjects">
       <header class="units-panel__head">
-        <span>03</span>
         <h2 data-i18n data-zh="主题索引" data-en="Subjects">主题索引</h2>
       </header>
 
       <div class="units-tags">
-        {tags.map((tag, index) => (
+        {tags.map((tag) => (
           <a href="#archive">
-            <span>{String(index + 1).padStart(2, '0')}</span>
             {tag}
           </a>
         ))}
       </div>
     </section>
 
-    <section class="units-panel units-panel--white">
+    <section class="units-panel units-panel--white" id="friends">
       <FriendLink />
     </section>
   </UnitsShell>
