@@ -15,10 +15,6 @@
   content: none;
 }
 
-.units-body .system-frame {
-  display: none;
-}
-
 .units-shell {
   display: grid;
   grid-template-columns: 144px minmax(0, 1fr);
@@ -163,15 +159,6 @@
 
 .units-panel--orange {
   background: var(--units-orange);
-}
-
-.units-panel--blue {
-  background: var(--units-blue);
-}
-
-.units-panel--purple {
-  color: #fff;
-  background: var(--units-purple);
 }
 
 .units-panel--white {
