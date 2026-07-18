@@ -1,0 +1,60 @@
+---
+import '../../styles/components/units-shell.scss';
+
+interface Props {
+  active?: 'home' | 'archive' | 'subjects' | 'about';
+}
+
+const { active = 'home' } = Astro.props;
+const items = [
+  { key: 'home', id: '01', label: 'Latest Notes', href: '/', tone: 'blue' },
+  { key: 'archive', id: '02', label: 'Archive', href: '/#archive', tone: 'yellow' },
+  { key: 'subjects', id: '03', label: 'Subjects', href: '/tags/', tone: 'orange' },
+  { key: 'about', id: '04', label: 'About', href: '/about/', tone: 'green' },
+];
+---
+
+<div class="units-shell">
+  <header class="units-mobile-head">
+    <a class="units-brand" href="/">
+      <strong>m1sak1.</strong>
+      <span>PERSONAL SYSTEM NOTES</span>
+    </a>
+    <a class="units-mobile-cta" href="/about/">About</a>
+    <a class="units-menu" href="/tags/" aria-label="打开标签索引">
+      <span></span>
+      <span></span>
+      <span></span>
+    </a>
+  </header>
+
+  <aside class="units-rail" aria-label="站点导航">
+    <a class="units-brand" href="/">
+      <strong>m1sak1.</strong>
+      <span>PERSONAL SYSTEM NOTES</span>
+    </a>
+
+    <nav class="units-rail__nav">
+      {items.map((item) => (
+        <a
+          class={`units-tile units-tile--${item.tone}`}
+          href={item.href}
+          aria-current={active === item.key ? 'page' : undefined}
+        >
+          <span>{item.id}</span>
+          <b>{item.label}</b>
+          <i aria-hidden="true">↗</i>
+        </a>
+      ))}
+    </nav>
+
+    <a class="units-tile units-tile--purple units-tile--cta" href="/about/">
+      <b>Who is M1saK1</b>
+    </a>
+    <a class="units-language" href="/rss.xml">RSS Feed</a>
+  </aside>
+
+  <main class="units-main">
+    <slot />
+  </main>
+</div>

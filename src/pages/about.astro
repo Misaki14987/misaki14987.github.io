@@ -1,13 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FriendLink from '../components/FriendLink.astro';
-import '../styles/pages/about.scss';
-
-const myInfo = {
-  name: 'M1saK1',
-  bio: 'From 杭州电子科技大学，学习 Web 开发中...',
-  interests: ['Coding', 'Rhythm Game', 'TCG', 'Idol'],
-};
+import UnitsShell from '../components/common/UnitsShell.astro';
 
 const profileStats = [
   ['base', 'Hangzhou / HDU'],
@@ -15,24 +9,29 @@ const profileStats = [
   ['learning', 'Rust / GNOME / Math'],
   ['outside', 'Rhythm game / TCG / Idol'],
 ];
+const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
 ---
 
 <BaseLayout
   title="About | M1saK1 Blog"
   description="M1saK1 的个人介绍、兴趣和联系方式。"
   ogImage="/images/vn-blog-hero.png"
+  bodyClass="units-body"
+  showNavigation={false}
 >
-  <div class="profile-page">
-    <section class="profile-stage page-reveal">
-      <div class="profile-stage__index" aria-hidden="true">
-        <strong>02</strong>
-      </div>
+  <UnitsShell active="about">
+    <section class="units-panel units-panel--green">
+      <header class="units-panel__head">
+        <span>04</span>
+        <h1>AboutMe</h1>
+      </header>
 
-      <div class="profile-stage__panel">
-        <h1>{myInfo.name}</h1>
-        <p>{myInfo.bio}</p>
-
-        <dl class="profile-stats">
+      <div class="units-about">
+        <div>
+          <h3>M1saK1</h3>
+          <p>From 杭州电子科技大学，学习 Web 开发中...</p>
+        </div>
+        <dl>
           {profileStats.map(([term, value]) => (
             <>
               <dt>{term}</dt>
@@ -42,21 +41,15 @@ const profileStats = [
         </dl>
       </div>
 
-    </section>
-
-    <section class="dossier-panel page-reveal page-reveal--delay-1">
-      <div class="dossier-panel__head">
-        <span class="dossier-panel__label">兴趣</span>
-        <span class="dossier-panel__count">{String(myInfo.interests.length).padStart(2, '0')}</span>
-      </div>
-
-      <div class="dossier-tags">
-        {myInfo.interests.map((interest, index) => (
+      <div class="units-chips">
+        {interests.map((interest, index) => (
           <span><b>{String(index + 1).padStart(2, '0')}</b>{interest}</span>
         ))}
       </div>
     </section>
 
-    <FriendLink />
-  </div>
+    <section class="units-panel units-panel--white">
+      <FriendLink />
+    </section>
+  </UnitsShell>
 </BaseLayout>

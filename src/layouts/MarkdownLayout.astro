@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import UnitsShell from '../components/common/UnitsShell.astro';
 import { Image } from 'astro:assets';
 import {
     formatPostDate,
@@ -68,108 +69,111 @@ const next = adjacentPost(nextPost);
     publishedTime={pubDate}
     modifiedTime={updatedDate}
     tags={tags}
-    bodyClass='bg-transparent'
+    bodyClass='units-body'
+    showNavigation={false}
 >
     <div class='reading-progress' aria-hidden='true'>
         <span data-reading-progress></span>
     </div>
 
-    <section class='post-section'>
-        <article class='post-article' data-tone={tone}>
-            <header class='post-header'>
-                <div class='post-header__rail'>
-                    <span>{category || tags[0] || 'POST'}</span>
-                    <strong>{formattedDate?.machine.replaceAll('-', ' / ')}</strong>
-                </div>
-                <div class='post-header__main'>
-                    <h1 class='post-header__title'>{title}</h1>
-                    {description && <p class='post-header__description'>{description}</p>}
-                    <div class='post-header__meta'>
-                        {author && <span>by {author}</span>}
-                        {formattedDate && <time datetime={formattedDate.machine}>{formattedDate.display}</time>}
+    <UnitsShell active='archive'>
+        <section class='post-section'>
+            <article class='post-article' data-tone={tone}>
+                <header class='post-header'>
+                    <div class='post-header__rail'>
+                        <span>{category || tags[0] || 'POST'}</span>
+                        <strong>{formattedDate?.machine.replaceAll('-', ' / ')}</strong>
                     </div>
-                    {tags.length > 0 && (
-                        <ul class='post-header__tags'>
-                            {tags.map((tag:string, index:number) => (
-                                <li class='post-header__tag'>
-                                    <b>{String(index + 1).padStart(2, '0')}</b>{tag}
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </div>
-            </header>
-            {cover && (
-                <figure class='post-cover'>
-                    <Image
-                        src={cover}
-                        alt={title}
-                        widths={[720, 960, 1200]}
-                        sizes='(max-width: 860px) calc(100vw - 32px), 860px'
-                        loading='eager'
-                        decoding='async'
-                    />
-                </figure>
-            )}
-
-            <div class='post-reading'>
-                {tocHeadings.length > 0 && (
-                    <aside class='post-toc' data-post-toc>
-                        <button
-                            class='post-toc__toggle'
-                            type='button'
-                            aria-expanded='false'
-                            data-toc-toggle
-                        >
-                            目录
-                            <span aria-hidden='true'>+</span>
-                        </button>
-                        <nav aria-label='文章目录' data-toc-list>
-                            <span class='post-toc__title'>目录</span>
-                            <ol>
-                                {tocHeadings.map((heading) => (
-                                    <li data-depth={heading.depth}>
-                                        <a href={`#${heading.slug}`} data-toc-link={heading.slug}>
-                                            {heading.text}
-                                        </a>
+                    <div class='post-header__main'>
+                        <h1 class='post-header__title'>{title}</h1>
+                        {description && <p class='post-header__description'>{description}</p>}
+                        <div class='post-header__meta'>
+                            {author && <span>by {author}</span>}
+                            {formattedDate && <time datetime={formattedDate.machine}>{formattedDate.display}</time>}
+                        </div>
+                        {tags.length > 0 && (
+                            <ul class='post-header__tags'>
+                                {tags.map((tag:string, index:number) => (
+                                    <li class='post-header__tag'>
+                                        <b>{String(index + 1).padStart(2, '0')}</b>{tag}
                                     </li>
                                 ))}
-                            </ol>
-                        </nav>
-                    </aside>
+                            </ul>
+                        )}
+                    </div>
+                </header>
+                {cover && (
+                    <figure class='post-cover'>
+                        <Image
+                            src={cover}
+                            alt={title}
+                            widths={[720, 960, 1200]}
+                            sizes='(max-width: 920px) calc(100vw - 20px), calc(100vw - 188px)'
+                            loading='eager'
+                            decoding='async'
+                        />
+                    </figure>
                 )}
 
-                <div class='post-reading__main'>
-                    {encrypted ? (
-                        <div class='article-content' data-encrypted-stage>
-                            <slot name='encrypted-gate' />
-                        </div>
-                    ) : (
-                        <div class='article-content' data-article-content>
-                            <slot />
-                        </div>
+                <div class='post-reading'>
+                    {tocHeadings.length > 0 && (
+                        <aside class='post-toc' data-post-toc>
+                            <button
+                                class='post-toc__toggle'
+                                type='button'
+                                aria-expanded='false'
+                                data-toc-toggle
+                            >
+                                目录
+                                <span aria-hidden='true'>+</span>
+                            </button>
+                            <nav aria-label='文章目录' data-toc-list>
+                                <span class='post-toc__title'>目录</span>
+                                <ol>
+                                    {tocHeadings.map((heading) => (
+                                        <li data-depth={heading.depth}>
+                                            <a href={`#${heading.slug}`} data-toc-link={heading.slug}>
+                                                {heading.text}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ol>
+                            </nav>
+                        </aside>
                     )}
 
-                    {(previous || next) && (
-                        <nav class='post-pagination' aria-label='相邻文章'>
-                            {previous ? (
-                                <a href={previous.href} data-tone={previous.tone}>
-                                    <span>上一篇</span>
-                                    <strong>{previous.title}</strong>
-                                </a>
-                            ) : <span></span>}
-                            {next && (
-                                <a href={next.href} data-tone={next.tone}>
-                                    <span>下一篇</span>
-                                    <strong>{next.title}</strong>
-                                </a>
-                            )}
-                        </nav>
-                    )}
+                    <div class='post-reading__main'>
+                        {encrypted ? (
+                            <div class='article-content' data-encrypted-stage>
+                                <slot name='encrypted-gate' />
+                            </div>
+                        ) : (
+                            <div class='article-content' data-article-content>
+                                <slot />
+                            </div>
+                        )}
+
+                        {(previous || next) && (
+                            <nav class='post-pagination' aria-label='相邻文章'>
+                                {previous ? (
+                                    <a href={previous.href} data-tone={previous.tone}>
+                                        <span>上一篇</span>
+                                        <strong>{previous.title}</strong>
+                                    </a>
+                                ) : <span></span>}
+                                {next && (
+                                    <a href={next.href} data-tone={next.tone}>
+                                        <span>下一篇</span>
+                                        <strong>{next.title}</strong>
+                                    </a>
+                                )}
+                            </nav>
+                        )}
+                    </div>
                 </div>
-            </div>
-        </article>
-    </section>
+            </article>
+        </section>
+    </UnitsShell>
 
     <button class='back-to-top' type='button' data-back-to-top aria-label='返回顶部'>
         <span aria-hidden='true'>↑</span>
