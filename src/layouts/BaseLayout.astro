@@ -1,6 +1,7 @@
 ---
 import '../global.scss';
 import '../styles/layouts/base-layout.scss';
+import '../styles/themes/plain.scss';
 import SiteHead from '../components/common/SiteHead.astro';
 import { SITE_TITLE } from '../scripts/seo';
 
@@ -17,8 +18,17 @@ const {
     tags = [],
 } = Astro.props;
 ---
-<html lang='zh-CN'>
+<html lang='zh-CN' data-theme='units'>
   <head>
+    <script is:inline>
+      try {
+        const requestedTheme = new URLSearchParams(location.search).get('theme');
+        const savedTheme = localStorage.getItem('site-theme');
+        document.documentElement.dataset.theme = ['units', 'plain'].includes(requestedTheme)
+          ? requestedTheme
+          : savedTheme === 'plain' ? 'plain' : 'units';
+      } catch {}
+    </script>
     <SiteHead
       title={title}
       description={description}

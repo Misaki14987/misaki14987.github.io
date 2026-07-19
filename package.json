@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "test:theme": "node scripts/theme-navigation-check.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
