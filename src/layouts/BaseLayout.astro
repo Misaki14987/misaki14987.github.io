@@ -1,8 +1,9 @@
 ---
 import '../global.scss';
 import '../styles/layouts/base-layout.scss';
-import '../styles/themes/plain.scss';
+import '../styles/themes/newspaper.scss';
 import SiteHead from '../components/common/SiteHead.astro';
+import ThemeController from '../components/common/ThemeController.astro';
 import { SITE_TITLE } from '../scripts/seo';
 
 const {
@@ -24,9 +25,10 @@ const {
       try {
         const requestedTheme = new URLSearchParams(location.search).get('theme');
         const savedTheme = localStorage.getItem('site-theme');
-        document.documentElement.dataset.theme = ['units', 'plain'].includes(requestedTheme)
-          ? requestedTheme
-          : savedTheme === 'plain' ? 'plain' : 'units';
+        const normalizeTheme = (value) => value === 'newspaper' || value === 'plain' ? 'newspaper' : 'units';
+        document.documentElement.dataset.theme = ['units', 'newspaper', 'plain'].includes(requestedTheme)
+          ? normalizeTheme(requestedTheme)
+          : normalizeTheme(savedTheme);
       } catch {}
     </script>
     <SiteHead
@@ -44,6 +46,7 @@ const {
   </head>
 
   <body class={`body ${bodyClass}`}>
+    <ThemeController />
     <main class='main'>
       <slot />
     </main>

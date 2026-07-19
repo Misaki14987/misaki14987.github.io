@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import UnitsShell from '../components/common/UnitsShell.astro';
+import NewspaperHome from '../components/themes/newspaper/NewspaperHome.astro';
 import FriendLink from '../components/FriendLink.astro';
 import { formatPostDate, getAllTags, getPostCards, getPublishedPosts } from '../scripts/publication';
 import '../styles/pages/index.scss';
@@ -31,7 +32,7 @@ const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
   bodyClass="units-body"
 >
   <UnitsShell active="home">
-    <div class="units-home" data-home-motion>
+    <div class="units-home" data-home-motion data-theme-content="units">
       {featured && (
         <section class="units-hero" id="latest" data-home-hero>
           <a class="units-hero__media" href={featured.link} aria-label={`阅读 ${featured.title}`}>
@@ -193,6 +194,7 @@ const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
         <FriendLink />
       </section>
     </div>
+    <NewspaperHome {featured} {articles} {diaries} {tags} />
   </UnitsShell>
 </BaseLayout>
 
