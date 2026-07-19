@@ -2,6 +2,7 @@
 title: "5.27 黑色的焦躁"
 pubDate: 2026-05-27
 author: "M1saK1"
+kind: diary
 category: ""
 cover: ./cover.jpg
 tags: ["Daily"]

@@ -7,15 +7,19 @@ import { formatPostDate, getAllTags, getPostCards, getPublishedPosts } from '../
 import '../styles/pages/index.scss';
 
 const posts = await getPublishedPosts();
-const blogs = getPostCards(posts);
-const featured = blogs[0];
-const tags = getAllTags(posts).slice(0, 10);
+const articles = getPostCards(posts.filter((post) => post.data.kind === 'article'));
+const diaries = getPostCards(posts.filter((post) => post.data.kind === 'diary'));
+const featured = articles[0];
+const tags = getAllTags(posts.filter((post) => post.data.kind === 'article')).slice(0, 10);
 const featuredDate = featured?.pubDate ? formatPostDate(featured.pubDate) : null;
+const archives = [
+  { id: 'articles', number: '02', label: 'PROOF', zh: '一些分享', en: 'Articles', tone: 'yellow', posts: articles, fallback: 'ARTICLE' },
+  { id: 'diary', number: '03', label: 'PRIVATE PRESS', zh: '胡思乱想', en: 'Diary', tone: 'orange', posts: diaries, fallback: 'DIARY' },
+];
 const profileStats = [
   ['base', 'Hangzhou / HDU'],
-  ['practice', 'Frontend systems'],
-  ['learning', 'Rust / GNOME / Math'],
-  ['outside', 'Rhythm game / TCG / Idol'],
+  ['practice', 'Frontend systems', 'Agent'],
+  ['outside', 'Rhythm game / TCG ']
 ];
 const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
 ---
@@ -80,52 +84,67 @@ const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
         </section>
       )}
 
-      <section class="units-panel units-panel--yellow" id="archive" data-print-section>
-      <header class="units-panel__head">
-        <div>
-          <span>02 / PROOF</span>
-          <h2 data-i18n data-zh="文章归档" data-en="Archive">文章归档</h2>
-        </div>
-        <a href="#subjects" data-i18n data-zh="主题索引 ↗" data-en="Subjects ↗">主题索引 ↗</a>
-      </header>
+      {archives.map((archive) => (
+        <section class={`units-panel units-panel--${archive.tone}`} id={archive.id} data-print-section>
+          <header class="units-panel__head">
+            <div>
+              <span>{archive.number} / {archive.label}</span>
+              <h2 data-i18n data-zh={archive.zh} data-en={archive.en}>{archive.zh}</h2>
+            </div>
+            {archive.id === 'articles' && (
+              <a href="#subjects" data-i18n data-zh="主题索引 ↗" data-en="Subjects ↗">主题索引 ↗</a>
+            )}
+          </header>
 
-      <div class="units-posts">
-        {blogs.map((blog, index) => {
-          return (
-            <a class={`units-post units-post--${index % 4}`} href={blog.link}>
-              <span class="units-post__cover">
-                {blog.image ? (
-                  typeof blog.image === 'string' ? (
-                    <img src={blog.image} alt="" loading="lazy" decoding="async" />
+          <div class="units-posts">
+            {archive.posts.map((blog, index) => (
+              <a class={`units-post units-post--${index % 4}`} href={blog.link}>
+                <span class="units-post__cover">
+                  {blog.image ? (
+                    typeof blog.image === 'string' ? (
+                      <img src={blog.image} alt="" loading="lazy" decoding="async" />
+                    ) : (
+                      <Image
+                        src={blog.image}
+                        alt=""
+                        widths={[320, 560, 760]}
+                        sizes="(max-width: 920px) calc(100vw - 64px), 30vw"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    )
                   ) : (
-                    <Image
-                      src={blog.image}
-                      alt=""
-                      widths={[320, 560, 760]}
-                      sizes="(max-width: 920px) calc(100vw - 64px), 30vw"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  )
-                ) : (
-                  <i aria-hidden="true"></i>
-                )}
-              </span>
-              <span class="units-post__copy">
-                <small>{String(index + 1).padStart(2, '0')} / {blog.subtitle || 'NOTE'}</small>
-                <strong>{blog.title}</strong>
-                <p>{blog.description}</p>
-              </span>
-            </a>
-          );
-        })}
-      </div>
+                    <i aria-hidden="true"></i>
+                  )}
+                </span>
+                <span class="units-post__copy">
+                  <small>{String(index + 1).padStart(2, '0')} / {blog.subtitle || archive.fallback}</small>
+                  <strong>{blog.title}</strong>
+                  <p>{blog.description}</p>
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+
+      <section class="units-panel units-panel--green" id="works" data-print-section>
+        <header class="units-panel__head">
+          <div>
+            <span>04 / PORTFOLIO</span>
+            <h2 data-i18n data-zh="作品集" data-en="Works">作品集</h2>
+          </div>
+        </header>
+        <div class="units-empty">
+          <strong>NO WORKS, YET.</strong>
+          <p data-i18n data-zh="这里会放完成并愿意公开的项目。" data-en="Finished public projects will live here.">这里会放完成并愿意公开的项目。</p>
+        </div>
       </section>
 
-      <section class="units-panel units-panel--green" id="about" data-print-section>
+      <section class="units-panel units-panel--yellow" id="about" data-print-section>
       <header class="units-panel__head">
         <div>
-          <span>03 / PLATES</span>
+          <span>05 / PLATES</span>
           <h2 data-i18n data-zh="关于我" data-en="About Me">关于我</h2>
         </div>
       </header>
@@ -155,14 +174,14 @@ const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
       <section class="units-panel units-panel--orange" id="subjects" data-print-section>
       <header class="units-panel__head">
         <div>
-          <span>04 / TYPE CASE</span>
+          <span>06 / TYPE CASE</span>
           <h2 data-i18n data-zh="主题索引" data-en="Subjects">主题索引</h2>
         </div>
       </header>
 
       <div class="units-tags">
         {tags.map((tag) => (
-          <a href="#archive">
+          <a href="#articles">
             {tag}
           </a>
         ))}
@@ -170,7 +189,7 @@ const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
       </section>
 
       <section class="units-panel units-panel--white" id="friends" data-print-section>
-        <span class="units-panel__label">05 / EXCHANGE</span>
+        <span class="units-panel__label">07 / EXCHANGE</span>
         <FriendLink />
       </section>
     </div>

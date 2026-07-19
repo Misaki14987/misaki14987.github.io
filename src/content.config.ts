@@ -10,6 +10,7 @@ const posts = defineCollection({
       updatedDate: z.coerce.date().optional(),
       draft: z.boolean().default(false),
       author: z.string().default('M1saK1'),
+      kind: z.enum(['article', 'diary']).default('article'),
       category: z.string().optional(),
       description: z.string().default(''),
       summary: z.string().optional(),

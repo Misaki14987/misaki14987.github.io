@@ -2,15 +2,15 @@
 import '../../styles/components/units-shell.scss';
 
 interface Props {
-  active?: 'home' | 'archive' | 'subjects' | 'about';
+  active?: 'home' | 'articles' | 'diary' | 'works';
 }
 
 const { active = 'home' } = Astro.props;
 const items = [
-  { key: 'home', id: '01', zh: '最新文章', en: 'Latest Notes', href: '/', tone: 'blue' },
-  { key: 'archive', id: '02', zh: '文章归档', en: 'Archive', href: '/#archive', tone: 'yellow' },
-  { key: 'subjects', id: '03', zh: '主题索引', en: 'Subjects', href: '/#subjects', tone: 'orange' },
-  { key: 'about', id: '04', zh: '关于我', en: 'About', href: '/#about', tone: 'green' },
+  { key: 'home', id: '01', zh: '最新文章', en: 'Latest', href: '/', tone: 'blue' },
+  { key: 'articles', id: '02', zh: '一些分享', en: 'Articles', href: '/#articles', tone: 'yellow' },
+  { key: 'diary', id: '03', zh: '胡思乱想', en: 'Diary', href: '/#diary', tone: 'orange' },
+  { key: 'works', id: '04', zh: '作品集', en: 'Works', href: '/#works', tone: 'green' },
 ];
 const socials = [
   { label: 'GH', href: 'https://github.com/Misaki14987', title: 'GitHub' },
@@ -32,6 +32,12 @@ const socials = [
       <span></span>
     </a>
   </header>
+
+  <nav class="units-mobile-nav" aria-label="内容导航">
+    {items.slice(1).map((item) => (
+      <a href={item.href} data-i18n data-zh={item.zh} data-en={item.en}>{item.zh}</a>
+    ))}
+  </nav>
 
   <div class="units-mobile-tools">
     <div class="units-locale" aria-label="语言切换">

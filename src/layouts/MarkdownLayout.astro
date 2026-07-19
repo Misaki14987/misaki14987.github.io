@@ -33,6 +33,7 @@ const {
     description,
     pubDate,
     updatedDate,
+    kind,
     tags = [],
     category,
     cover,
@@ -72,7 +73,7 @@ const next = adjacentPost(nextPost);
         <span data-reading-progress></span>
     </div>
 
-    <UnitsShell active='archive'>
+    <UnitsShell active={kind === 'diary' ? 'diary' : 'articles'}>
         <section class='post-section'>
             <article class='post-article' data-tone={tone}>
                 <header class='post-header'>
