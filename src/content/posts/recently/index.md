@@ -2,6 +2,7 @@
 title: 'My First Year in HDU'
 pubDate: 2025-09-24
 author: 'M1saK1'
+kind: diary
 category: '快回你电吧你电又win了'
 cover: ./cover.jpg
 tags: ['Daily']
