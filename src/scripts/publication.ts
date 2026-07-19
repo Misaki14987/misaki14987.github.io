@@ -8,6 +8,7 @@ import {
 import { ENCRYPTED_PLACEHOLDER, isEncrypted } from "./encrypted";
 
 export type PostEntry = CollectionEntry<"posts">;
+export type PostKind = PostEntry["data"]["kind"];
 export type PostTone = "build" | "theory" | "personal";
 
 const toTime = (value: Date | string | undefined) =>
@@ -21,9 +22,9 @@ export const postPath = (postOrId: PostEntry | string) => {
   return withTrailingSlash(`/posts/${id}`);
 };
 
-export const getPublishedPosts = async () =>
+export const getPublishedPosts = async (kind?: PostKind) =>
   (await getCollection("posts"))
-    .filter((post) => !post.data.draft)
+    .filter((post) => !post.data.draft && (!kind || post.data.kind === kind))
     .sort(sortByNewest);
 
 export const postSubtitle = (post: PostEntry) =>
