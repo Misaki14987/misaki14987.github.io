@@ -1,0 +1,107 @@
+---
+import { Image } from 'astro:assets';
+import { formatPostDate } from '../../../scripts/publication';
+
+const { featured, articles, diaries, tags } = Astro.props;
+const dateOf = (post: { pubDate?: Date }) => post.pubDate ? formatPostDate(post.pubDate).display : 'UNDATED';
+---
+
+<div class="np-root np-desk" data-newspaper-home data-motion="pending">
+  <section class="np-opening np-desk__opening" aria-labelledby="newspaper-masthead">
+    <div class="np-desk__newspaper">
+      <span>PERSONAL EDITION · NO. 14987</span>
+      <h1 id="newspaper-masthead">Misaki<br />Journal</h1>
+      <p>Code, daily life, and the unfinished notes left on a working desk.</p>
+      <b class="np-desk__masthead-stamp" aria-hidden="true">DESK COPY<br />HANGZHOU</b>
+    </div>
+    <div class="np-desk__pencil" aria-hidden="true"></div>
+    <div class="np-desk__coffee" aria-hidden="true"><i></i></div>
+    <span class="np-opening__cue">ISSUE 01 · SUNDAY EDITION</span>
+  </section>
+
+  <div class="np-desk__surface">
+    {featured && (
+      <section class="np-scene np-desk__lead" aria-labelledby="newspaper-lead-title">
+        <span class="np-tape" aria-hidden="true"></span>
+        <a href={featured.link}>
+          {featured.image ? (
+            typeof featured.image === 'string' ? (
+              <img src={featured.image} alt="" loading="eager" decoding="async" />
+            ) : (
+              <Image src={featured.image} alt="" widths={[640, 980]} sizes="(max-width: 760px) 100vw, 52vw" loading="eager" />
+            )
+          ) : <i class="np-desk__lead-placeholder" aria-hidden="true"></i>}
+          <div>
+            <small>CLIPPING 01 · {dateOf(featured)}</small>
+            <h2 id="newspaper-lead-title">{featured.title}</h2>
+            <p>{featured.description}</p>
+            <strong>READ THE CLIPPING <span aria-hidden="true">→</span></strong>
+          </div>
+        </a>
+        <p class="np-handnote">This one belongs in the center.<br />— M.</p>
+      </section>
+    )}
+
+    <section class="np-scene np-desk__columns" id="np-articles" aria-labelledby="newspaper-columns-title">
+      <h2 id="newspaper-columns-title" class="np-visually-hidden">Editorial Columns</h2>
+      <div class="np-desk__article-stack">
+        <header><span>READING PILE</span><h3>Articles</h3></header>
+        {articles.map((article, index) => (
+          <a href={article.link} style={`--i:${index}`}>
+            <small>{dateOf(article)} / {article.subtitle || article.tags[0] || 'ARTICLE'}</small>
+            <strong>{article.title}</strong>
+            <p>{article.description}</p>
+          </a>
+        ))}
+      </div>
+      <div class="np-desk__diary-book" id="np-diary">
+        <header><span>PRIVATE NOTEBOOK</span><h3>Diary</h3></header>
+        {diaries.map((diary) => (
+          <a href={diary.link}>
+            <span>{dateOf(diary)}</span><strong>{diary.title}</strong><small>SEALED ENTRY</small>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="np-scene np-desk__classified" id="np-works">
+      <span class="np-tape" aria-hidden="true"></span>
+      <small>TORN FROM THE CLASSIFIEDS</small>
+      <h2>PORTFOLIO SPACE TO LET</h2>
+      <p>这里暂时还没有作品。等我真的完成了什么，也愿意把它拿出来时，它会占据这一整块版面。</p>
+      <b>VACANT</b>
+    </section>
+
+    <section class="np-scene np-desk__about" id="np-about">
+      <div class="np-desk__book">
+        <small>OWNER'S COPY</small><h2>M1saK1</h2>
+        <p>From HDU, making frontend systems and agents. Usually surrounded by rhythm games, TCG cards and too many open terminals.</p>
+      </div>
+      <ul aria-label="Interests"><li>HANGZHOU</li><li>FRONTEND</li><li>AGENTS</li><li>RHYTHM GAME</li><li>TCG</li></ul>
+    </section>
+
+    <section class="np-scene np-desk__index" id="np-subjects">
+      <div class="np-desk__notebook">
+        <small>06 / THINGS I KEEP RETURNING TO</small><h2>Index notebook</h2>
+        {tags.map((tag, index) => <a href="#np-articles"><span>{String(index + 1).padStart(2, '0')}</span>{tag}</a>)}
+      </div>
+    </section>
+
+    <section class="np-scene np-desk__exchange" id="np-friends">
+      <h2>Postcards on the corner</h2>
+      <a href="https://summ2.link" target="_blank" rel="noopener noreferrer"><span>POST CARD</span><strong>summ2</strong><small>Vidar Team Pwn, awmc</small></a>
+      <a href="https://nan0in27.cn" target="_blank" rel="noopener noreferrer"><span>POST CARD</span><strong>nan0in</strong><small>ORAYS Pwn, Hack for fun</small></a>
+    </section>
+
+    <footer class="np-outro np-desk__outro">
+      <div class="np-desk__folded"><span>THAT'S ALL FOR TODAY</span><strong>Misaki Journal</strong></div>
+      <div class="np-mail-slot" aria-hidden="true"><i></i></div>
+    </footer>
+  </div>
+</div>
+
+<script>
+  import { initializeNewspaperHome } from '../../../scripts/client/newspaper-home';
+
+  initializeNewspaperHome();
+</script>
