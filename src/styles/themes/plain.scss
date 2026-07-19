@@ -1,0 +1,89 @@
+html[data-theme="plain"] {
+  --bg: #fff;
+  --paper: #fff;
+  --paper-deep: #f1f1f1;
+  --ink: #161616;
+  --ink-soft: #4a4a4a;
+  --line: rgba(0, 0, 0, 0.18);
+  --line-soft: rgba(0, 0, 0, 0.08);
+  --line-strong: rgba(0, 0, 0, 0.42);
+}
+
+html[data-theme="plain"] .units-body {
+  --units-bg: #fff;
+  --units-black: #161616;
+  --units-blue: #fff;
+  --units-yellow: #fff;
+  --units-orange: #fff;
+  --units-green: #fff;
+
+  background: #fff;
+}
+
+html[data-theme="plain"] .units-tile,
+html[data-theme="plain"] .units-panel,
+html[data-theme="plain"] .units-post,
+html[data-theme="plain"] .units-empty,
+html[data-theme="plain"] .units-about dl,
+html[data-theme="plain"] .units-chips span,
+html[data-theme="plain"] .friend-entry {
+  background: #fff;
+  border: 1px solid var(--units-black);
+  border-radius: 0;
+}
+
+html[data-theme="plain"] .units-tile[aria-current="page"] {
+  color: #fff;
+  background: var(--units-black);
+  outline: 0;
+}
+
+html[data-theme="plain"] .units-tile--cta {
+  color: var(--units-black);
+}
+
+html[data-theme="plain"] .units-panel {
+  padding: clamp(24px, 4vw, 56px);
+}
+
+html[data-theme="plain"] .units-hero,
+html[data-theme="plain"] .post-header,
+html[data-theme="plain"] .post-cover,
+html[data-theme="plain"] .post-toc,
+html[data-theme="plain"] .article-content,
+html[data-theme="plain"] .post-pagination > a {
+  border-radius: 0;
+}
+
+html[data-theme="plain"] .units-author--blue,
+html[data-theme="plain"] .units-author--orange,
+html[data-theme="plain"] .units-author--yellow,
+html[data-theme="plain"] .units-hero__plates,
+html[data-theme="plain"] .units-batch-stamp {
+  display: none;
+}
+
+html[data-theme="plain"] .units-author--key {
+  text-shadow: none;
+}
+
+html[data-theme="plain"] .units-post__cover,
+html[data-theme="plain"] .units-post__copy,
+html[data-theme="plain"] .units-post__copy::after {
+  border-color: var(--units-black);
+}
+
+html[data-theme="plain"] .units-tags a,
+html[data-theme="plain"] .units-chips span {
+  color: var(--units-black);
+  background: #fff;
+  border-radius: 0;
+}
+
+html[data-theme="plain"] .post-toc,
+html[data-theme="plain"] .article-content,
+html[data-theme="plain"] .post-pagination > a {
+  background: #fff;
+  border: 1px solid var(--units-black);
+  box-shadow: none;
+}

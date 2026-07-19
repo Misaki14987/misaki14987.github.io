@@ -37,6 +37,9 @@ const socials = [
     {items.slice(1).map((item) => (
       <a href={item.href} data-i18n data-zh={item.zh} data-en={item.en}>{item.zh}</a>
     ))}
+    <button class="units-theme-switch units-theme-switch--mobile" type="button" data-theme-toggle>
+      <span data-theme-name>UNIT</span>
+    </button>
   </nav>
 
   <div class="units-mobile-tools">
@@ -77,6 +80,11 @@ const socials = [
       <b data-i18n data-zh="M1saK1 是谁!" data-en="Who is M1saK1!">M1saK1是谁！</b>
     </a>
 
+    <button class="units-theme-switch" type="button" data-theme-toggle>
+      <span>THEME</span>
+      <b data-theme-name>UNIT</b>
+    </button>
+
     <div class="units-locale" aria-label="语言切换">
       <button type="button" data-locale="zh" aria-pressed="true">中文</button>
       <button type="button" data-locale="en" aria-pressed="false">EN</button>
@@ -97,6 +105,8 @@ const socials = [
 </div>
 
 <script>
+  type Theme = "units" | "plain";
+
   const applyLocale = (locale: "zh" | "en") => {
     document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
     localStorage.setItem("site-locale", locale);
@@ -108,9 +118,37 @@ const socials = [
     });
   };
 
-  document.querySelectorAll<HTMLButtonElement>("[data-locale]").forEach((button) => {
-    button.addEventListener("click", () => applyLocale(button.dataset.locale === "en" ? "en" : "zh"));
-  });
+  const applyTheme = (theme: Theme) => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("site-theme", theme);
+    document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]").forEach((button) => {
+      const nextTheme = theme === "units" ? "plain" : "units";
+      const nextName = nextTheme === "units" ? "UNIT" : "PLAIN";
+      button.setAttribute("aria-label", `切换到 ${nextName} 主题`);
+      button.setAttribute("title", `切换到 ${nextName} 主题`);
+      button.querySelector<HTMLElement>("[data-theme-name]")!.textContent = theme === "units" ? "UNIT" : "PLAIN";
+    });
+  };
 
-  applyLocale(localStorage.getItem("site-locale") === "en" ? "en" : "zh");
+  const savedTheme = (): Theme => {
+    const requestedTheme = new URLSearchParams(location.search).get("theme");
+    if (requestedTheme === "plain" || requestedTheme === "units") return requestedTheme;
+    return localStorage.getItem("site-theme") === "plain" ? "plain" : "units";
+  };
+
+  const mountControls = () => {
+    document.querySelectorAll<HTMLButtonElement>("[data-locale]").forEach((button) => {
+      button.onclick = () => applyLocale(button.dataset.locale === "en" ? "en" : "zh");
+    });
+    document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]").forEach((button) => {
+      button.onclick = () => applyTheme(document.documentElement.dataset.theme === "plain" ? "units" : "plain");
+    });
+
+    applyLocale(localStorage.getItem("site-locale") === "en" ? "en" : "zh");
+    applyTheme(savedTheme());
+  };
+
+  document.addEventListener("astro:after-swap", () => applyTheme(savedTheme()));
+  document.addEventListener("astro:page-load", mountControls);
+  mountControls();
 </script>
