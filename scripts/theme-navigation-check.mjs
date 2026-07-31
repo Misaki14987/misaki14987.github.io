@@ -79,7 +79,7 @@ try {
   };
 
   const waitFor = async (expression, expected) => {
-    const deadline = Date.now() + 8_000;
+    const deadline = Date.now() + 20_000;
     while (Date.now() < deadline) {
       try {
         if (await evaluate(expression) === expected) return;

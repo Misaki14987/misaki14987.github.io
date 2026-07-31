@@ -15,3 +15,7 @@ This is a single-context repository. See `docs/agents/domain.md`.
 ### Newspaper theme
 
 When working on the newspaper theme experiment, follow `docs/agents/newspaper-theme-workflow.md`. The agent may make visual and implementation decisions autonomously within that workflow.
+
+### Human–Agent loops
+
+For bounded autonomous iteration, evidence gates, handoff responsibilities, and stop conditions, follow `docs/agents/human-agent-loop-playbook.md`.
