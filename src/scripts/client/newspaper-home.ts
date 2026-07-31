@@ -24,11 +24,9 @@ export const initializeNewspaperHome = () => {
       root.style.setProperty('--desk-paper-y', `${startY * (1 - progress)}px`);
       root.style.setProperty('--desk-paper-rotate', `${startRotation * (1 - progress)}deg`);
       root.style.setProperty('--desk-paper-scale', String(startScale + progress * (1 - startScale)));
-      root.style.setProperty('--desk-title-opacity', String(.2 + ink * .8));
-      root.style.setProperty('--desk-title-scale', String(1.12 - ink * .12));
-      root.style.setProperty('--desk-title-blur', `${(1 - ink) * 5}px`);
-      root.style.setProperty('--desk-pencil-shift', `${progress * 34}px`);
-      root.style.setProperty('--desk-coffee-shift', `${progress * -18}px`);
+      root.style.setProperty('--desk-title-opacity', String(.88 + ink * .12));
+      root.style.setProperty('--desk-title-scale', String(1.04 - ink * .04));
+      root.style.setProperty('--desk-title-blur', `${(1 - ink) * .4}px`);
       root.style.setProperty('--desk-fold-angle', `${(1 - progress) * 34}deg`);
       root.style.setProperty('--desk-crease-opacity', String(.34 - progress * .2));
 
@@ -53,7 +51,7 @@ export const initializeNewspaperHome = () => {
         entry.target.classList.add('is-in-view');
         observer.unobserve(entry.target);
       });
-    }, { rootMargin: '-8% 0px -12%', threshold: .16 });
+    }, { rootMargin: '0px 0px -40%', threshold: .05 });
 
     const mountMotion = () => {
       const reduced = reducedMotion.matches;

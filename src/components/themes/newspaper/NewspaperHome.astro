@@ -12,10 +12,17 @@ const dateOf = (post: { pubDate?: Date }) => post.pubDate ? formatPostDate(post.
       <span>PERSONAL EDITION · NO. 14987</span>
       <h1 id="newspaper-masthead">Misaki<br />Journal</h1>
       <p>Code, daily life, and the unfinished notes left on a working desk.</p>
+      <div class="np-desk__edition-line" aria-label="Edition contents">
+        <span>VOL. 01</span>
+        <span>{String(articles.length).padStart(2, '0')} ARTICLES</span>
+        <span>{String(diaries.length).padStart(2, '0')} DIARY</span>
+      </div>
+      <div class="np-desk__edition-note">
+        <strong>EDITED &amp; PUBLISHED BY M1saK1</strong>
+        <span>HANGZHOU · PERSONAL PRESS</span>
+      </div>
       <b class="np-desk__masthead-stamp" aria-hidden="true">DESK COPY<br />HANGZHOU</b>
     </div>
-    <div class="np-desk__pencil" aria-hidden="true"></div>
-    <div class="np-desk__coffee" aria-hidden="true"><i></i></div>
     <span class="np-opening__cue">ISSUE 01 · SUNDAY EDITION</span>
   </section>
 
