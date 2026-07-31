@@ -1,0 +1,83 @@
+[
+  {
+    "conceptName": "错版印刷所 / Misaki Print Lab",
+    "visualMetaphor": "博客是一台仍在运转的个人孔版印刷机：代码、审美和兴趣是三块不断套色的色版。",
+    "artDirection": "日系独立杂志与孔版印刷语言。保留现有蓝、黄、橙、绿，用黑色套准线、纸张裁切和局部错版制造实验感，不使用复古滤镜或动漫人物。",
+    "heroMoment": "首屏以超大 M1saK1 字标为主体，最新文章封面作为一张正在套色的印张。首次移动指针时，三层色版从轻微错位吸附到准确位置，依次显出 DESIGN、CODE、PLAY 三个作者侧面。",
+    "narrativeArc": [
+      "首屏完成作者身份的三色套准",
+      "滚动时最新文章被送入印刷机并裁成归档条目",
+      "关于我展示构成作者的色版与参数",
+      "主题索引成为可拨动的活字库",
+      "友链作为印后交换样刊完成收束"
+    ],
+    "layoutSystem": "沿用固定侧栏与纵向全宽区块，减少卡片感；首页内容改为连续印张，使用裁切线和跨区色块建立节奏。文章页保持现有单栏纸张阅读区。",
+    "typography": "粗黑无衬线承担身份与章节编号，正文维持现有中文阅读字体；实验性只发生在字重、遮罩与套色，不扭曲正文字符。",
+    "colorSystem": "纸色背景、纯黑结构线、现有四种高饱和专色；每一屏最多两种专色同时占主导，避免全页彩虹化。",
+    "assetPlan": "复用文章封面与现有 hero 图；套色层、裁切标记和纸张遮罩由 CSS 生成，不新增人物或外部资产。个人作品未来直接作为新的印张进入系统。",
+    "interactionConcept": "所有动作围绕套准、进纸、裁切、翻面四个印刷动作，让内容在滚动中从作者宣言转换为文章、主题和关系。",
+    "heroInteraction": "指针只在 hero 内控制最大 8px 的色版错位，静止 500ms 后自动套准；点击字标三次会短暂印出隐藏的无糖 Schweppes 批次章，随后自动消失且不改变布局。",
+    "scrollNarrative": [
+      {"section":"最新文章","contentPurpose":"建立作者身份并引导首篇文章","visualRole":"hook","motionPurpose":"transform","interaction":"首屏滚动 0-70% 将三层字标套准，70-100% 把封面沿裁切线送向下一屏；标题和链接始终可点击。"},
+      {"section":"文章归档","contentPurpose":"证明持续技术输出","visualRole":"proof","motionPurpose":"inspect","interaction":"条目进入视口时像连续纸带分栏，悬停只翻起标题所在纸角并显出主题色，不移动邻项。"},
+      {"section":"关于我","contentPurpose":"解释技术、审美和兴趣的组合","visualRole":"exploration","motionPurpose":"compare","interaction":"滚动使三块作者色版依次对齐，资料字段同步高亮对应色版。"},
+      {"section":"主题索引","contentPurpose":"提供按兴趣探索入口","visualRole":"contrast","motionPurpose":"navigate","interaction":"标签像活字横向换位，键盘焦点与悬停会把对应文章保留全色，其余降为单色。"},
+      {"section":"友链","contentPurpose":"以创作者关系完成页面","visualRole":"resolution","motionPurpose":"reveal","interaction":"友链从交换样刊封套中露出；仅首次进入视口播放一次。"}
+    ],
+    "microInteractions": ["侧栏箭头悬停时完成一次套准位移", "文章链接按下时出现 120ms 油墨压痕", "品牌三击触发隐藏批次章", "阅读进度条使用稳定的单色印刷线"],
+    "transitionRules": ["位移不超过组件自身 8%", "滚动驱动状态必须可逆", "正文区域禁止持续动画", "进入文章时由彩色印张过渡为安静纸面", "同一时刻只允许一个主运动"],
+    "mobileFallback": "首屏改为手指横向拖动完成套准；裁切转场缩短为一次 24px 推纸。归档保持单列，标签使用原生横向滚动和吸附。",
+    "reducedMotionFallback": "直接呈现已套准字标和最终排版，仅保留颜色、下划线与焦点状态；彩蛋显示为静态批次章。",
+    "risks": ["错版幅度过大会显得廉价", "滚动裁切若持续过长会阻碍进入归档", "高饱和色需控制每屏占比"]
+  },
+  {
+    "conceptName": "个人频道切片 / M1saK1 Broadcast",
+    "visualMetaphor": "首页是一段由作者亲自编排的短节目，文章、作品与兴趣是不同频道切片，而不是传统栏目。",
+    "artDirection": "平成末期电视包装、音乐节目字幕与现代网页排版的混合。使用清晰时间码、硬切画面和不规则字幕位置，但禁止扫描线、故障乱码与监控终端语义。",
+    "heroMoment": "首屏从一帧定格的最新文章画面开始，M1saK1 姓名作为节目标题横跨画面；指针移动切换 DESIGN、BUILD、WRITE 三个取景框，每次只改变真实内容裁切和字幕。",
+    "narrativeArc": ["片头确认作者与最新输出", "频道切换展示文章能力", "人物短访谈式关于我", "节目表式主题导航", "片尾名单式友链与作品预告"],
+    "layoutSystem": "全宽画面与窄字幕轨交替，侧栏成为固定频道选择器；区块不包成浮动卡片，依靠画幅比例和硬边分区。",
+    "typography": "中日双语电视标题式粗体搭配紧凑信息字幕；正文仍采用当前字体与舒展行高，所有字距保持 0。",
+    "colorSystem": "白与黑为节目底色，蓝、橙、黄作为频道识别色，绿色仅用于关于我；避免蓝紫渐变和暗色主界面。",
+    "assetPlan": "复用现有封面作为真实节目帧；CSS object-position 提供多取景框。后续作品可直接成为新频道，不生成角色。",
+    "interactionConcept": "切换、定格、字幕跟随和片尾收束都对应用户正在查看的内容类型，动效强调作者跨领域但表达一致。",
+    "heroInteraction": "hero 被划为三个不可见但可键盘访问的频道区域，移动或聚焦时改变封面取景、作者副标题与主色；快速往返三次会出现一帧个人兴趣彩蛋。",
+    "scrollNarrative": [
+      {"section":"最新文章","contentPurpose":"用真实内容建立作者品牌","visualRole":"hook","motionPurpose":"inspect","interaction":"滚动在三个取景框之间硬切，最后停在文章标题和阅读链接的稳定全景。"},
+      {"section":"文章归档","contentPurpose":"展示技术内容范围","visualRole":"proof","motionPurpose":"navigate","interaction":"归档是一条垂直节目单，当前条目进入中心线时更新右侧大幅真实封面预览。"},
+      {"section":"关于我","contentPurpose":"表达设计、新技术与兴趣","visualRole":"exploration","motionPurpose":"reveal","interaction":"资料以三段短访谈字幕依次出现，头像缺席时由姓名排版承担主角，不用占位人物。"},
+      {"section":"主题索引","contentPurpose":"跨频道筛选内容","visualRole":"contrast","motionPurpose":"compare","interaction":"选择主题后节目单原位过滤，非匹配项缩为可恢复的细时间轴。"},
+      {"section":"友链","contentPurpose":"展示创作者网络并预告作品","visualRole":"resolution","motionPurpose":"transform","interaction":"友链以片尾名单速度由滚动直接控制，页面停止滚动时名单也停止。"}
+    ],
+    "microInteractions": ["链接聚焦出现精确角标而非发光", "频道切换伴随 80ms 字幕反白", "兴趣彩蛋只占一帧并立即恢复", "返回顶部把页面定格回片头"],
+    "transitionRules": ["使用硬切与遮罩，不使用通用淡入", "画面变化不能导致文字换行抖动", "频道反馈小于 180ms", "正文阅读页不保留频道指针反馈"],
+    "mobileFallback": "三个频道改为顶端原生分段控件，拖动封面横向切换；节目单使用封面上方的小型固定预览，片尾名单变为正常列表。",
+    "reducedMotionFallback": "三个频道作为静态分段内容展示，归档不联动预览，保留当前项颜色与语义。",
+    "risks": ["电视包装容易滑向怀旧模板", "频繁硬切可能造成视觉疲劳", "主题过滤需要真实链接策略才能完整落地"]
+  },
+  {
+    "conceptName": "透明素材标本台 / Specimen Desk",
+    "visualMetaphor": "M1saK1 把新技术、文章和兴趣当作透明素材样本持续收集、拆解并重组；网站是一张可操作的设计标本台。",
+    "artDirection": "日系产品目录与透明亚克力文具的触感，明亮纸底、实物感透明层、粗黑标签和少量高饱和组件。不是玻璃拟态，不使用模糊悬浮卡片。",
+    "heroMoment": "M1saK1 名称压在一组透明切片下，最新文章封面被拆成图像、标题、主题、日期四层；指针轻移可以观察层间关系，滚动后四层准确合并为可阅读文章入口。",
+    "narrativeArc": ["拆开作者当前作品", "观察文章样本库", "翻到作者参数页", "按主题重新组合样本", "把友链和未来作品放入待研究托盘"],
+    "layoutSystem": "首页每段是无边框工作台带，稳定网格承载少量可重叠的透明切片；阅读页完全退出景深，回到平面纸张。",
+    "typography": "超粗作者名与小号目录标签构成尺度对比；文章标题不旋转、不透视，正文排版不改变。",
+    "colorSystem": "近白纸面、黑色文字、透明无色层为主，现有蓝、绿、橙只作为样本标签，黄色承担选中状态。",
+    "assetPlan": "现有封面分层不做 AI 重绘；透明材质、编号和连接线由 CSS 生成。若以后需要中心实物，可单独生成一件透明随身听或卡带并先经确认。",
+    "interactionConcept": "拆解用于理解、合并用于进入内容、重组用于发现关联，让实验感来自可检查的信息结构。",
+    "heroInteraction": "只在支持精细指针的设备上使用 CSS 3D 透视，指针控制最大 4 度倾斜；悬停每层显示其真实元信息。按住品牌 700ms 会在角落盖上 SAMPLE 14987 标本章。",
+    "scrollNarrative": [
+      {"section":"最新文章","contentPurpose":"把技术文章作为作者代表作品","visualRole":"hook","motionPurpose":"inspect","interaction":"指针检查四层信息，向下滚动将层合并为稳定文章入口。"},
+      {"section":"文章归档","contentPurpose":"呈现可持续检查的文章样本","visualRole":"proof","motionPurpose":"compare","interaction":"文章按真实标签形成一条样本带，悬停标签时相关样本通过边线连接，不改变位置。"},
+      {"section":"关于我","contentPurpose":"展示作者构成与技术追求","visualRole":"exploration","motionPurpose":"reveal","interaction":"资料像翻开透明索引页逐行显现，滚动结束后全部保持静止可读。"},
+      {"section":"主题索引","contentPurpose":"重组跨文章关系","visualRole":"contrast","motionPurpose":"transform","interaction":"点击标签把关联封面复制为一排小样本预览，第二次点击恢复；使用真实链接作为无脚本回退。"},
+      {"section":"友链","contentPurpose":"表达外部关系与未来作品空间","visualRole":"resolution","motionPurpose":"navigate","interaction":"友链和作品占位共用待研究托盘，聚焦时抽出对应标签但不遮挡相邻内容。"}
+    ],
+    "microInteractions": ["指针经过元信息连接线时对应层变为实色", "品牌长按触发标本章", "链接按下时透明层瞬间压平", "代码块复制成功以标签换色反馈"],
+    "transitionRules": ["3D 只用于 hero 素材层且最大 4 度", "滚动后必须收敛到平面稳定态", "透明层不承载长正文", "移动和减少动态模式不依赖悬停"],
+    "mobileFallback": "hero 四层改为可横向拖动的平面切片，松手自动吸附并合并；连接线改为标签点击后的静态高亮。",
+    "reducedMotionFallback": "直接展示合并后的 hero，元信息作为普通列表；标本章可由长按静态切换。",
+    "risks": ["透明层若使用模糊会落入玻璃拟态", "CSS 3D 的文字清晰度需要实机检查", "样本连接线在文章增多后可能过密"]
+  }
+]

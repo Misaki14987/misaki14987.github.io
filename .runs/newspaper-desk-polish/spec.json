@@ -1,0 +1,32 @@
+{
+  "level": "heavy",
+  "selectedDirection": "Desk",
+  "scope": "Throwaway prototype route only; do not change the production UNIT theme.",
+  "signatureInteraction": "UNIT plates separate, an opaque aged-paper bridge covers the layout swap, then the same sheet contracts into the Desk newspaper's folded opening pose.",
+  "timeline": {
+    "desktopMs": 1400,
+    "mobileMs": 1100,
+    "maximumMs": 1800,
+    "acceleratedStableMs": 100
+  },
+  "states": ["idle", "plate-exit", "bridge-enter", "covered-swap", "desk-handoff", "desk-ready"],
+  "opening": "Native scroll unfolds the paper, settles its crease, resolves ink, and commits one masthead stamp.",
+  "chapterEvents": {
+    "lead": "clipping placement and tape pressure",
+    "columns": "article pile dealt while diary cover opens",
+    "classified": "torn notice pull, tape pressure, VACANT stamp",
+    "about": "owner book opens and interest slips land",
+    "index": "ruled notebook opens and labels settle",
+    "exchange": "postcards are dealt and postmarked",
+    "outro": "edition folds into mail slot and flap rebounds"
+  },
+  "mobile": "Keep native vertical scroll, contained horizontal strips, smaller fold pose, and all transition decoration away from readable content.",
+  "reducedMotion": "Skip the transition atomically, remove opening distance, show the settled Desk layout, and cancel pending frames and timers on live preference changes.",
+  "forbidden": [
+    "No new design direction",
+    "No production UNIT changes",
+    "No generated assets",
+    "No animation dependency",
+    "No generic whole-section fade as the primary event"
+  ]
+}

@@ -1,0 +1,325 @@
+{
+  "revision": 2,
+  "level": "heavy",
+  "role": "Motion Director",
+  "selectedDirection": "Desk",
+  "artDirectionStatus": "locked",
+  "currentVerdict": "fail_against_observed_experience",
+  "targetScore": 99,
+  "targetRubric": {
+    "conceptOriginality": 15,
+    "firstScreenImpact": 20,
+    "signatureInteraction": 25,
+    "scrollNarrative": 15,
+    "typographyLayout": 10,
+    "contentClarity": 9,
+    "feasibility": 5
+  },
+  "criticalDiagnosis": [
+    {
+      "severity": "hard-fail",
+      "evidence": "src/scripts/client/prototype/newspaper.ts: runTransition() is called only by [data-run-transition].",
+      "finding": "A direct visit never starts UNIT exit, Paper Bridge, or any automatic Desk entrance. The replay button is development-only, so the experience the user opens has no entrance animation."
+    },
+    {
+      "severity": "hard-fail",
+      "evidence": "src/scripts/client/prototype/newspaper.ts: render() calls updateDeskOpening() once; openingProgress is derived only from scrollY.",
+      "finding": "At scrollY 0 the page remains indefinitely at paper y -120px, scale .84, masthead opacity .2, blur 5px, and fold angle 34deg. No property changes over time until the user scrolls."
+    },
+    {
+      "severity": "high",
+      "evidence": "desktop-desk-handoff.png and mobile-desk-handoff.png",
+      "finding": "The first Desk state is mostly a blank folded sheet. It reads as an unfinished static composition, not an opening ritual, because the masthead and editorial identity are absent and no automatic action follows."
+    },
+    {
+      "severity": "high",
+      "evidence": "desktop-opening-mid.png and mobile-opening-mid.png",
+      "finding": "The scroll midpoint places much of the newspaper outside the viewport and leaves a large inert green gap around a small instruction. The dominant subject is leaving the frame instead of transforming in place."
+    },
+    {
+      "severity": "high",
+      "evidence": "src/styles/prototypes/newspaper.scss: chapter events share .is-in-view, similar .9s settle easings, and repeated translate/opacity patterns.",
+      "finding": "The object names differ, but the perceived rhythm repeats: object slides in, opacity appears, object stops. A user scrolling normally can miss the short action and see only static final layouts."
+    },
+    {
+      "severity": "high",
+      "evidence": ".runs/newspaper-desk-polish/qa-report.json and screenshots",
+      "finding": "The prior 90 score is based on selected state screenshots and assertions. There is no direct-entry time series, video trace, or pixel-delta proof that motion starts automatically. The evidence therefore overstates first-screen impact and signature interaction."
+    }
+  ],
+  "revisedSignatureInteraction": "On every eligible direct Desk entry, a compact folded edition drops from above, hits the green work surface hard enough to jolt the pencil and coffee, springs open across its center crease, receives a left-to-right wet-ink masthead impression, and is struck with the DESK COPY stamp. On UNIT theme switching, the existing separated plates and opaque Paper Bridge become this same landing edition, completing the entire print-to-desk handoff within 1.8 seconds.",
+  "nonNegotiableOutcome": "Without any click or scroll, a full-motion direct visitor must see large paper displacement by 250ms, a desk impact by 650ms, an unmistakable fold opening by 1100ms, readable masthead ink by 1450ms, and a stamp strike by 1700ms. The screen must never remain in the current blank-sheet pose.",
+  "entryModes": {
+    "direct": {
+      "trigger": "Automatically after the Desk homepage root mounts at scrollY <= 8 and two animation frames have established the initial pose.",
+      "includes": "Desk drop, impact, unfold, ink impression, and stamp. It does not replay UNIT or the Paper Bridge.",
+      "replay": "Run on a fresh direct navigation or reload. Do not run on browser back-forward restoration or when returning from the Focus Reader with a restored scroll position."
+    },
+    "themeSwitch": {
+      "trigger": "Explicit UNIT-to-Desk theme switch.",
+      "includes": "UNIT plate exit, opaque Paper Bridge, covered swap, bridge contraction, Desk impact, unfold, ink impression, and stamp in one continuous timeline.",
+      "replay": "Once per explicit activation. A second activation while active finishes the current transition instead of spawning another."
+    },
+    "restored": {
+      "trigger": "Back-forward navigation or same-theme return with scrollY > 8.",
+      "includes": "No entrance replay. Restore the recorded entry and chapter states before paint."
+    },
+    "reduced": {
+      "trigger": "prefers-reduced-motion: reduce at mount or enabled live.",
+      "includes": "No automatic or scroll-linked motion. Render the fully opened, inked, stamped Desk edition and normal document flow immediately."
+    }
+  },
+  "entryStateMachine": {
+    "states": [
+      "pending",
+      "paper-drop",
+      "desk-impact",
+      "paper-unfold",
+      "ink-impression",
+      "stamp-strike",
+      "ready"
+    ],
+    "stateOwner": "The Desk homepage root owns data-entry. .np-desk__newspaper, its fold face, masthead, stamp, pencil, coffee, and shadows react only to that state and CSS variables.",
+    "initialPaint": "The initial full-motion CSS state must be present in server markup or a pre-paint attribute. Do not render the settled paper and then move it to the start pose after JavaScript mounts.",
+    "completion": "animationend from the stamp is authoritative; one 1900ms desktop / 1650ms mobile timeout is fallback only.",
+    "interruption": "The first wheel, touchstart, Escape, PageDown, or Space during direct entry adds ready within 100ms and lets the native input continue. It must never strand a blank or blurred paper."
+  },
+  "directEntryTimeline": {
+    "desktopTotalMs": 1800,
+    "mobileTotalMs": 1550,
+    "desktop": [
+      {
+        "rangeMs": "0-80",
+        "state": "pending",
+        "contract": "Green desk, coffee, and pencil are visible. A folded newspaper edge is already visible at the top 6% of the viewport, proving that the page is alive before the first frame of travel."
+      },
+      {
+        "rangeMs": "80-540",
+        "state": "paper-drop",
+        "contract": "The compact edition travels downward by 62vh, rotates from -15deg to 3deg, and scales from .66 to .94. At 250ms at least 45% of its final area is visible. Use cubic-bezier(.55,.02,.82,.46), not the generic settle easing."
+      },
+      {
+        "rangeMs": "540-740",
+        "state": "desk-impact",
+        "contract": "Paper overshoots 34px, compresses scaleY to .93 for 70ms, rebounds -16px, then rests. Shadow spreads from 18px/35% to 52px/48% and returns. Pencil kicks 11deg and 46px; coffee shifts 22px and a single CSS ring expands 18px."
+      },
+      {
+        "rangeMs": "680-1220",
+        "state": "paper-unfold",
+        "contract": "The visible right leaf opens from 86deg to -4deg, overshoots to 5deg, then settles at 0deg. The paper widens from 54% to 100% of its final visual width without scaling readable text. Center-crease shadow moves from .58 to .16 opacity."
+      },
+      {
+        "rangeMs": "1040-1480",
+        "state": "ink-impression",
+        "contract": "A black ink mask prints Misaki Journal from left to right using clip-path. It begins with a 3px burgundy misregistration and 7px directional smear, reaches full coverage at 1370ms, and snaps into registration by 1480ms. The title is never revealed by opacity alone."
+      },
+      {
+        "rangeMs": "1450-1740",
+        "state": "stamp-strike",
+        "contract": "DESK COPY enters from 92px above at scale 1.85 and -16deg, strikes 10px below its resting point for 65ms, then rebounds to scale 1 and -8deg. A 2px duplicate ink edge remains as physical overprint."
+      },
+      {
+        "rangeMs": "1740-1800",
+        "state": "ready",
+        "contract": "All automatic transforms settle. The masthead and deck are crisp and readable, the newspaper remains centered in the first viewport, and the first hint of the next desk scene is visible."
+      }
+    ],
+    "mobile": [
+      {
+        "rangeMs": "0-60",
+        "state": "pending",
+        "contract": "A folded paper edge is visible above the 88vw final paper box. No toolbar or text is covered."
+      },
+      {
+        "rangeMs": "60-440",
+        "state": "paper-drop",
+        "contract": "Travel 42vh, rotate -8deg to 2deg, scale .74 to .96. At 220ms at least 40% of final paper area is visible."
+      },
+      {
+        "rangeMs": "440-590",
+        "state": "desk-impact",
+        "contract": "Overshoot 18px, compress scaleY .96 for 55ms, rebound -9px. Pencil kicks 7deg and 24px; coffee shifts 12px."
+      },
+      {
+        "rangeMs": "540-1010",
+        "state": "paper-unfold",
+        "contract": "Fold leaf opens 78deg to 0deg. The outer paper box stays within 12px of both viewport edges and never crosses the masthead bar."
+      },
+      {
+        "rangeMs": "840-1260",
+        "state": "ink-impression",
+        "contract": "The masthead prints left-to-right with a maximum 2px burgundy misregistration and 4px smear, then becomes crisp."
+      },
+      {
+        "rangeMs": "1230-1490",
+        "state": "stamp-strike",
+        "contract": "Stamp travels 54px, starts at scale 1.5, impacts 6px, and settles without touching the title or deck."
+      },
+      {
+        "rangeMs": "1490-1550",
+        "state": "ready",
+        "contract": "Opened masthead and deck fit the first viewport, with at least 48px of the following desk surface visible."
+      }
+    ]
+  },
+  "themeSwitchTimeline": {
+    "desktopTotalMs": 1780,
+    "mobileTotalMs": 1580,
+    "hardMaximumMs": 1800,
+    "desktop": [
+      "0-420ms: UNIT plates misregister by 10px and eject upward in blue, yellow, orange, black order; black leaves 180ms after orange.",
+      "180-580ms: aged Paper Bridge rises 108vh and reaches verified opaque full coverage at 520ms.",
+      "520-536ms: layout swaps behind the bridge only after edge coverage and opacity checks pass.",
+      "536-900ms: bridge contracts into a 58%-width folded edition, rotates -7deg to 3deg, and hits the green desk.",
+      "820-1320ms: bridge edition unfolds 82deg to 0deg while the center crease and shadow respond.",
+      "1120-1510ms: masthead receives the directional ink impression.",
+      "1490-1730ms: DESK COPY stamp strikes and rebounds.",
+      "1730-1780ms: overlay hands its exact geometry to the real Desk newspaper and is removed on the following frame."
+    ],
+    "mobile": [
+      "0-340ms: plates eject with 6px misregistration and black leaving last.",
+      "150-500ms: bridge rises to verified full coverage at 450ms.",
+      "450-466ms: covered layout swap.",
+      "466-760ms: bridge contracts and impacts as the 88vw folded Mobile Edition.",
+      "700-1140ms: fold opens without crossing viewport edges.",
+      "940-1320ms: masthead ink impression.",
+      "1300-1530ms: stamp strike.",
+      "1530-1580ms: frame-matched handoff and overlay removal."
+    ],
+    "coverageRule": "Keep the existing opaque Paper Bridge guarantee, but do not stop at a blank folded handoff. The bridge itself must continue through impact, opening, ink, and stamp before ownership transfers to the Desk DOM."
+  },
+  "postEntryScrollStory": {
+    "principle": "Automatic entry establishes the edition. Scroll then moves that edition through a single work session. Every chapter has approach, physical action, and handoff beats driven by scene progress, so normal scrolling cannot skip directly from one static composition to another.",
+    "progressFormula": "For each active scene, sceneProgress = clamp((0.92 * innerHeight - rect.top) / (0.72 * innerHeight + 0.35 * rect.height)). Read rects once per animation frame and write only CSS variables.",
+    "activation": "IntersectionObserver with rootMargin '35% 0px 35%' activates progress tracking before a scene enters and removes it after its committed final state. It is not the animation trigger by itself.",
+    "continuityRule": "Each chapter uses 0.00-0.25 for approach, 0.25-0.68 for its unique action, and 0.68-1.00 for handoff/settling. Scene spacing must leave no scroll interval longer than 0.45 viewport with all active variables unchanged.",
+    "commitRule": "Stamps, tape pressure, opened covers, postmarks, and delivery commit once when progress first crosses their threshold. They remain settled when scrolling backward. Paper approach and nonsemantic perspective may reverse until commit.",
+    "sharedLanguage": "Every action must be explainable as paper inertia, fold resistance, wet ink, tape pressure, stamp impact, desk-object collision, or mail-slot mechanics. No floating, generic parallax, whole-scene fade, hover scale, or repeated slide-in may be a primary beat."
+  },
+  "chapterContracts": [
+    {
+      "chapter": "lead",
+      "event": "editor_places_lead_clipping",
+      "amplitudeDesktop": "Clipping enters from x -22vw, y 14vh, rotate -11deg, scale .82; it overshoots x 26px and settles at .8deg.",
+      "amplitudeMobile": "Enter x -52px, y 64px, rotate -5deg, scale .92; settle at .4deg inside the single-column box.",
+      "timingByProgress": "0-.34 placement; .34 tape falls 118px and compresses scaleY .72; .46 handwritten note draws with an ink mask; .72 settled.",
+      "commitAt": 0.46,
+      "uniqueProof": "The tape must visibly deform at impact; a plain clipping translate does not pass."
+    },
+    {
+      "chapter": "columns",
+      "event": "reading_pile_dealt_and_diary_opened",
+      "amplitudeDesktop": "Pile base enters x -24vw at -7deg; cards are dealt from y -96px with alternating 8deg; diary enters x 20vw at 12deg and its cover rotatesY -118deg.",
+      "amplitudeMobile": "The horizontal strip itself stays fixed; cards deal 46px within their panel and diary cover opens -92deg. No x transform crosses the strip boundary.",
+      "timingByProgress": "0-.28 pile arrives; .22-.56 cards deal at progress offsets .06; .34-.68 diary opens; .78 both settle while the next torn edge becomes visible.",
+      "commitAt": 0.68,
+      "uniqueProof": "At least three distinct card poses and a visible hinged diary cover must exist simultaneously for 180ms."
+    },
+    {
+      "chapter": "classified",
+      "event": "classified_torn_taped_and_stamped",
+      "amplitudeDesktop": "Notice pulls from x 31vw, rotate 10deg, scale .76; the torn edge flexes by 18px before flattening. VACANT starts 96px high, scale 1.9, rotate -19deg.",
+      "amplitudeMobile": "Notice pulls 68px from the right at 5deg, scale .9; stamp travels 52px and remains clear of paragraph text.",
+      "timingByProgress": "0-.34 pull; .30-.45 torn-edge recoil; .42 tape pressure; .56 VACANT impact; .72 rebound; .82 settled.",
+      "commitAt": 0.56,
+      "uniqueProof": "The jagged edge must recoil before the stamp. A tape/stamp appearing by opacity alone is a hard fail."
+    },
+    {
+      "chapter": "about",
+      "event": "owners_copy_opened_and_interest_slips_dealt",
+      "amplitudeDesktop": "Book rises 18vh with rotateX 9deg; cover opens rotateY -122deg; five slips travel 90-160px with alternating 13deg.",
+      "amplitudeMobile": "Book rises 54px; cover opens -96deg inside its box; slips travel at most 42px and wrap only after landing.",
+      "timingByProgress": "0-.30 book arrives; .24-.58 cover opens; .43-.72 slips deal at .055 progress intervals; .84 settled.",
+      "commitAt": 0.58,
+      "uniqueProof": "The cover must visibly expose the author copy, and slips must land one by one rather than fade as a group."
+    },
+    {
+      "chapter": "index",
+      "event": "index_notebook_opened_and_labels_inserted",
+      "amplitudeDesktop": "Notebook enters y 16vh, rotate 5deg, scale .84; cover opens -126deg; labels travel x -84px into separate ruled rows.",
+      "amplitudeMobile": "Notebook enters y 46px, rotate 2.5deg, scale .94; cover opens -94deg; labels travel x -30px without clipping long tags.",
+      "timingByProgress": "0-.30 notebook placement; .26-.56 cover opens; .42-.76 labels insert at .035 progress intervals; .84 red index mark draws across the final row.",
+      "commitAt": 0.76,
+      "uniqueProof": "Rows must populate sequentially and remain focusable throughout; a shared opacity reveal does not pass."
+    },
+    {
+      "chapter": "exchange",
+      "event": "postcards_dealt_and_postmarked",
+      "amplitudeDesktop": "First card enters x -24vw, y 12vh, rotate -17deg; second enters x 24vw, y 18vh, rotate 15deg; each overshoots 30px.",
+      "amplitudeMobile": "Cards travel 58px within the horizontal strip with rotations capped at 6deg; strip remains touch and keyboard scrollable.",
+      "timingByProgress": "0-.36 first deal; .18-.50 second deal; .48 and .62 postmark strikes from scale 2.1; .78 both rebound and settle.",
+      "commitAt": 0.62,
+      "uniqueProof": "Cards must approach from opposite directions and receive temporally separate postmarks."
+    },
+    {
+      "chapter": "outro",
+      "event": "edition_folded_and_delivered",
+      "amplitudeDesktop": "Edition folds at two creases from scaleY 1 to .34, rotates 2deg to 0, then travels 230px into the slot; flap rotatesX 52deg to 84deg and rebounds.",
+      "amplitudeMobile": "Fold stays within 86vw; feed travel 120px; slot flap uses the same angle with no viewport overflow.",
+      "timingByProgress": "0-.58 reversible two-crease fold; first crossing .72 commits feed; .72-.90 edition enters slot; .90 flap opens; .96 rebound.",
+      "commitAt": 0.72,
+      "uniqueProof": "Fold must respond continuously to scroll before delivery commits. The current one-shot scaleY collapse does not pass."
+    }
+  ],
+  "mobileSafety": {
+    "requiredWidths": [360, 390, 768],
+    "rules": [
+      "All readable content remains in normal document flow. Motion transforms whole physical objects, never separate text lines.",
+      "No animated bounding box may cross the 12px viewport safe inset or the fixed prototype toolbar.",
+      "Lead, Classified, About, and Index use vertical flow and may move at most 68px before their content becomes readable.",
+      "Columns and Exchange preserve contained horizontal strips; child motion is clipped to the strip and never prevents pan-y.",
+      "Settled rotation is at most .7deg and transient rotation is at most 6deg.",
+      "At 360x800 and 390x844, capture entry at 0, 250, 550, 950, 1350, and settled milliseconds plus every chapter at action midpoint."
+    ]
+  },
+  "reducedMotion": {
+    "initial": "CSS and script select ready before motion starts. Paper is open, masthead and deck are crisp, stamp is settled, opening spacer is collapsed, chapters are in readable final states, and Focus Reader is upright.",
+    "liveEnable": "Within 100ms cancel all descendant CSS/WAAPI animations, pending timers, and scroll frames; set data-entry ready; commit requested theme; settle all chapter objects; collapse opening distance; preserve current focus and nearest reading position.",
+    "liveDisable": "Do not replay direct entry or committed chapter events. Only unvisited chapters below the current position may use full motion.",
+    "prohibited": "No continuously updated requestAnimationFrame, scroll progress variable, unfolding, ink impression, stamp, dealing, fold, or delivery remains active under reduce."
+  },
+  "implementationConstraints": {
+    "allowed": [
+      "existing Astro markup and Sass",
+      "one inert fold face or ink mask if the existing pseudo-elements cannot express the action",
+      "CSS custom properties, keyframes, clip-path, masks, transforms, and pseudo-elements",
+      "IntersectionObserver, requestAnimationFrame, matchMedia, AbortController, animationend, and the Web Animations API"
+    ],
+    "forbidden": [
+      "new animation dependency",
+      "WebGL or canvas",
+      "generated assets before a specific missing texture is demonstrated",
+      "autoplay loader or blank interstitial",
+      "generic whole-section fade",
+      "redesign of Desk colors, typography, content order, or object vocabulary",
+      "motion that delays article reading or hijacks vertical scroll"
+    ],
+    "minimumChangeBias": "Reuse the existing transition layer, Desk DOM, lifecycle helper, scroll frame, and reduced-motion listener. Replace weak states and triggers rather than adding a parallel motion system."
+  },
+  "proofRequiredForScoreAbove98": {
+    "automaticEntry": [
+      "Record a direct load from before first paint through 1800ms on desktop and 1550ms on mobile; do not click or scroll.",
+      "Capture frames at 0, 250, 550, 950, 1350, and settled milliseconds.",
+      "Between 0 and 550ms, the newspaper bounding-box center must move at least 35vh desktop / 24vh mobile and frame pixel delta inside the first viewport must exceed 15%.",
+      "At 1100ms desktop / 950ms mobile, fold angle must differ from its start by at least 55deg.",
+      "At completion, masthead is readable and stamp is visibly settled."
+    ],
+    "scrollNarrative": [
+      "Record one continuous top-to-bottom scroll at 650-850 CSS px/s, not isolated final screenshots.",
+      "Sample sceneProgress and object transforms every 100ms; no unchanged interval may exceed 0.45 viewport while traveling between chapters.",
+      "For each chapter capture approach, action midpoint, and committed state; verify the uniqueProof clause.",
+      "Scroll backward after each commit and confirm stamps, tape, opened covers, postmarks, and delivery do not reverse."
+    ],
+    "mobile": [
+      "At 360x800, 390x844, and 768x1024 verify every sampled animation frame has document.scrollWidth <= innerWidth.",
+      "Use bounding-box collision checks for visible headings, paragraphs, links, buttons, toolbar, and animated objects at entry and chapter midpoints.",
+      "Verify pan-y remains native in Columns and Exchange and focused offscreen strip items scroll into view."
+    ],
+    "reducedMotion": [
+      "Toggle prefers-reduced-motion during paper-drop, paper-unfold, Classified stamp, and outro fold.",
+      "Each toggle must reach ready in under 100ms with zero active animations and no blank or clipped content.",
+      "Reload under reduce and confirm no entry pose flashes before the static edition."
+    ],
+    "acceptance": "A static final screenshot cannot satisfy any motion check. Final scoring requires the direct-entry time series and continuous scroll trace. Any missed automatic trigger, blank-sheet pause, generic chapter reveal, mobile collision, or reduced-motion flash caps the Heavy score below 90."
+  }
+}

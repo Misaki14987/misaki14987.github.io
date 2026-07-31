@@ -1,0 +1,255 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="units"> <head><script>
+      try {
+        const requestedTheme = new URLSearchParams(location.search).get('theme');
+        const savedTheme = localStorage.getItem('site-theme');
+        const normalizeTheme = (value) => value === 'newspaper' || value === 'plain' ? 'newspaper' : 'units';
+        document.documentElement.dataset.theme = ['units', 'newspaper', 'plain'].includes(requestedTheme)
+          ? normalizeTheme(requestedTheme)
+          : normalizeTheme(savedTheme);
+      } catch {}
+    </script><meta charset="UTF-8"><link rel="icon" type="image/svg+xml" href="/icons/favicon.svg"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro Blog"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" rel="stylesheet"></noscript><title>从零写一个 GNOME Shell 扩展 | M1saK1 Blog</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.B3vRBseb.js"></script><meta name="description" content="第一次用 GNOME是在 Ubuntu 上。说实话我挺认这种 UI 思路的：极简、专注，要什么自己加。习惯了这套快捷键之后操作很顺。但Ubuntu是大便所以我扬掉了。但当时一直有个想法就是我想要桌面上常驻一块小面板，能看到今天的任务、能编辑、能加日程，最好还能同步 Google 日历。翻了半天 GNOME 扩展商店没有..."><link rel="canonical" href="https://blog.yodelist.icu/posts/task-dashboard/"><link rel="alternate" type="application/rss+xml" title="M1saK1 Blog" href="https://blog.yodelist.icu/rss.xml"><meta property="og:site_name" content="M1saK1 Blog"><meta property="og:title" content="从零写一个 GNOME Shell 扩展 | M1saK1 Blog"><meta property="og:description" content="第一次用 GNOME是在 Ubuntu 上。说实话我挺认这种 UI 思路的：极简、专注，要什么自己加。习惯了这套快捷键之后操作很顺。但Ubuntu是大便所以我扬掉了。但当时一直有个想法就是我想要桌面上常驻一块小面板，能看到今天的任务、能编辑、能加日程，最好还能同步 Google 日历。翻了半天 GNOME 扩展商店没有..."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.yodelist.icu/posts/task-dashboard/"><meta property="og:image" content="https://blog.yodelist.icu/_astro/msz.CXwjb5vJ.jpg"><meta property="og:image:alt" content="从零写一个 GNOME Shell 扩展"><meta property="article:published_time" content="2026-06-02T00:00:00.000Z"><meta property="article:tag" content="GNOME"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="从零写一个 GNOME Shell 扩展 | M1saK1 Blog"><meta name="twitter:description" content="第一次用 GNOME是在 Ubuntu 上。说实话我挺认这种 UI 思路的：极简、专注，要什么自己加。习惯了这套快捷键之后操作很顺。但Ubuntu是大便所以我扬掉了。但当时一直有个想法就是我想要桌面上常驻一块小面板，能看到今天的任务、能编辑、能加日程，最好还能同步 Google 日历。翻了半天 GNOME 扩展商店没有..."><meta name="twitter:image" content="https://blog.yodelist.icu/_astro/msz.CXwjb5vJ.jpg"><link rel="stylesheet" href="/_astro/_slug_.BeJU9rQJ.css">
+<link rel="stylesheet" href="/_astro/_slug_.I8Oai7RN.css"></head> <body class="body units-body"> <div class="theme-transition" data-theme-transition data-phase="idle" aria-hidden="true"> <div class="theme-transition__unit" aria-hidden="true"> <span class="theme-transition__unit-brand">M1saK1</span> <div class="theme-transition__plates"> <i data-plate="blue">M1saK1</i> <i data-plate="yellow">M1saK1</i> <i data-plate="orange">M1saK1</i> <i data-plate="key">M1saK1</i> </div> <div class="theme-transition__blocks"><i></i><i></i><i></i><i></i></div> </div> <div class="theme-transition__edition" aria-hidden="true"> <span>PERSONAL EDITION</span> <strong>Misaki<br>Journal</strong> <small>DESK COPY / 14987</small> </div> <div class="theme-transition__bridge" aria-hidden="true"><i></i><i></i></div> </div> <script type="module" src="/_astro/ThemeController.astro_astro_type_script_index_0_lang.3rtIvII2.js"></script> <main class="main">  <div class="reading-progress" aria-hidden="true"> <span data-reading-progress></span> </div> <div class="units-shell"> <header class="newspaper-nav"> <a class="newspaper-nav__brand" href="/"> <strong>Misaki Journal</strong> <span>Personal edition · Hangzhou</span> </a> <nav aria-label="报纸版面导航"> <a href="/#articles">Articles</a> <a href="/#diary">Diary</a> <a href="/#works">Works</a> </nav> <button class="newspaper-theme-switch" type="button" data-theme-toggle> <span>THEME</span> <b data-theme-name>NEWSPAPER</b> </button> </header> <header class="units-mobile-head"> <a class="units-brand" href="/"> <strong>m1sak1.</strong> <span>I Love Schweppes</span> </a> <a class="units-mobile-cta" href="/#about" data-i18n data-zh="关于我" data-en="About">关于我</a> <a class="units-menu" href="/#subjects" aria-label="打开标签索引"> <span></span> <span></span> <span></span> </a> </header> <nav class="units-mobile-nav" aria-label="内容导航"> <a href="/#articles" data-i18n data-zh="一些分享" data-en="Articles">一些分享</a><a href="/#diary" data-i18n data-zh="胡思乱想" data-en="Diary">胡思乱想</a><a href="/#works" data-i18n data-zh="作品集" data-en="Works">作品集</a> <button class="units-theme-switch units-theme-switch--mobile" type="button" data-theme-toggle> <span data-theme-name>UNIT</span> </button> </nav> <div class="units-mobile-tools"> <div class="units-locale" aria-label="语言切换"> <button type="button" data-locale="zh" aria-pressed="true">中文</button> <button type="button" data-locale="en" aria-pressed="false">EN</button> </div> <nav class="units-socials" aria-label="社交媒体"> <a href="https://github.com/Misaki14987" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer"> GH </a><a href="https://space.bilibili.com/M1saK1" title="Bilibili" aria-label="Bilibili" target="_blank" rel="noopener noreferrer"> Bili </a><a href="/rss.xml" title="RSS Feed" aria-label="RSS Feed"> RSS </a> </nav> </div> <aside class="units-rail" aria-label="站点导航"> <a class="units-brand" href="/"> <strong>米撒奇</strong> <span>I Love Schweppes Without Suger</span> </a> <nav class="units-rail__nav"> <a class="units-tile units-tile--blue" href="/"> <span>01</span> <b data-i18n data-zh="最新文章" data-en="Latest">最新文章</b> <i aria-hidden="true">↗</i> </a><a class="units-tile units-tile--yellow" href="/#articles" aria-current="page"> <span>02</span> <b data-i18n data-zh="一些分享" data-en="Articles">一些分享</b> <i aria-hidden="true">↗</i> </a><a class="units-tile units-tile--orange" href="/#diary"> <span>03</span> <b data-i18n data-zh="胡思乱想" data-en="Diary">胡思乱想</b> <i aria-hidden="true">↗</i> </a><a class="units-tile units-tile--green" href="/#works"> <span>04</span> <b data-i18n data-zh="作品集" data-en="Works">作品集</b> <i aria-hidden="true">↗</i> </a> </nav> <a class="units-tile units-tile--purple units-tile--cta" href="/#about"> <b data-i18n data-zh="M1saK1 是谁!" data-en="Who is M1saK1!">M1saK1是谁！</b> </a> <button class="units-theme-switch" type="button" data-theme-toggle> <span>THEME</span> <b data-theme-name>UNIT</b> </button> <div class="units-locale" aria-label="语言切换"> <button type="button" data-locale="zh" aria-pressed="true">中文</button> <button type="button" data-locale="en" aria-pressed="false">EN</button> </div> <nav class="units-socials" aria-label="社交媒体"> <a href="https://github.com/Misaki14987" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer"> GH </a><a href="https://space.bilibili.com/M1saK1" title="Bilibili" aria-label="Bilibili" target="_blank" rel="noopener noreferrer"> Bili </a><a href="/rss.xml" title="RSS Feed" aria-label="RSS Feed"> RSS </a> </nav> </aside> <main class="units-main">  <section class="post-section"> <article class="post-article" data-tone="build"> <header class="post-header"> <div class="post-header__main"> <h1 class="post-header__title">从零写一个 GNOME Shell 扩展</h1>  <ul class="post-header__tags"> <li class="post-header__tag"> GNOME </li> </ul> </div> </header> <figure class="post-cover"> <img src="/_astro/msz.CXwjb5vJ_1ttNAr.webp" srcset="/_astro/msz.CXwjb5vJ_ZzL9td.webp 720w, /_astro/msz.CXwjb5vJ_1TNsiG.webp 960w, /_astro/msz.CXwjb5vJ_Z1qHgtB.webp 1200w" alt="从零写一个 GNOME Shell 扩展" sizes="(max-width: 920px) calc(100vw - 20px), calc(100vw - 188px)" loading="eager" decoding="async" fetchpriority="auto" width="4095" height="2814"> </figure> <div class="post-reading"> <aside class="post-toc" data-post-toc> <button class="post-toc__toggle" type="button" aria-expanded="false" data-toc-toggle>
+目录
+<span aria-hidden="true">+</span> </button> <nav aria-label="文章目录" data-toc-list> <span class="post-toc__title">目录</span> <ol> <li data-depth="2"> <a href="#gnome扩展是什么" data-toc-link="gnome扩展是什么"> Gnome扩展是什么 </a> </li><li data-depth="2"> <a href="#最小示例" data-toc-link="最小示例"> 最小示例 </a> </li><li data-depth="2"> <a href="#生命周期" data-toc-link="生命周期"> 生命周期 </a> </li><li data-depth="2"> <a href="#常用-ui-模块" data-toc-link="常用-ui-模块"> 常用 UI 模块 </a> </li><li data-depth="2"> <a href="#顶栏入口" data-toc-link="顶栏入口"> 顶栏入口 </a> </li><li data-depth="2"> <a href="#菜单项" data-toc-link="菜单项"> 菜单项 </a> </li><li data-depth="2"> <a href="#桌面层-ui" data-toc-link="桌面层-ui"> 桌面层 UI </a> </li><li data-depth="2"> <a href="#本地数据" data-toc-link="本地数据"> 本地数据 </a> </li><li data-depth="2"> <a href="#定时刷新" data-toc-link="定时刷新"> 定时刷新 </a> </li><li data-depth="2"> <a href="#文件监听" data-toc-link="文件监听"> 文件监听 </a> </li><li data-depth="2"> <a href="#调试" data-toc-link="调试"> 调试 </a> </li><li data-depth="2"> <a href="#安装与分发" data-toc-link="安装与分发"> 安装与分发 </a> </li> </ol> </nav> </aside> <div class="post-reading__main"> <div class="article-content" data-article-content> <p>第一次用 GNOME是在 Ubuntu 上。说实话我挺认这种 UI 思路的：极简、专注，要什么自己加。习惯了这套快捷键之后操作很顺。但Ubuntu是大便所以我扬掉了。但当时一直有个想法就是我想要桌面上常驻一块小面板，能看到今天的任务、能编辑、能加日程，最好还能同步 Google 日历。翻了半天 GNOME 扩展商店没有东西。后面又去试了 Conky（<a href="https://github.com/brndnmtthws/conky">https://github.com/brndnmtthws/conky</a>），但我完全不喜欢在终端里手搓配置文件那种感觉。我想要的是类似 Planify（<a href="https://github.com/alainm23/planify">https://github.com/alainm23/planify</a>）那种带 GUI 的东西，但能浮在桌面上。</p>
+<p>然后这事就一直搁着，直到今年在Fedora上，某天突然又想起来了。现在有各种AI工具写代码的摩擦比去年小太多了，于是花了大概一天把它搓了出来。</p>
+<p>所以这篇文章就以这个 Task Dashboard 为例，介绍一下 GNOME Shell 扩展怎么写。(其实GJS一坨大便</p>
+<h2 id="gnome扩展是什么">Gnome扩展是什么</h2>
+<p>GNOME Shell 扩展是一段运行在 GNOME Shell 进程里的 JavaScript 代码，通过 GJS 调用 GNOME 平台能力，使用 Shell 暴露的 UI 模块修改桌面行为。</p>
+<p>跟普通应用相比，扩展有几个特点：</p>
+<ul>
+<li>直接跑在 Shell 进程里，没有独立的进程边界</li>
+<li>UI 使用 St（GNOME Shell Toolkit），不是 GTK</li>
+<li>改完代码需要重新加载 Shell 才能生效（至少要 disable/enable）</li>
+<li>桌面用户能直接开关、配置</li>
+</ul>
+<p>最简单的一个扩展只需要两个文件：<code>metadata.json</code> 和 <code>extension.js</code>。</p>
+<h2 id="最小示例">最小示例</h2>
+<p><code>metadata.json</code> 描述扩展自身信息：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "uuid"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"yodel@misaki.local"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "name"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"I love hdu"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "description"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Fuck hdu."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "shell-version"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"45"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"46"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"47"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#79B8FF">  "version"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><code>uuid</code> 决定了扩展安装到哪个目录，格式推荐 <code>扩展名@域名</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>~/.local/share/gnome-shell/extensions/hello@misaki.local</span></span></code></pre>
+<p><code>shell-version</code> 声明兼容的 GNOME Shell 版本号。版本对不上时 GNOME 会拒绝加载扩展。</p>
+<p><code>extension.js</code> 是入口，导出一个继承自 <code>Extension</code> 的类：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { Extension } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "resource:///org/gnome/Shell/Extensions/js/extensions.js"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { PanelMenu } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "resource:///org/gnome/shell/ui/panelMenu.js"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> St </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "gi://St"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> HelloExtension</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Extension</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">  enable</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">._indicator </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> PanelMenu.</span><span style="color:#B392F0">Button</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0.0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Hello"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">._indicator.</span><span style="color:#B392F0">add_child</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#E1E4E8"> St.</span><span style="color:#B392F0">Label</span><span style="color:#E1E4E8">({ text: </span><span style="color:#9ECBFF">"Hi"</span><span style="color:#E1E4E8"> }));</span></span>
+<span class="line"><span style="color:#E1E4E8">    Main.panel.</span><span style="color:#B392F0">addToStatusArea</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.uuid, </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">._indicator, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"right"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">  disable</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">._indicator?.</span><span style="color:#B392F0">destroy</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">._indicator </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>这个例子会在顶栏右侧出现一个写着 “Hi” 的按钮。点开是空菜单。<code>Main</code> 是从 <code>main.js</code> 引入的全局对象。</p>
+<h2 id="生命周期">生命周期</h2>
+<p>扩展的入口类实现两个方法：</p>
+<ul>
+<li><code>enable()</code>：用户在 GNOME 扩展设置里开启扩展时调用</li>
+<li><code>disable()</code>：关闭扩展时调用，必须清理 <code>enable()</code> 里创建的所有资源</li>
+</ul>
+<p><code>enable()</code> 里的典型工作：</p>
+<ol>
+<li>创建顶栏入口</li>
+<li>构建 UI Actor</li>
+<li>加载配置或数据</li>
+<li>注册 GObject 信号监听</li>
+<li>启动定时器</li>
+<li>监听文件变化</li>
+</ol>
+<p><code>disable()</code> 必须做反向操作：</p>
+<ol>
+<li>销毁 UI Actor</li>
+<li>移除 timeout</li>
+<li>断开 signal handler</li>
+<li>取消 file monitor</li>
+<li>解除事件订阅</li>
+</ol>
+<p><strong>资源清理是 GNOME 扩展开发里最严肃的事</strong>。扩展跑在 Shell 进程里，泄漏一个 signal handler、忘清一个 timeout，最终都会让整个桌面卡顿或崩溃。每次改完代码要 disable/enable 一次确认没有泄漏。(一坨石)</p>
+<h2 id="常用-ui-模块">常用 UI 模块</h2>
+<p>GNOME Shell 的 UI 模块名都以 <code>St</code> 开头（GIR 命名空间 <code>gi://St</code>）</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>模块</th><th>作用</th></tr></thead><tbody><tr><td><code>St.BoxLayout</code></td><td>横向/纵向盒子</td></tr><tr><td><code>St.Label</code></td><td>文本</td></tr><tr><td><code>St.Button</code></td><td>按钮</td></tr><tr><td><code>St.Icon</code></td><td>图标</td></tr><tr><td><code>St.Entry</code></td><td>单行输入框</td></tr><tr><td><code>St.ScrollView</code></td><td>滚动容器</td></tr><tr><td><code>St.Clipboard</code></td><td>剪贴板</td></tr></tbody></table>
+<p>需要复杂控件（文本编辑器、树形列表、富输入）时，Shell 侧做不了，要打开一个独立的 GTK 应用窗口。</p>
+<p>样式通过 CSS 控制，扩展目录下放一个 <code>stylesheet.css</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">.hello-label</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  font-weight</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">bold</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  padding</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0</span><span style="color:#79B8FF"> 8</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>在 <code>metadata.json</code> 里声明：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "uuid"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"hello@misaki.local"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "name"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Hello"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "stylesheet"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"stylesheet.css"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "shell-version"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"45"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#79B8FF">  "version"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><code>enable()</code> 里给 Actor 设置 style class：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">._label </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> St.</span><span style="color:#B392F0">Label</span><span style="color:#E1E4E8">({ text: </span><span style="color:#9ECBFF">"Hi"</span><span style="color:#E1E4E8">, style_class: </span><span style="color:#9ECBFF">"hello-label"</span><span style="color:#E1E4E8"> });</span></span></code></pre>
+<h2 id="顶栏入口">顶栏入口</h2>
+<p>顶栏按钮的基类是 <code>PanelMenu.Button</code>，派生类实现 <code>_init()</code> 构造子项。常见模式是 Icon + Label 横向排列：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { PanelMenu } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "resource:///org/gnome/shell/ui/panelMenu.js"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> St </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "gi://St"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Clutter </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "gi://Clutter"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> HelloIndicator</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> PanelMenu</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Button</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">  _init</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#79B8FF">    super</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">_init</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0.0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Hello Indicator"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> box</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> St.</span><span style="color:#B392F0">BoxLayout</span><span style="color:#E1E4E8">({ style_class: </span><span style="color:#9ECBFF">"panel-status-menu-box"</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"><span style="color:#E1E4E8">    box.</span><span style="color:#B392F0">add_child</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">      new</span><span style="color:#E1E4E8"> St.</span><span style="color:#B392F0">Icon</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">        icon_name: </span><span style="color:#9ECBFF">"face-smile-symbolic"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        style_class: </span><span style="color:#9ECBFF">"system-status-icon"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      }),</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#E1E4E8">    box.</span><span style="color:#B392F0">add_child</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">      new</span><span style="color:#E1E4E8"> St.</span><span style="color:#B392F0">Label</span><span style="color:#E1E4E8">({ text: </span><span style="color:#9ECBFF">"Hello"</span><span style="color:#E1E4E8">, y_align: Clutter.ActorAlign.</span><span style="color:#79B8FF">CENTER</span><span style="color:#E1E4E8"> }),</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">add_child</span><span style="color:#E1E4E8">(box);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>挂到顶栏用 <code>Main.panel.addToStatusArea()</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">Main.panel.</span><span style="color:#B392F0">addToStatusArea</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.uuid, </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">._indicator, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"right"</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>参数分别是：扩展 uuid、按钮实例、位置索引、分区名（<code>"left"</code> / <code>"center"</code> / <code>"right"</code>）。</p>
+<h2 id="菜单项">菜单项</h2>
+<p>按钮点开后是菜单。<code>PanelMenu.Button</code> 内部维护一个 <code>Menu</code>，可以使用标准的 <code>MenuItem</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#79B8FF"> *</span><span style="color:#F97583"> as</span><span style="color:#E1E4E8"> Menu </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "resource:///org/gnome/shell/ui/menu.js"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.menu.</span><span style="color:#B392F0">addMenuItem</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#E1E4E8"> Menu.</span><span style="color:#B392F0">MenuItem</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"刷新"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">_refresh</span><span style="color:#E1E4E8">()));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.menu.</span><span style="color:#B392F0">addMenuItem</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#E1E4E8"> Menu.</span><span style="color:#B392F0">SeparatorMenuItem</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Switch / Slider 也可以添加</span></span>
+<span class="line"><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.menu.</span><span style="color:#B392F0">addMenuItem</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#E1E4E8"> PopupMenu.</span><span style="color:#B392F0">PopupSwitchMenuItem</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"启用"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.menu.</span><span style="color:#B392F0">addMenuItem</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#E1E4E8"> PopupMenu.</span><span style="color:#B392F0">PopupSeparatorMenuItem</span><span style="color:#E1E4E8">());</span></span></code></pre>
+<p>菜单项需要响应点击就传一个回调，需要复杂内容就继承 <code>PopupBaseMenuItem</code> 自定义。</p>
+<h2 id="桌面层-ui">桌面层 UI</h2>
+<p>除了顶栏入口和菜单，扩展还可以在桌面上添加 Actor。常见做法是在 <code>enable()</code> 里构造一个 <code>St.Widget</code>，用 <code>Main.layoutManager.addChrome()</code> 加到桌面层：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> widget</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> St.</span><span style="color:#B392F0">Widget</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  name: </span><span style="color:#9ECBFF">"hello-overlay"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  layout_manager: </span><span style="color:#F97583">new</span><span style="color:#E1E4E8"> Clutter.</span><span style="color:#B392F0">BoxLayout</span><span style="color:#E1E4E8">(),</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">widget.</span><span style="color:#B392F0">set_position</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">50</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">50</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">widget.</span><span style="color:#B392F0">set_size</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">200</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Main.layoutManager.</span><span style="color:#B392F0">addChrome</span><span style="color:#E1E4E8">(widget);</span></span></code></pre>
+<p>桌面层 Actor 的位置、内容需要自己管理——没有 GTK 那种布局系统，定位和尺寸都要手动算。</p>
+<h2 id="本地数据">本地数据</h2>
+<p>扩展需要保存状态时，可以写到 <code>~/.config/&#x3C;应用名>/</code> 下的 JSON 文件：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> file</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Gio.File.</span><span style="color:#B392F0">new_for_path</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">  GLib.</span><span style="color:#B392F0">build_filenamev</span><span style="color:#E1E4E8">([GLib.</span><span style="color:#B392F0">get_user_config_dir</span><span style="color:#E1E4E8">(), </span><span style="color:#9ECBFF">"hello"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"data.json"</span><span style="color:#E1E4E8">]),</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">contents</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> file.</span><span style="color:#B392F0">load_contents_async</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> data</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">parse</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> TextDecoder</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">decode</span><span style="color:#E1E4E8">(contents));</span></span></code></pre>
+<p>写入：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> bytes</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> TextEncoder</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">encode</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">stringify</span><span style="color:#E1E4E8">(data, </span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#F97583">await</span><span style="color:#E1E4E8"> file.</span><span style="color:#B392F0">replace_contents_bytes_async</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">  new</span><span style="color:#E1E4E8"> GLib.</span><span style="color:#B392F0">Bytes</span><span style="color:#E1E4E8">(bytes),</span></span>
+<span class="line"><span style="color:#79B8FF">  null</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  false</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  Gio.FileCreateFlags.</span><span style="color:#79B8FF">REPLACE_DESTINATION</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  null</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>读取时需要兜底：文件不存在、JSON 损坏、字段缺失都要处理，否则用户遇到一次坏数据，Shell 就崩一次。</p>
+<h2 id="定时刷新">定时刷新</h2>
+<p>定时器用 <code>GLib.timeout_add()</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">._timeoutId </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> GLib.</span><span style="color:#B392F0">timeout_add</span><span style="color:#E1E4E8">(GLib.</span><span style="color:#79B8FF">PRIORITY_DEFAULT</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">15000</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">_refresh</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> GLib.</span><span style="color:#79B8FF">SOURCE_CONTINUE</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 返回 false 停止</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<p><code>disable()</code> 里移除：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">._timeoutId) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  GLib.Source.</span><span style="color:#B392F0">remove</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">._timeoutId);</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">._timeoutId </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>时间间隔不要太短。Shell 进程里跑密集的逻辑会让整个桌面卡顿，刷新频率通常 10-30 秒就够。</p>
+<h2 id="文件监听">文件监听</h2>
+<p>如果需要响应外部文件变化，用 <code>Gio.File.monitor_file()</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">._monitor </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> file.</span><span style="color:#B392F0">monitor</span><span style="color:#E1E4E8">(Gio.FileMonitorFlags.</span><span style="color:#79B8FF">NONE</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">._monitorId </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">._monitor.</span><span style="color:#B392F0">connect</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"changed"</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">_reloadData</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<p>清理：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">._monitor.</span><span style="color:#B392F0">disconnect</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">._monitorId);</span></span>
+<span class="line"><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">._monitor.</span><span style="color:#B392F0">cancel</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<p>文件变化事件可能连续触发（编辑器保存时通常触发多次），需要 debounce。</p>
+<h2 id="调试">调试</h2>
+<p>GNOME 扩展的调试方式跟 Web 开发完全不同。反正让Agent做吧）</p>
+<p><strong>查看日志</strong>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">journalctl</span><span style="color:#79B8FF"> --user</span><span style="color:#79B8FF"> -f</span><span style="color:#9ECBFF"> /usr/bin/gnome-shell</span></span></code></pre>
+<p><code>log()</code> 和 <code>logError()</code> 的输出会出现在这里。</p>
+<p><strong>重载扩展</strong>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">gnome-extensions</span><span style="color:#9ECBFF"> disable</span><span style="color:#9ECBFF"> hello@misaki.local</span></span>
+<span class="line"><span style="color:#B392F0">gnome-extensions</span><span style="color:#9ECBFF"> enable</span><span style="color:#9ECBFF"> hello@misaki.local</span></span></code></pre>
+<p><strong>查看扩展状态</strong>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">gnome-extensions</span><span style="color:#9ECBFF"> info</span><span style="color:#9ECBFF"> hello@misaki.local</span></span></code></pre>
+<p><strong>列出已安装扩展</strong>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">gnome-extensions</span><span style="color:#9ECBFF"> list</span><span style="color:#79B8FF"> --enabled</span></span></code></pre>
+<p><strong>Looking Glass</strong>：按下 <code>Alt + F2</code> 输入 <code>lg</code> 回车，可以打开 GNOME 内部的 JavaScript 控制台和 inspector。能直接看 Main 的状态、执行 JS、临时调用扩展方法。调试 UI 问题时会用到。</p>
+<p>修改 <code>extension.js</code> 后不会自动生效——<code>disable</code> 再 <code>enable</code> 是最低成本的迭代方式，复杂场景下需要重启 Shell（注销重新登录，或在 Wayland 下按 <code>Alt + F2</code> 输入 <code>r</code>）。</p>
+<h2 id="安装与分发">安装与分发</h2>
+<p>开发时直接放到扩展目录：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>~/.local/share/gnome-shell/extensions/hello@misaki.local/</span></span>
+<span class="line"><span>├── metadata.json</span></span>
+<span class="line"><span>├── extension.js</span></span>
+<span class="line"><span>├── stylesheet.css</span></span>
+<span class="line"><span>└── prefs.js   (可选)</span></span></code></pre>
+<p><strong><code>prefs.js</code></strong> 是扩展的配置窗口入口。如果写了它，GNOME 扩展设置里会出现”设置”按钮。</p>
+<p>然后我还没分发,后面有空了再</p>
+<p><a href="https://github.com/Misaki14987/Task-Dashboard">https://github.com/Misaki14987/Task-Dashboard</a> 项目地址
+<img alt="Task Dashboard 效果演示" loading="lazy" decoding="async" fetchpriority="auto" width="5112" height="2880" src="/_astro/image.Pai5dAs7_2tbVrt.webp" ></p>
+<blockquote>
+<p>是谁在喜欢Gnome？哦是我（后面换笔记本还是用Hyprland吧</p>
+</blockquote> </div> <nav class="post-pagination" aria-label="相邻文章"> <a href="/posts/word-cloud-implement/" data-tone="build"> <span>上一篇</span> <strong>React+GSAP搓一个简单的词云组件</strong> </a>  </nav> </div> </div> </article> </section>  </main> </div> <script type="module">const a=e=>{document.documentElement.lang=e==="zh"?"zh-CN":"en",localStorage.setItem("site-locale",e),document.querySelectorAll("[data-i18n]").forEach(t=>{t.textContent=t.dataset[e]||t.textContent}),document.querySelectorAll("[data-locale]").forEach(t=>{t.setAttribute("aria-pressed",String(t.dataset.locale===e))})},l=()=>{document.querySelectorAll("[data-locale]").forEach(e=>{e.onclick=()=>a(e.dataset.locale==="en"?"en":"zh")}),a(localStorage.getItem("site-locale")==="en"?"en":"zh")};document.addEventListener("astro:page-load",l);l();</script> <button class="back-to-top" type="button" data-back-to-top aria-label="返回顶部"> <span aria-hidden="true">↑</span>
+顶部
+</button>  </main> <script type="module">const s=()=>{history.scrollRestoration="manual";let e=!1,t=0;const o=()=>`scroll:${location.pathname}${location.search}`,i=()=>{sessionStorage.setItem(o(),String(window.scrollY))};window.addEventListener("scroll",()=>{cancelAnimationFrame(t),t=requestAnimationFrame(i)},{passive:!0}),window.addEventListener("popstate",()=>{e=!0}),document.addEventListener("astro:before-preparation",i),document.addEventListener("astro:after-swap",()=>{if(location.hash)return;const n=Number(sessionStorage.getItem(o())||0);requestAnimationFrame(()=>{window.scrollTo({top:e?n:0,behavior:"auto"}),e=!1})})};let a=!1;const r=()=>{a||(a=!0,s())};r();</script> </body> </html> <script type="module" src="/_astro/MarkdownLayout.astro_astro_type_script_index_0_lang.D4scnx5J.js"></script>

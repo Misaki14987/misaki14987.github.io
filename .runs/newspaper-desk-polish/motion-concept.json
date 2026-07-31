@@ -1,0 +1,292 @@
+{
+  "version": 1,
+  "level": "heavy",
+  "selectedDirection": "Desk",
+  "status": "motion-contract-ready_prototype-failed",
+  "signatureInteraction": "An explicit UNIT-to-newspaper switch pulls the UNIT wordmark apart into blue, yellow, orange, and black printing plates. One blank aged sheet rolls over the viewport, hides the layout swap at full coverage, and becomes the partially folded newspaper already resting on M1saK1's green desk. Scroll then opens that same edition, settles its crease, and stamps the masthead.",
+  "animatedSubject": "One aged newspaper sheet, treated as the same physical edition from Paper Bridge through desk opening and final mail-slot delivery.",
+  "scrollStory": [
+    "UNIT leaves as separated print plates; the black key plate lingers last.",
+    "A blank sheet rises across the viewport and completely covers the old layout.",
+    "The Desk layout swaps behind the covered sheet; the bridge aligns with the folded Desk newspaper before the overlay is removed.",
+    "Scroll opens the newspaper, relaxes the center crease, resolves wet ink, and commits the masthead stamp.",
+    "The lead clipping is placed and taped at the center of the desk.",
+    "Articles are dealt into a reading pile while the diary notebook opens beside them.",
+    "A torn classified notice is pulled free, taped down, and marked VACANT.",
+    "The owner's copy opens and interest slips are dealt beside it.",
+    "The index notebook opens and subject labels settle into its ruled rows.",
+    "Two exchange postcards are dealt onto the desk and receive a postmark.",
+    "The edition folds, enters the door mail slot, and leaves the slot flap rebounding once."
+  ],
+  "inputModes": [
+    "scroll",
+    "pointer",
+    "keyboard",
+    "time"
+  ],
+  "informationLossWithoutMotion": "Full motion explains the theme change as a print-to-paper handoff and turns the page order into one workday at the publisher's desk. Reduced motion keeps the same settled objects and reading order, but intentionally omits that causal physical story.",
+  "failureMode": "Fail if the layout swaps before the bridge is opaque edge-to-edge, if the bridge and Desk newspaper visibly jump at handoff, if any chapter is reduced to generic opacity/translate reveal, if scroll reverses a committed stamp or delivery event, or if mobile motion crosses readable text.",
+  "prototypeScope": "Extend only the selected Desk prototype enough to prove the UNIT plate exit, opaque Paper Bridge, covered layout swap, bridge-to-newspaper handoff, scroll-controlled opening, one representative section event, mobile geometry, acceleration, and live reduced-motion cancellation. Do not port the full homepage until this isolated path passes.",
+  "directionLocks": [
+    "Keep the overhead green work surface, aged paper, restrained burgundy ink, clippings, notebook, postcards, pencil, coffee, tape, and mail slot.",
+    "Do not turn Desk into Press machinery, an Archive records room, a UNIT color-block layout, a generic card grid, or a new design direction.",
+    "Use no generated assets for the prototype; CSS paper, ink, crease, tape, stamp, and halftone treatment are sufficient until a specific missing texture is proven.",
+    "No WebGL, canvas, GSAP, or new animation dependency."
+  ],
+  "runtimeContract": {
+    "nativeApis": [
+      "CSS custom properties, transforms, clip-path, pseudo-elements, transitions, and keyframes",
+      "matchMedia('(prefers-reduced-motion: reduce)') with a live change listener",
+      "IntersectionObserver for one-shot chapter events",
+      "requestAnimationFrame only to coalesce scroll reads and write CSS variables",
+      "AbortController for Astro lifecycle cleanup",
+      "animationend and transitionend with timeout fallback for finite phase completion"
+    ],
+    "stateVariables": {
+      "themePhase": "idle | plate-exit | bridge-enter | covered-swap | desk-handoff | desk-ready",
+      "requestedTheme": "units | newspaper",
+      "layoutSwapped": "boolean; may become true only while bridgeCoverage is 1",
+      "bridgeCoverage": "0..1; derived from the finite automatic timeline, not page scroll",
+      "openingProgress": "0..1; clamp(scrollY / (0.72 * innerHeight)) on the homepage",
+      "mastheadStamped": "boolean; commits once when openingProgress first reaches 0.70",
+      "completedEvents": "Set of lead, columns, classified, about, index, exchange, delivery",
+      "reducedMotion": "live MediaQueryList.matches OR prototype override",
+      "motionFrame": "single pending requestAnimationFrame id",
+      "transitionAbort": "AbortController for temporary wheel, touchstart, keydown, and completion listeners"
+    },
+    "ownership": {
+      "themeTransition": "One fixed, inert [data-theme-transition] sibling of the current theme root; it owns plate clones and the blank bridge sheet and is removed after handoff.",
+      "unitExit": "The existing UNIT author mark supplies four aria-hidden visual clones; the semantic UNIT content remains in place until covered.",
+      "deskOpening": ".np-desk__opening owns the scroll range; .np-desk__newspaper owns paper pose and ink variables.",
+      "chapters": "Each existing .np-desk .np-scene owns one event class and is unobserved after completion.",
+      "delivery": ".np-desk__outro owns fold progress and the one-shot mail-slot rebound."
+    },
+    "lifecycle": [
+      "Mount once through the existing page lifecycle helper.",
+      "Cancel requestAnimationFrame, observers, timers, and transition listeners on cleanup or Astro navigation.",
+      "Saved-theme restoration and same-theme navigation render directly and never create the transition overlay.",
+      "A repeated theme-switch activation while themePhase is not idle calls finishTransition instead of starting another instance."
+    ]
+  },
+  "themeTransition": {
+    "trigger": "Only an explicit theme-switch activation from UNIT to the newspaper theme. Homepage switching first records focus, sets scroll to 0, and starts the automatic segment. An article switch preserves the nearest heading and opens the upright Focus Reader directly after the covered swap.",
+    "nonTriggers": [
+      "initial saved-theme restoration",
+      "Astro navigation within the same theme",
+      "browser Back restoration",
+      "live reduced-motion preference changes"
+    ],
+    "desktopTimelineMs": [
+      {
+        "start": 0,
+        "end": 80,
+        "event": "Theme control takes an ink-pressure state; transition overlay is mounted with no visual gap."
+      },
+      {
+        "start": 80,
+        "end": 560,
+        "event": "UNIT plates misregister by at most 8px, then blue, yellow, and orange pull upward at 80ms intervals; the black key plate waits until 400ms and leaves last."
+      },
+      {
+        "start": 280,
+        "end": 760,
+        "event": "The blank aged bridge sheet rolls from below the viewport to edge-to-edge coverage. A roller shadow and two press creases travel with it; no machine illustration appears."
+      },
+      {
+        "start": 680,
+        "end": 700,
+        "event": "bridgeCoverage is 1. Swap the DOM/theme layout behind the opaque sheet in one task, then verify coverage again on the next animation frame."
+      },
+      {
+        "start": 700,
+        "end": 1384,
+        "event": "The bridge sheet rolls past, exposing the green desk from top to bottom while its remaining paper geometry rotates and scales toward the Desk opening's initial folded pose."
+      },
+      {
+        "start": 1384,
+        "end": 1400,
+        "event": "Copy the final bridge pose into Desk CSS variables, reveal .np-desk__newspaper on the same frame, remove the overlay on the next frame, restore focus, and set themePhase to desk-ready."
+      }
+    ],
+    "mobileTimelineMs": [
+      {
+        "start": 0,
+        "end": 60,
+        "event": "Ink-pressure acknowledgement and overlay mount."
+      },
+      {
+        "start": 60,
+        "end": 440,
+        "event": "The four UNIT plates separate by at most 5px and pull upward at 60ms intervals; black leaves last."
+      },
+      {
+        "start": 200,
+        "end": 620,
+        "event": "The bridge rolls upward and reaches full coverage at 540ms."
+      },
+      {
+        "start": 540,
+        "end": 556,
+        "event": "Swap the layout behind full paper coverage."
+      },
+      {
+        "start": 556,
+        "end": 1084,
+        "event": "Reveal the green desk and align the bridge remnant with the narrower folded Mobile Edition."
+      },
+      {
+        "start": 1084,
+        "end": 1100,
+        "event": "Complete the frame-matched handoff and remove the overlay."
+      }
+    ],
+    "coverageGuarantee": "The bridge is fixed at inset: 0, at least 102vw by 102dvh, opaque var(--np-paper), overflow: clip, and above both theme roots. layoutSwapped cannot be set until its bounding rect covers all four viewport edges and computed opacity equals 1. No dark, transparent, or blank browser-background frame is permitted.",
+    "handoffPose": {
+      "desktop": "Match the Desk paper at translateY(-120px) rotate(-7deg) scale(.84), width min(720px, 72vw), centered at top 16vh.",
+      "mobile": "Match the Desk paper at translateY(-72px) rotate(-3deg) scale(.90), width 88vw, centered at top 12vh. The bridge carries no readable copy, so it cannot cover or collide with text."
+    },
+    "acceleration": "The first wheel, touchstart, or Escape during the automatic segment calls finishTransition. Before swap, snap the bridge to verified full coverage, swap behind it, then snap to the Desk handoff pose and remove it within two animation frames. After swap, snap directly to the handoff pose. Stable Desk state is required within 100ms; the input listener is then removed.",
+    "focus": "Keep focus on the activated switch while the overlay is inert and aria-hidden. After homepage handoff, focus the newspaper theme switch without scrolling; after article handoff, restore the preserved nearest heading using preventScroll.",
+    "hardMaximumMs": 1800
+  },
+  "deskEntrance": {
+    "automaticHandoff": "Ends with the newspaper visibly present but partially folded. Automatic motion stops here.",
+    "scrollRange": "openingProgress runs from 0 at scrollY 0 to 1 at 72vh. It never prevents native vertical scrolling and is reversible until a discrete event commits.",
+    "beats": [
+      {
+        "range": "0.00-0.28",
+        "event": "The folded edition settles from the handoff pose; desk paper y moves -120px to -70px, rotation -7deg to -4deg, and scale .84 to .91."
+      },
+      {
+        "range": "0.28-0.58",
+        "event": "The right fold opens around the center crease; scale reaches .98, fold shadow narrows, pencil shifts no more than 34px, and coffee shifts no more than 18px in the opposite direction."
+      },
+      {
+        "range": "0.40-0.70",
+        "event": "Wet masthead ink resolves from 5px blur and 20% density to sharp full-density print. This is ink development, not a generic fade."
+      },
+      {
+        "range": "0.70",
+        "event": "Commit one 220ms masthead stamp impact: 6px downward pressure for 70ms, 2px overprint misregistration, then settle. mastheadStamped remains true when scrolling back."
+      },
+      {
+        "range": "0.70-1.00",
+        "event": "The center crease relaxes and all paper, ink, pencil, and coffee variables reach their settled values before the lead clipping enters."
+      }
+    ],
+    "viewportRule": "The opening remains a standalone first scene. The lead story never shares the initial viewport. Mobile completes the ritual within at most 1.5 viewports and uses no sticky lock."
+  },
+  "sectionEvents": [
+    {
+      "section": "lead",
+      "selector": ".np-desk__lead",
+      "trigger": "First intersection when the section top reaches 74% of the viewport; threshold .12.",
+      "physicalEvent": "Place the central clipping, then slap down its tape and reveal the handwritten placement note as drying pen ink.",
+      "timing": "Clipping 0-820ms; tape pressure 620-800ms; handnote ink 760-1120ms.",
+      "commit": "Once per visit; clipping and tape stay settled."
+    },
+    {
+      "section": "columns",
+      "selector": ".np-desk__columns",
+      "trigger": "First intersection at the same observer boundary.",
+      "physicalEvent": "Sort the desk: article sheets are dealt into a staggered reading pile from left to right while the burgundy diary cover opens from its spine.",
+      "timing": "Pile base 0-720ms; cards settle at 70ms intervals from 240ms; diary cover 120-900ms.",
+      "commit": "Once per visit; mobile preserves the horizontal Exploration Strip and does not consume vertical gestures."
+    },
+    {
+      "section": "classified",
+      "selector": ".np-desk__classified",
+      "trigger": "First intersection at the observer boundary.",
+      "physicalEvent": "Pull one torn classified clipping from the right, press its tape, then strike the existing VACANT stamp.",
+      "timing": "Paper pull 0-760ms; tape 560-740ms; stamp 700-920ms.",
+      "commit": "Once per visit; the stamp does not reverse."
+    },
+    {
+      "section": "about",
+      "selector": ".np-desk__about",
+      "trigger": "First intersection at the observer boundary.",
+      "physicalEvent": "Slide in and open the owner's copy, then deal five interest slips beside the book.",
+      "timing": "Book slide/open 0-820ms; slips land from 420ms at 90ms intervals.",
+      "commit": "Once per visit; no slip crosses the book text."
+    },
+    {
+      "section": "index",
+      "selector": ".np-desk__index",
+      "trigger": "First intersection at the observer boundary.",
+      "physicalEvent": "Open the ruled index notebook and insert subject labels into its rows from top to bottom.",
+      "timing": "Notebook open 0-700ms; labels settle from 360ms at 55ms intervals, capped at 900ms total.",
+      "commit": "Once per visit; links remain focusable throughout and focus-visible uses the same settled label state."
+    },
+    {
+      "section": "exchange",
+      "selector": ".np-desk__exchange",
+      "trigger": "First intersection at the observer boundary.",
+      "physicalEvent": "Deal two postcards onto the corner in opposite rotations and apply one CSS postmark to each.",
+      "timing": "First card 0-620ms; second 160-780ms; postmarks strike at 520ms and 680ms for 180ms.",
+      "commit": "Once per visit; mobile keeps the horizontal strip scrollable by touch and keyboard."
+    },
+    {
+      "section": "outro",
+      "selector": ".np-desk__outro",
+      "trigger": "Fold progress begins when the footer top reaches 85% of the viewport and reaches 1 at 30%; delivery commits on the first crossing of .92.",
+      "physicalEvent": "Fold the edition along its press crease, feed it into the mail slot, and rebound the flap once.",
+      "timing": "Fold follows scroll until .92; committed feed 420ms; flap rebound 520ms after feed.",
+      "commit": "Delivery stays complete when scrolling back."
+    }
+  ],
+  "observerContract": {
+    "options": {
+      "root": null,
+      "rootMargin": "0px 0px -26% 0px",
+      "threshold": 0.12
+    },
+    "rule": "Add exactly one event-specific completed class, record it in completedEvents, and unobserve. Do not apply a shared opacity reveal to .np-scene."
+  },
+  "mobileContract": {
+    "widths": [
+      360,
+      390,
+      768
+    ],
+    "motionLimits": [
+      "Ordinary section entry offsets are at most 24px vertically and 12px horizontally; rotations are at most 0.7deg once settled.",
+      "No animated child may leave its scene's overflow-safe box or pass over a heading, paragraph, link, button, or form control.",
+      "Lead, classified, about, and index use one-column document flow. No absolute positioning is added for readable content.",
+      "Columns and exchange retain contained horizontal Exploration Strips with scroll-snap, visible next-item hint, touch scrolling, and keyboard-focus access.",
+      "The bridge is decorative and text-free; title sizing and document flow never depend on its geometry.",
+      "Test start, midpoint, and settled states at 360x800 and 390x844, not only final screenshots."
+    ]
+  },
+  "reducedMotionContract": {
+    "live": true,
+    "onEnable": "Within 100ms abort the transition timeline and all finite section transitions, cancel the scroll requestAnimationFrame, disconnect observers, apply the requested theme directly, remove the bridge and empty opening distance, set every paper/ink/object variable to its settled value, mark all visible content readable, expand the Focus Reader, and preserve focus.",
+    "onDisable": "Do not replay UNIT exit, Desk entrance, stamps, or already completed section events. Reconnect observers only for unvisited sections below the current scroll position.",
+    "staticEdition": [
+      "No Plate Exit, Paper Bridge, opening parallax, unfolding, ink development, stamping, card dealing, fold, delivery, or slot rebound runs.",
+      "The masthead and lead story appear directly with no empty ritual viewport.",
+      "All content and controls remain in normal document flow; static rotations are halved on mobile and cannot create horizontal overflow.",
+      "No requestAnimationFrame loop or scroll-motion state remains active."
+    ]
+  },
+  "acceptanceGate": {
+    "requiredViewports": [
+      "1440x900",
+      "1024x768",
+      "768x1024",
+      "390x844",
+      "360x800"
+    ],
+    "checks": [
+      "UNIT exit is visibly its own event before any newspaper layout appears.",
+      "No viewport pixel exposes the layout swap; bridge edge coverage is verified during the swap frame.",
+      "Bridge-to-Desk paper handoff has no visible position, scale, rotation, color, or shadow jump.",
+      "The newspaper opening, ink resolution, and masthead stamp form a complete scroll-controlled entrance.",
+      "Every chapter has the specified physical event and no shared generic scene reveal remains.",
+      "Wheel, touchstart, and Escape finish the automatic segment in under 100ms and leave a stable page.",
+      "Mobile start, midpoint, and final states have no text overlap, clipping, or page-level horizontal overflow.",
+      "A live reduced-motion change settles immediately without reload and leaves no animation frame activity.",
+      "Astro navigation mounts the controller once and cleanup removes every listener and observer.",
+      "No new dependency or generated asset is added."
+    ]
+  }
+}

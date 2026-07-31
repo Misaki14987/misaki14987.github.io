@@ -1,0 +1,111 @@
+{
+  "level": "heavy",
+  "direction": "Desk / Personal Newspaper refinement",
+  "scope": "Selected throwaway Desk prototype only; no redesign and no production UNIT changes.",
+  "designScore": 90,
+  "threshold": 85,
+  "hardFails": [],
+  "build": {
+    "pnpmBuild": "passed",
+    "themeTest": "passed"
+  },
+  "evidence": {
+    "desktopViewport": "1440x900",
+    "mobileViewport": "390x844",
+    "screenshots": [
+      "screenshots/desktop-unit-exit.png",
+      "screenshots/desktop-covered-swap.png",
+      "screenshots/desktop-desk-handoff.png",
+      "screenshots/desktop-opening-mid.png",
+      "screenshots/mobile-unit-exit.png",
+      "screenshots/mobile-covered-swap.png",
+      "screenshots/mobile-desk-handoff.png",
+      "screenshots/mobile-opening-mid.png",
+      "screenshots/mobile-reduced.png",
+      "screenshots/mobile-chapter-lead.png",
+      "screenshots/mobile-chapter-columns.png",
+      "screenshots/mobile-chapter-classified.png",
+      "screenshots/mobile-chapter-about.png",
+      "screenshots/mobile-chapter-index.png",
+      "screenshots/mobile-chapter-exchange.png",
+      "screenshots/mobile-chapter-outro.png"
+    ]
+  },
+  "scriptedChecks": {
+    "desktopBridgeCoversViewport": true,
+    "mobileBridgeCoversViewport": true,
+    "acceleratedTransitionSettlesMs": 2.2,
+    "acceleratedTransitionLimitMs": 100,
+    "liveReducedMotionSettlesMs": 43.6,
+    "liveReducedMotionActiveAnimations": 0,
+    "horizontalOverflow": {
+      "360": false,
+      "768": false,
+      "1024": false,
+      "1440": false
+    },
+    "clippedTextCount": 1,
+    "clippedTextFinding": "The only reported node is the intentional .np-visually-hidden Editorial Columns heading; no visible text is clipped."
+  },
+  "visualChecks": {
+    "firstViewport": {
+      "status": "pass",
+      "finding": "UNIT is the clear departure subject, then the folded newspaper becomes the first Desk focal point with the next scene kept below the opening ritual."
+    },
+    "signatureInteraction": {
+      "status": "pass",
+      "finding": "The screenshots show a legible UNIT plate exit, fully opaque Paper Bridge, covered swap, folded Desk handoff, scroll opening, ink resolution and committed masthead stamp."
+    },
+    "bridgeAndHandoff": {
+      "status": "pass",
+      "finding": "Both desktop and mobile covered-swap frames are opaque edge to edge. The handoff keeps paper color, crease, pose and shadow coherent without a visible mixed-layout frame."
+    },
+    "sectionEventUniqueness": {
+      "status": "pass",
+      "finding": "Lead places a taped clipping; Columns deals a reading pile and opens a diary; Classified pulls torn paper and stamps VACANT; About opens the owner's book and deals labels; Index opens a ruled notebook; Exchange deals and postmarks postcards; Outro folds and feeds the edition into the mail slot."
+    },
+    "motionLanguage": {
+      "status": "pass",
+      "finding": "Paper folds, crease shadows, wet ink, tape pressure, stamps, dealt desk objects and mail-slot delivery form one consistent physical language."
+    },
+    "scrollNarrative": {
+      "status": "pass",
+      "finding": "One edition moves from print-plate departure through arrival and opening, across a working desk's reading and filing actions, then ends as a delivered folded paper."
+    },
+    "mobile": {
+      "status": "pass",
+      "finding": "No incoherent overlap or visible text obstruction is present. Lead, Classified, About and Index stay in document flow; Columns and Exchange preserve contained horizontal strips with a clear next-item hint."
+    },
+    "reducedMotion": {
+      "status": "pass",
+      "finding": "The live preference change reaches the complete static Desk in 43.6ms with zero active animations; the opening distance collapses and the newspaper remains readable."
+    }
+  },
+  "remainingDeviations": [
+    {
+      "severity": "non-blocking",
+      "deviation": "All chapter observers commit through the shared is-in-view class instead of one event-specific completed class and a completedEvents record.",
+      "risk": "The physical effects are visually distinct, but production analytics, replay policy or per-event lifecycle changes would be harder to isolate."
+    },
+    {
+      "severity": "non-blocking-prototype-risk",
+      "deviation": "The covered swap relies on the fixed bridge geometry and scheduled phase timing rather than a runtime bounding-rect and computed-opacity assertion before layoutSwapped changes.",
+      "risk": "Current desktop/mobile measurements pass; add the runtime assertion only when this throwaway prototype is ported to production or its geometry becomes dynamic."
+    },
+    {
+      "severity": "non-blocking-intentional",
+      "deviation": "Wheel, touchstart or Escape acceleration calls finishTransition directly instead of visibly snapping through bridge coverage and the frame-matched handoff.",
+      "risk": "This intentionally prioritizes a stable state under interruption and settles in 2.2ms, well below the 100ms contract; the accelerated path does not preserve the full visual continuity of the normal path."
+    },
+    {
+      "severity": "non-blocking-prototype-risk",
+      "deviation": "Outro folding is a one-shot IntersectionObserver event rather than the specified scroll-linked fold progress with a .92 delivery commit.",
+      "risk": "The final delivery beat is visually complete, but production should tighten it if reversible, progress-coupled folding remains a requirement."
+    }
+  ],
+  "finalGate": {
+    "passed": true,
+    "accepted": true,
+    "finding": "Heavy visual acceptance passes at 90/100 with no hard fails. The core interaction, narrative motion, mobile layout and reduced-motion behavior are complete; listed implementation-contract deviations remain non-blocking for this throwaway prototype."
+  }
+}

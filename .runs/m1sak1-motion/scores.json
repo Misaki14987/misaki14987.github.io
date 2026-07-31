@@ -1,0 +1,60 @@
+{
+  "directions": [
+    {
+      "conceptName": "错版印刷所 / Misaki Print Lab",
+      "scores": {
+        "originality": 18,
+        "firstScreenImpact": 19,
+        "typographyFit": 9,
+        "motionInteraction": 19,
+        "narrativeDepth": 14,
+        "contentClarity": 5,
+        "assetFeasibility": 5,
+        "mobileFeasibility": 5
+      },
+      "total": 94,
+      "hardFails": [],
+      "passed": true,
+      "strengths": "作者字标是明确主角；套准、进纸、裁切、翻面形成统一且内容驱动的高强度叙事；现有资产、CSS 与移动端拖动即可完整落地。",
+      "risks": "需严格限制错版幅度、专色占比与裁切时长，否则容易显廉价并拖慢归档入口。"
+    },
+    {
+      "conceptName": "个人频道切片 / M1saK1 Broadcast",
+      "scores": {
+        "originality": 16,
+        "firstScreenImpact": 18,
+        "typographyFit": 8,
+        "motionInteraction": 18,
+        "narrativeDepth": 13,
+        "contentClarity": 4,
+        "assetFeasibility": 5,
+        "mobileFeasibility": 4
+      },
+      "total": 86,
+      "hardFails": [],
+      "passed": true,
+      "strengths": "真实封面、作者标题与频道切换能快速建立焦点；硬切、检查、筛选和片尾滚动承担明确内容目的。",
+      "risks": "电视包装语言较常见，容易滑向怀旧模板；连续硬切与移动端分段控件会削弱概念独特性，节目化结构也略影响栏目扫描。"
+    },
+    {
+      "conceptName": "透明素材标本台 / Specimen Desk",
+      "scores": {
+        "originality": 17,
+        "firstScreenImpact": 17,
+        "typographyFit": 9,
+        "motionInteraction": 18,
+        "narrativeDepth": 13,
+        "contentClarity": 5,
+        "assetFeasibility": 5,
+        "mobileFeasibility": 4
+      },
+      "total": 88,
+      "hardFails": [],
+      "passed": true,
+      "strengths": "拆解、检查、合并、重组构成清楚的信息叙事；作者名与真实文章元信息保持主角清晰，资产依赖低且阅读态收敛明确。",
+      "risks": "首屏层叠的瞬时冲击力仅达到门槛，CSS 3D 文字清晰度需实机验证；移动端平面切片较桌面景深体验明显减弱。"
+    }
+  ],
+  "selectedDirection": "错版印刷所 / Misaki Print Lab",
+  "selectionReason": "总分最高且所有关键门槛均有余量。它以 M1saK1 字标作为明确焦点，用同一印刷动作体系贯穿作者身份、文章证明、主题导航与关系收束，同时无需新增资产，并在移动端保留可操作的套准核心。"
+}

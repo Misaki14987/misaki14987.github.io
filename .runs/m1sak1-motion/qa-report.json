@@ -1,0 +1,48 @@
+{
+  "designScore": 94,
+  "hardFails": [],
+  "build": "passed",
+  "viewports": {
+    "desktop": "1440x900",
+    "mobile": "390x844"
+  },
+  "screenshots": [
+    "screenshots/desktop-2.png",
+    "screenshots/desktop-entry-mid.png",
+    "screenshots/mobile-stamp.png",
+    "screenshots/mobile-archive-cdp.png",
+    "screenshots/desktop-article.png",
+    "screenshots/mobile-article.png",
+    "screenshots/desktop-reduced.png"
+  ],
+  "interactionChecks": {
+    "registrationVariablesRespond": true,
+    "entranceHasVisibleEarlyState": true,
+    "entranceSettlesCompletely": true,
+    "batchStampActivates": true,
+    "archivePrintStateActivates": true,
+    "archiveScrollPositionCorrect": true,
+    "horizontalOverflow": false
+  },
+  "visualChecks": {
+    "authorIsFirstViewportFocalPoint": true,
+    "latestArticleRemainsReadable": true,
+    "nextSectionHintVisible": true,
+    "mobileTextOverflow": false,
+    "articleReadingRemainsQuiet": true,
+    "reducedMotionUsable": true
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "finding": "The initial section reveal clipped the entire next panel, making the first-viewport continuation hint too weak.",
+      "fix": "Keep panel paper visible and animate only its printed content.",
+      "result": "passed"
+    }
+  ],
+  "remainingTradeoffs": [
+    "The registration effect is deliberately subtle at rest; it becomes visible through pointer or touch movement.",
+    "Future work filtering was not built before real work entries exist."
+  ],
+  "accepted": true
+}
