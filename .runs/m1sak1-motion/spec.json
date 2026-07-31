@@ -1,0 +1,167 @@
+{
+  "name": "错版印刷所 / Misaki Print Lab",
+  "score": 94,
+  "pageSections": [
+    {
+      "order": 1,
+      "id": "latest",
+      "role": "hook",
+      "content": "M1saK1 作者身份 + 最新文章"
+    },
+    { "order": 2, "id": "archive", "role": "proof", "content": "技术文章归档" },
+    {
+      "order": 3,
+      "id": "about",
+      "role": "exploration",
+      "content": "作者技术、审美与兴趣色版"
+    },
+    {
+      "order": 4,
+      "id": "subjects",
+      "role": "navigate",
+      "content": "主题活字索引"
+    },
+    {
+      "order": 5,
+      "id": "friends",
+      "role": "resolution",
+      "content": "交换样刊式友链"
+    }
+  ],
+  "contentRule": "不创建没有真实数据的作品空区块；未来作品沿用文章印张结构接入。",
+  "tokens": {
+    "colors": {
+      "paper": "#efe5dc",
+      "ink": "#050505",
+      "white": "#ffffff",
+      "blue": "#0d7ce8",
+      "yellow": "#ffb10a",
+      "orange": "#ff5d10",
+      "green": "#08ae46"
+    },
+    "typeScale": {
+      "heroAuthor": "clamp(72px, 13vw, 196px)",
+      "heroArticle": "clamp(30px, 4.4vw, 64px)",
+      "section": "clamp(34px, 5vw, 72px)",
+      "body": "13px-20px"
+    },
+    "spacing": {
+      "pageGap": "22px",
+      "panelDesktop": "34px",
+      "panelMobile": "20px",
+      "motionMaxOffset": "8px"
+    },
+    "radii": {
+      "hero": "28px",
+      "panel": "28px",
+      "item": "8px",
+      "pill": "999px only for tags"
+    },
+    "shadows": {
+      "default": "none",
+      "pressed": "inset 0 4px 0 rgba(0,0,0,.18)"
+    },
+    "easings": {
+      "settle": "cubic-bezier(.22,1,.36,1)",
+      "press": "cubic-bezier(.2,.8,.2,1)",
+      "linear": "linear"
+    },
+    "durations": {
+      "micro": "120ms",
+      "register": "680ms",
+      "sectionPrint": "720ms",
+      "stamp": "1400ms"
+    }
+  },
+  "hero": {
+    "composition": "Full-bleed real article cover. Oversized M1saK1 is the first focal point and semantic h1; duplicated aria-hidden blue/orange/yellow layers create registration. Latest article title becomes h2 in a stable lower caption area.",
+    "viewport": "Height is capped below the viewport so the archive edge remains visible on desktop and mobile.",
+    "subjectTreatment": "The author name remains readable at every registration offset. DESIGN / CODE / PLAY identifies the three plates without turning into explanatory copy.",
+    "registration": "Pointer or touch position sets x/y CSS variables clamped to +/-8px; pointer leave/release settles to zero. Initial load moves from preset misregistration to aligned state.",
+    "feed": "From hero top to exit, a requestAnimationFrame-throttled scroll progress variable moves the cover/copy no more than 48px and closes the crop no more than 6%; links remain clickable.",
+    "easterEgg": "Three activations of the author mark within 900ms reveal LOT 14987 / ZERO SUGAR as a decorative batch stamp for 1400ms, without layout shift."
+  },
+  "assets": [
+    {
+      "asset": "existing latest post cover",
+      "use": "hero full-bleed print sheet",
+      "fallback": "existing blue/green graphic fallback"
+    },
+    {
+      "asset": "existing article covers",
+      "use": "archive proof",
+      "fallback": "solid assigned process color"
+    }
+  ],
+  "layoutRules": {
+    "desktop": "Keep sticky left rail. Hero and every section remain a full content band, not floating cards. Archive uses 3 columns only where each item stays at least 220px wide.",
+    "tablet": "Keep composition but use 2-column archive and reduce registration layers to +/-6px.",
+    "mobile": "Use existing mobile header, single-column archive, hero at least 540px and no taller than viewport minus 108px. Touch movement can register plates without preventing vertical scrolling; release aligns them. Keep the next section edge visible.",
+    "article": "No pointer tracking, parallax, registration, sticky transform, or continuous text motion in article content. Existing reading progress, focus, TOC, code and heading controls remain stable."
+  },
+  "motionSystem": {
+    "actions": {
+      "registration": "Color layers move into alignment to reveal author facets.",
+      "feed": "Hero and archive items travel vertically as paper entering the press.",
+      "cut": "A hard horizontal ink bar crosses a section once as it enters view.",
+      "flip": "Hover/focus lifts only a small item corner and exposes its process color."
+    },
+    "triggers": [
+      "page ready",
+      "pointer/touch inside hero",
+      "scroll progress",
+      "IntersectionObserver at 20%",
+      "hover/focus-visible",
+      "triple activation"
+    ],
+    "rules": [
+      "At most one dominant motion at a time.",
+      "No generic ambient float or endless loop.",
+      "All section reveals run once and settle completely.",
+      "Transform never changes document flow.",
+      "Interactive motion must have an equivalent focus state."
+    ]
+  },
+  "interactionStates": {
+    "default": "All content readable and links operable before JS.",
+    "hover": "Registration or paper-corner feedback only; no neighbor movement.",
+    "focusVisible": "2px black outline with 4px offset plus the same paper-corner state.",
+    "active": "120ms ink-pressure inset state.",
+    "loading": "No full-screen loader; hero is immediately readable.",
+    "noJs": "Final aligned layout with no hidden content."
+  },
+  "reducedMotion": [
+    "Force registration offsets and feed progress to zero.",
+    "Disable section cut/reveal transforms and smooth scrolling.",
+    "Keep hover/focus color and outline feedback.",
+    "Batch stamp appears and disappears without animated transform.",
+    "No content is omitted."
+  ],
+  "acceptanceChecks": [
+    "M1saK1 is the first-screen h1 and dominant focal point.",
+    "Latest article title, description and link remain visible and clickable.",
+    "Registration offset never exceeds 8px and returns to alignment.",
+    "Archive, about, subjects and friends reveal through print actions rather than generic fades.",
+    "Triple activation reveals one non-blocking batch stamp with no layout shift.",
+    "No continuous motion exists inside article reading content.",
+    "Desktop 1440x900 and mobile 390x844 have no overflow or incoherent overlap.",
+    "Mobile preserves registration through touch/scroll and shows a hint of the next section.",
+    "prefers-reduced-motion keeps every control and all content usable.",
+    "Astro production build passes and no new dependency is added."
+  ],
+  "forbiddenDeviations": [
+    "No hacker, terminal, scanline or glitch language.",
+    "No generated person.",
+    "No SaaS card grid.",
+    "No blur-heavy glassmorphism.",
+    "No WebGL or animation dependency for this direction.",
+    "No empty future-work section.",
+    "No redesign of article typography or user-modified markdown font."
+  ],
+  "minimalFileTarget": [
+    "src/pages/index.astro",
+    "src/styles/pages/index.scss",
+    "src/styles/components/units-shell.scss",
+    "src/scripts/client/home-motion.ts"
+  ]
+}

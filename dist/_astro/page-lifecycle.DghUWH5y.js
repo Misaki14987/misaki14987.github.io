@@ -1,0 +1,1 @@
+const u=new Set,c=(e,a)=>{if(u.has(e))return;u.add(e);let n=null,o;const d=()=>{const t=document.querySelector(e);t!==n&&(o?.(),o=void 0,n=t,t&&(o=a(t)||void 0))};document.addEventListener("astro:page-load",d),d()};export{c as m};

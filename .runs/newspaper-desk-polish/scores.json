@@ -1,0 +1,99 @@
+{
+  "level": "heavy",
+  "direction": "Desk / Personal Newspaper refinement",
+  "scope": "Final scoring of the selected Desk implementation only; no alternate direction was considered.",
+  "evidence": {
+    "contracts": [
+      "docs/design/newspaper-theme.md",
+      ".runs/newspaper-desk-polish/motion-concept.json",
+      ".runs/newspaper-desk-polish/spec.json"
+    ],
+    "implementation": [
+      "src/pages/prototype/newspaper.astro",
+      "src/components/prototype/newspaper/DeskVariant.astro",
+      "src/scripts/client/prototype/newspaper.ts",
+      "src/styles/prototypes/newspaper.scss"
+    ],
+    "visualQA": [
+      "screenshots/desktop-unit-exit.png",
+      "screenshots/desktop-covered-swap.png",
+      "screenshots/desktop-desk-handoff.png",
+      "screenshots/desktop-opening-mid.png",
+      "screenshots/mobile-unit-exit.png",
+      "screenshots/mobile-covered-swap.png",
+      "screenshots/mobile-desk-handoff.png",
+      "screenshots/mobile-opening-mid.png",
+      "screenshots/mobile-reduced.png",
+      "screenshots/mobile-chapter-lead.png",
+      "screenshots/mobile-chapter-columns.png",
+      "screenshots/mobile-chapter-classified.png",
+      "screenshots/mobile-chapter-about.png",
+      "screenshots/mobile-chapter-index.png",
+      "screenshots/mobile-chapter-exchange.png",
+      "screenshots/mobile-chapter-outro.png"
+    ]
+  },
+  "scores": {
+    "conceptOriginality": 14,
+    "firstScreenImpact": 18,
+    "signatureInteraction": 22,
+    "scrollNarrative": 13,
+    "typographyLayout": 9,
+    "contentClarity": 9,
+    "feasibility": 5
+  },
+  "total": 90,
+  "threshold": 85,
+  "passed": true,
+  "hardFails": [],
+  "motionDirectorHardFails": [],
+  "heavyPrototypePassed": true,
+  "assessment": {
+    "unitExit": {
+      "status": "pass",
+      "finding": "UNIT separates into blue, yellow, orange and black plates; the black key plate leaves last, giving the outgoing theme its own readable event."
+    },
+    "bridgeCoveredSwap": {
+      "status": "pass",
+      "finding": "The aged sheet reaches opaque edge-to-edge coverage before data-layout-swapped changes, then contracts into the Desk handoff pose. Desktop and mobile covered-swap evidence exposes no old/new mixed frame."
+    },
+    "deskEntry": {
+      "status": "pass",
+      "finding": "The same visible sheet lands partially folded; native scroll opens its fold, relaxes the crease, resolves wet masthead ink and commits one non-reversing DESK COPY stamp."
+    },
+    "sectionEventUniqueness": {
+      "status": "pass",
+      "finding": "Lead placement and tape, dealt reading pile with diary-cover opening, torn classified with VACANT strike, owner-book opening with slips, index opening with labels, dealt/postmarked postcards and mail-slot delivery are visually distinct physical events."
+    },
+    "narrativeContinuity": {
+      "status": "pass",
+      "finding": "One edition moves from print plates to blank bridge, folded desk paper, developed masthead, working-desk clippings and notebooks, correspondence, then final delivery; later events stay committed when scrolling back."
+    },
+    "mobile": {
+      "status": "pass",
+      "finding": "The 390x844 transition, opening, reduced-motion and every chapter screenshot remain readable without incoherent overlap. Columns and postcards stay in contained horizontal strips while vertical document flow remains native."
+    },
+    "reducedMotion": {
+      "status": "pass",
+      "finding": "A live preference change finishes the finite transition, shows the settled Desk state, removes empty opening distance, disables transitions/animations and leaves content immediately readable."
+    }
+  },
+  "build": {
+    "command": "pnpm build",
+    "status": "passed",
+    "dependenciesAdded": false,
+    "generatedAssetsAdded": false
+  },
+  "thresholdChecks": {
+    "totalAtLeast85": true,
+    "signatureInteractionAtLeast21": true,
+    "scrollNarrativeAtLeast12": true,
+    "noHardFails": true,
+    "heavyMotionPrototypePassed": true
+  },
+  "remainingRisks": [
+    "The captured visual set proves 1440x900 and 390x844. Repeat the same transition midpoint and settled-state checks at 360, 768 and 1024 pixels when porting the prototype into the production theme.",
+    "The prototype switcher is development-only; keep it absent from production so it cannot compete with the mobile masthead."
+  ],
+  "gate": "PASS. The selected Desk Heavy prototype may proceed to the Builder stage without changing its art direction or weakening the signature transition and chapter events."
+}
