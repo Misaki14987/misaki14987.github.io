@@ -97,7 +97,7 @@ $A\beta$ 表示信号经过放大器和反馈网络以后产生的总变化。�
 
 我们把原来的输入信号设为 0，然后从断口处放入一个测试信号，记作 $v_t$
 
-![断环后的环路增益测量](./loop-gain-measurement.svg)
+![测试信号从断口经过求和点、放大器与反馈网络后返回的环路示意图](./loop-gain-measurement.svg)
 
 *从断口注入 $v_t$，跟着信号绕环路一圈，回到断口处得到 $v_r$。*
 
@@ -207,7 +207,7 @@ $$
 =360^\circ-\angle T(j\omega_{\mathrm{gc}})
 $$
 
-![在增益交越频率下读取相位裕度](./phase-margin.svg)
+![环路增益在增益交越频率处为 1，相位距离 360 度为 60 度的曲线](./phase-margin.svg)
 
 *先找到 $\lvert T\rvert=1$ 的位置，再看此处的相位距离 $360^\circ$ 还有多少。*
 
@@ -276,7 +276,7 @@ $$
 =\arctan\left(\frac{\omega}{\omega_0}\right)
 $$
 
-![RC 极点产生的相位滞后](./rc-pole-phase.svg)
+![RC 低通电路及其相位滞后随频率升高而接近 90 度的曲线](./rc-pole-phase.svg)
 
 *频率经过极点频率 $\omega_0$ 时，相位滞后为 $45^\circ$；频率继续升高，相位滞后逐渐接近 $90^\circ$。*
 

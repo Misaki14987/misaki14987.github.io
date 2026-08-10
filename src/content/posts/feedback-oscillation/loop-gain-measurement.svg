@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 340" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 50 900 290" role="img" aria-labelledby="title desc">
   <title id="title">断环后的环路增益测量</title>
   <desc id="desc">测试信号 vt 从断口进入求和点，经过放大器 A 和反馈网络 beta 后返回 vr。</desc>
   <defs>
@@ -10,8 +10,6 @@
     </marker>
   </defs>
   <rect width="900" height="340" fill="#f8f7f2"/>
-  <text x="450" y="38" text-anchor="middle" fill="#172033" font-family="sans-serif" font-size="22" font-weight="700">断环后，跟着测试信号走一圈</text>
-
   <line x1="54" y1="142" x2="162" y2="142" stroke="#3156d8" stroke-width="3" marker-end="url(#arrow-blue)"/>
   <text x="90" y="126" fill="#3156d8" font-family="sans-serif" font-size="19" font-weight="700">v<tspan baseline-shift="sub" font-size="13">t</tspan></text>
 

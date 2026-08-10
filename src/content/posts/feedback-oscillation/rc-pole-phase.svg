@@ -1,9 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 52 900 360" role="img" aria-labelledby="title desc">
   <title id="title">RC 极点产生的相位滞后</title>
   <desc id="desc">RC 低通电路在极点频率下产生 45 度相位滞后，高频时逐渐逼近 90 度。</desc>
   <rect width="900" height="430" fill="#f8f7f2"/>
-  <text x="450" y="38" text-anchor="middle" fill="#172033" font-family="sans-serif" font-size="22" font-weight="700">一个 RC 极点如何产生相位滞后</text>
-
   <text x="62" y="112" fill="#3156d8" font-family="sans-serif" font-size="18" font-weight="700">v<tspan baseline-shift="sub" font-size="12">in</tspan></text>
   <line x1="108" y1="106" x2="168" y2="106" stroke="#172033" stroke-width="3"/>
   <path d="M168 106h18l10-16 18 32 18-32 18 32 18-32 10 16h22" fill="none" stroke="#172033" stroke-width="3" stroke-linejoin="round"/>
