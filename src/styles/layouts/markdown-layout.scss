@@ -784,3 +784,8 @@
     padding: 38px 22px 52px;
   }
 }
+.article-content :global(.katex-display) {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 0.25rem;
+}
