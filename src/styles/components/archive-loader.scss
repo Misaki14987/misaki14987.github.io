@@ -7,7 +7,7 @@
   place-items: center;
   opacity: 0;
   visibility: hidden;
-  background: rgba(241, 239, 232, 0.82);
+  background: rgba(244, 240, 226, 0.86);
   backdrop-filter: blur(4px);
   transition: opacity 180ms ease, visibility 0s linear 180ms;
 }
@@ -37,7 +37,7 @@
   display: block;
   width: 38%;
   height: 100%;
-  background: var(--blue);
+  background: var(--signal);
   transform: translateX(-110%);
 }
 

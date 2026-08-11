@@ -36,7 +36,9 @@
   margin-bottom: 0;
   font-family: var(--font-ui);
   font-size: clamp(48px, 7vw, 78px);
-  letter-spacing: -0.06em;
+  font-weight: 860;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
 }
 
 .tag-index__head p {
@@ -67,7 +69,7 @@
 
 .tag-index__item:hover {
   padding-left: 10px;
-  color: var(--blue);
+  color: var(--signal);
 }
 
 .tag-index__number,

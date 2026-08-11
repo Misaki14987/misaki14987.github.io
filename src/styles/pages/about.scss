@@ -39,7 +39,9 @@
   margin: 0;
   font-family: var(--font-ui);
   font-size: clamp(54px, 7vw, 86px);
-  letter-spacing: -0.07em;
+  font-weight: 860;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
 }
 
 .profile-stage__panel > p {
@@ -89,7 +91,17 @@
 }
 
 .dossier-panel__label {
-  color: var(--blue);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--signal);
+}
+
+.dossier-panel__label::before {
+  content: "";
+  width: 26px;
+  height: 3px;
+  background: var(--signal);
 }
 
 .dossier-panel__count {

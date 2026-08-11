@@ -5,28 +5,38 @@
 }
 
 :root {
-  --bg: #f1efe8;
-  --paper: #f8f7f2;
-  --paper-deep: #e7e3d9;
-  --ink: #172033;
-  --ink-soft: #485064;
-  --muted: #777c89;
-  --faint: #a4a6aa;
-  --line: rgba(23, 32, 51, 0.18);
-  --line-soft: rgba(23, 32, 51, 0.09);
-  --line-strong: rgba(23, 32, 51, 0.42);
-  --blue: #3156d8;
-  --blue-soft: #e7ebfb;
-  --green: #28775f;
-  --green-soft: #e3eee8;
-  --red: #d4535d;
-  --red-soft: #f4e4e2;
+  /* brand palette, shared with the home hero */
+  --fizz: #f5d73e;
+  --signal: #086b52;
+  --signal-soft: #dcece5;
+  --coral: #e94f37;
+  --coral-soft: #f8e2dc;
+  --bone: #fffdf2;
+
+  --bg: #f4f0e2;
+  --paper: var(--bone);
+  --paper-deep: #eae5d3;
+  --ink: #18160f;
+  --ink-soft: #4b4736;
+  --muted: #78725f;
+  --faint: #a49d89;
+  --line: rgba(24, 22, 15, 0.18);
+  --line-soft: rgba(24, 22, 15, 0.09);
+  --line-strong: rgba(24, 22, 15, 0.42);
+
+  /* reading tones: build / theory / personal */
+  --blue: var(--signal);
+  --blue-soft: var(--signal-soft);
+  --green: #8a6a10;
+  --green-soft: #f3ead0;
+  --red: var(--coral);
+  --red-soft: var(--coral-soft);
   --container: 1180px;
   --header-height: 72px;
   --rail: 168px;
 
-  --shadow-soft: 0 18px 50px rgba(34, 40, 55, 0.08);
-  --shadow-lift: 0 28px 70px rgba(34, 40, 55, 0.12);
+  --shadow-soft: 0 18px 50px rgba(24, 22, 15, 0.08);
+  --shadow-lift: 0 28px 70px rgba(24, 22, 15, 0.12);
 
   --font-body:
     "LXGW WenKai Screen",
@@ -63,8 +73,8 @@ body {
   font-family: var(--font-body);
   text-rendering: optimizeLegibility;
   background:
-    linear-gradient(90deg, transparent 0 calc(50% - 590px + var(--rail)), rgba(23, 32, 51, 0.08) calc(50% - 590px + var(--rail)), rgba(23, 32, 51, 0.08) calc(50% - 590px + var(--rail) + 1px), transparent calc(50% - 590px + var(--rail) + 1px)),
-    repeating-linear-gradient(0deg, transparent 0 31px, rgba(23, 32, 51, 0.035) 31px 32px),
+    linear-gradient(90deg, transparent 0 calc(50% - 590px + var(--rail)), rgba(24, 22, 15, 0.08) calc(50% - 590px + var(--rail)), rgba(24, 22, 15, 0.08) calc(50% - 590px + var(--rail) + 1px), transparent calc(50% - 590px + var(--rail) + 1px)),
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(24, 22, 15, 0.035) 31px 32px),
     var(--bg);
 }
 
@@ -75,7 +85,7 @@ body::before {
   z-index: -2;
   pointer-events: none;
   opacity: 0.36;
-  background-image: radial-gradient(rgba(23, 32, 51, 0.14) 0.55px, transparent 0.55px);
+  background-image: radial-gradient(rgba(24, 22, 15, 0.14) 0.55px, transparent 0.55px);
   background-size: 5px 5px;
   mix-blend-mode: multiply;
 }
@@ -87,13 +97,13 @@ body::after {
   z-index: -1;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.2), transparent 14%, transparent 86%, rgba(23, 32, 51, 0.025)),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.2), transparent 14%, transparent 86%, rgba(24, 22, 15, 0.025)),
     radial-gradient(circle at 72% 0%, rgba(255, 255, 255, 0.62), transparent 34%);
 }
 
 ::selection {
-  color: #fff;
-  background: var(--blue);
+  color: var(--bone);
+  background: var(--signal);
 }
 
 a {
@@ -114,7 +124,7 @@ picture {
 }
 
 :focus-visible {
-  outline: 2px solid var(--blue);
+  outline: 2px solid var(--signal);
   outline-offset: 4px;
 }
 
@@ -172,7 +182,7 @@ picture {
 @media (max-width: 1240px) {
   body {
     background:
-      repeating-linear-gradient(0deg, transparent 0 31px, rgba(23, 32, 51, 0.035) 31px 32px),
+      repeating-linear-gradient(0deg, transparent 0 31px, rgba(24, 22, 15, 0.035) 31px 32px),
       var(--bg);
   }
 }

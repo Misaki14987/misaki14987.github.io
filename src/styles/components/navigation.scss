@@ -3,8 +3,8 @@
   top: 0;
   z-index: 50;
   min-height: var(--header-height);
-  background: rgba(241, 239, 232, 0.88);
-  border-bottom: 1px solid var(--line);
+  background: rgba(245, 215, 62, 0.94);
+  border-bottom: 1px solid rgba(24, 22, 15, 0.24);
   backdrop-filter: blur(14px);
 }
 
@@ -33,7 +33,7 @@
   place-items: center;
   width: 34px;
   height: 34px;
-  color: #fff;
+  color: var(--fizz);
   background: var(--ink);
   font-family: var(--font-mono);
   font-size: 11px;
@@ -65,14 +65,14 @@
   gap: 8px;
   min-height: 40px;
   padding: 0 14px;
-  color: var(--ink-soft);
+  color: rgba(24, 22, 15, 0.72);
   font-size: 12px;
   text-decoration: none;
   transition: color 160ms ease, background 160ms ease;
 }
 
 .nav a span {
-  color: var(--faint);
+  color: rgba(24, 22, 15, 0.46);
   font-family: var(--font-mono);
   font-size: 9px;
 }
@@ -84,7 +84,7 @@
   right: 14px;
   bottom: -1px;
   height: 2px;
-  background: var(--blue);
+  background: var(--signal);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 180ms ease;
@@ -93,7 +93,7 @@
 .nav a:hover,
 .nav a.active {
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.42);
+  background: rgba(24, 22, 15, 0.08);
 }
 
 .nav a.active::after {
