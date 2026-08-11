@@ -15,7 +15,7 @@ const tags = [...new Set(blogs.flatMap((blog) => blog.tags ?? []))]
 
 <BaseLayout
   title="M1saK1 Blog"
-  description="M1saK1 的个人博客首页"
+  description="M1saK1 的个人博客"
   ogImage="/images/vn-blog-hero.png"
 >
   <div class="home" data-home-scenes data-active-scene="intro">
@@ -59,7 +59,7 @@ const tags = [...new Set(blogs.flatMap((blog) => blog.tags ?? []))]
         <a class="current-note" href={latest.link}>
           <span class="current-note__date">{latestDate?.display}</span>
           <strong>{latest.title}</strong>
-          <p>{latest.description || latest.subtitle || '查看最新文章。'}</p>
+          <p>{latest.description || latest.subtitle}</p>
           <span class="current-note__action">阅读最新文章 ↗</span>
         </a>
       )}
