@@ -9,7 +9,6 @@ interface Props {
 
 const { class: wrapperClass = "" } = Astro.props as Props;
 
-const subjects = ['Frontend', 'Rust', 'Math', 'Daily'];
 ---
 
 <section class={`identity ${wrapperClass}`}>
@@ -17,7 +16,6 @@ const subjects = ['Frontend', 'Rust', 'Math', 'Daily'];
     <div>
       <h2>M1saK1</h2>
     </div>
-    <span class="identity__chapter">杭州电子科技大学</span>
   </div>
 
   <div class="identity__portrait-row">
@@ -35,19 +33,10 @@ const subjects = ['Frontend', 'Rust', 'Math', 'Daily'];
 
   <dl class="identity-fields">
     <dt>focus</dt>
-    <dd>frontend systems</dd>
-    <dt>learning</dt>
-    <dd>rust / gnome / math</dd>
+    <dd>Frontend/Agent</dd>
     <dt>off-screen</dt>
-    <dd>rhythm game / tcg / idol</dd>
+    <dd>rhythm game / visual novel</dd>
   </dl>
-
-  <div class="identity-routes" aria-label="Writing subjects">
-    {subjects.map((subject, index) => (
-      <span><b>{String(index + 1).padStart(2, '0')}</b>{subject}</span>
-    ))}
-  </div>
-
   <div class="identity-links">
     <a href="https://github.com/Misaki14987" target="_blank" rel="noopener noreferrer">GitHub</a>
     <a href="https://x.com/LianiuMis" target="_blank" rel="noopener noreferrer">X</a>
