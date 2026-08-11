@@ -25,14 +25,26 @@
 }
 
 .tag-stream__label {
-  color: var(--blue);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--signal);
+}
+
+.tag-stream__label::before {
+  content: "";
+  width: 26px;
+  height: 3px;
+  background: var(--signal);
 }
 
 .tag-stream h1 {
   margin: 12px 0 0;
   font-family: var(--font-ui);
   font-size: clamp(42px, 6vw, 68px);
-  letter-spacing: -0.055em;
+  font-weight: 860;
+  line-height: 0.94;
+  letter-spacing: -0.02em;
   overflow-wrap: anywhere;
 }
 

@@ -27,7 +27,17 @@
 }
 
 .identity__chapter {
-  color: var(--blue);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--signal);
+}
+
+.identity__chapter::before {
+  content: "";
+  width: 22px;
+  height: 3px;
+  background: var(--signal);
 }
 
 .identity__portrait-row {
