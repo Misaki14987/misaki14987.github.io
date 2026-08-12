@@ -1,7 +1,5 @@
 .friend-section {
-  margin-left: var(--rail);
-  padding: 56px 0 0 56px;
-  border-left: 1px solid var(--line);
+  padding: 56px 0 0;
 }
 
 .friend-section__head {
@@ -20,7 +18,17 @@
 }
 
 .friend-section__label {
-  color: var(--blue);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--signal);
+}
+
+.friend-section__label::before {
+  content: "";
+  width: 26px;
+  height: 3px;
+  background: var(--signal);
 }
 
 .friend-section__count {
@@ -39,6 +47,11 @@
   min-height: 96px;
   padding: 16px 0;
   border-bottom: 1px solid var(--line);
+  transition: background 180ms ease;
+}
+
+.friend-entry:hover {
+  background: color-mix(in srgb, var(--fizz) 20%, transparent);
 }
 
 .friend-entry__index {
@@ -52,7 +65,7 @@
   height: 64px;
   overflow: hidden;
   border: 1px solid var(--line);
-  clip-path: polygon(0 0, 100% 0, 100% 76%, 76% 100%, 0 100%);
+  border-radius: 50%;
 }
 
 .friend-entry__avatar img {
@@ -78,7 +91,7 @@
 }
 
 .friend-entry:hover .friend-entry__name a {
-  color: var(--blue);
+  color: var(--signal);
 }
 
 .friend-entry__url {
@@ -96,12 +109,6 @@
 }
 
 @media (max-width: 680px) {
-  .friend-section {
-    margin-left: 0;
-    padding-left: 0;
-    border-left: 0;
-  }
-
   .friend-entry {
     grid-template-columns: 28px 54px minmax(0, 1fr);
     gap: 12px;
