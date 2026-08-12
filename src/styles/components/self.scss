@@ -23,7 +23,7 @@
   margin: 5px 0 0;
   font-family: var(--font-ui);
   font-size: 25px;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
 }
 
 .identity__chapter {
@@ -51,7 +51,7 @@
   height: 92px;
   overflow: hidden;
   border: 1px solid var(--line-strong);
-  clip-path: polygon(0 0, 100% 0, 100% 74%, 74% 100%, 0 100%);
+  border-radius: 50%;
 }
 
 .identity__avatar img {

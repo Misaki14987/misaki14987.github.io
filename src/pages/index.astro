@@ -2,12 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogCard from '../components/BlogCard.astro';
 import Self from '../components/Self.astro';
-import { formatPostDate, getPostCards, getPublishedPosts } from '../scripts/publication';
+import { getPostCards, getPublishedPosts } from '../scripts/publication';
 import '../styles/pages/index.scss';
 
 const blogs = getPostCards(await getPublishedPosts());
-const latest = blogs[0];
-const latestDate = latest?.pubDate ? formatPostDate(latest.pubDate) : undefined;
 const tags = [...new Set(blogs.flatMap((blog) => blog.tags ?? []))]
   .filter(Boolean)
   .sort((a, b) => a.localeCompare(b, 'zh-CN'));
@@ -16,7 +14,8 @@ const tags = [...new Set(blogs.flatMap((blog) => blog.tags ?? []))]
 <BaseLayout
   title="M1saK1 Blog"
   description="M1saK1 的个人博客"
-  ogImage="/images/vn-blog-hero.png"
+  ogImage="/images/home-og.png"
+  bodyClass="home-page"
 >
   <div class="home" data-home-scenes data-active-scene="intro">
     <nav class="scene-switcher" aria-label="首页场景">
@@ -37,32 +36,39 @@ const tags = [...new Set(blogs.flatMap((blog) => blog.tags ?? []))]
     </nav>
 
     <div class="scene-viewport">
-    <section class="opening home-scene page-reveal is-active" data-scene="intro">
-      <div class="opening__folio" aria-hidden="true">
-        <strong>001—{String(blogs.length).padStart(3, '0')}</strong>
+    <section class="opening home-scene is-active" data-scene="intro">
+      <div class="opening__media" aria-hidden="true">
+        <canvas data-hero-field data-note-count={blogs.length}></canvas>
       </div>
 
-      <div class="opening__statement">
-        <h1>M1saK1 Blog</h1>
-        <p>怡泉大好き</p>
-        <div class="opening__coordinates">
-          <span>{String(blogs.length).padStart(2, '0')} notes</span>
-          <span>{String(tags.length).padStart(2, '0')} subjects</span>
-        </div>
+      <div class="opening__topline" aria-hidden="true">
+        <span>Bright ideas</span>
+        <span>Shanghai / CN</span>
+        <span>Since 2025</span>
+      </div>
+
+      <div class="opening__statement page-reveal">
+        <h1>
+          <span>M1SAK1</span>
+          <span>SPARKLING</span>
+          <span>NOTES<i aria-hidden="true">*</i></span>
+        </h1>
+        <p class="opening__intro">
+          
+        <p class="opening__eyebrow">怡泉大好き</p>
+        </p>
         <button class="opening__switch" type="button" data-scene-target="articles">
-          查看全部文章
-          <span aria-hidden="true">→</span>
+          <span class="opening__switch-icon" aria-hidden="true">↘</span>
+          <span>浏览全部文章</span>
         </button>
       </div>
 
-      {latest && (
-        <a class="current-note" href={latest.link}>
-          <span class="current-note__date">{latestDate?.display}</span>
-          <strong>{latest.title}</strong>
-          <p>{latest.description || latest.subtitle}</p>
-          <span class="current-note__action">阅读最新文章 ↗</span>
-        </a>
-      )}
+      <div class="opening__edition" aria-hidden="true">
+        <span>BATCH 01</span>
+        <strong>{String(blogs.length).padStart(2, '0')}</strong>
+        <span>NOTES</span>
+      </div>
+
     </section>
 
     <section class="notebook home-scene" data-scene="articles" hidden>

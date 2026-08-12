@@ -11,6 +11,11 @@
   border-bottom: 1px solid var(--line);
   color: var(--ink);
   animation: entry-reveal 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: background 180ms ease;
+}
+
+.archive-entry:hover {
+  background: color-mix(in srgb, var(--fizz) 16%, transparent);
 }
 
 .archive-entry[data-tone="theory"] {
@@ -49,9 +54,11 @@
 }
 
 .entry-index i {
-  width: 28px;
-  height: 2px;
-  background: var(--tone);
+  width: 10px;
+  height: 10px;
+  background: transparent;
+  border: 1px solid var(--tone);
+  border-radius: 50%;
 }
 
 .entry-cover {
@@ -60,7 +67,6 @@
   overflow: hidden;
   background: var(--tone-soft);
   border: 1px solid var(--line);
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
 }
 
 .entry-cover img {
@@ -98,7 +104,7 @@
   font-size: 24px;
   font-weight: 760;
   line-height: 1.22;
-  letter-spacing: -0.015em;
+  letter-spacing: 0;
 }
 
 .entry-title a {
