@@ -5,63 +5,170 @@
   pointer-events: none;
   display: grid;
   place-items: center;
+  overflow: hidden;
   opacity: 0;
   visibility: hidden;
-  background: rgba(244, 240, 226, 0.86);
-  backdrop-filter: blur(4px);
-  transition: opacity 180ms ease, visibility 0s linear 180ms;
+  background: var(--fizz);
+  clip-path: inset(100% 0 0 0);
+  transition:
+    clip-path 360ms cubic-bezier(0.76, 0, 0.24, 1),
+    opacity 120ms ease,
+    visibility 0s linear 360ms;
 }
 
 .archive-loader__record {
-  width: min(360px, calc(100vw - 48px));
-  padding: 16px 0;
-  border-top: 1px solid var(--ink);
-  border-bottom: 1px solid var(--line);
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  width: min(320px, calc(100vw - 48px));
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(28px) scale(0.96);
 }
 
+.archive-loader__kicker,
 .archive-loader__text {
   font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
+  font-size: 9px;
+  letter-spacing: 0;
+}
+
+.archive-loader__record strong {
+  margin-top: 10px;
+  color: var(--signal);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 38px;
+  font-style: italic;
+  font-weight: 500;
 }
 
 .archive-loader__line {
-  height: 2px;
-  margin: 12px 0 8px;
+  width: 100%;
+  height: 3px;
+  margin: 24px 0 10px;
   overflow: hidden;
-  background: var(--line-soft);
+  background: rgba(24, 22, 15, 0.18);
 }
 
 .archive-loader__line::before {
   content: "";
   display: block;
-  width: 38%;
+  width: 100%;
   height: 100%;
   background: var(--signal);
-  transform: translateX(-110%);
+  transform: scaleX(0);
+  transform-origin: left;
 }
 
 .archive-loader__text {
-  color: var(--muted);
-  text-align: right;
+  justify-self: end;
+  color: rgba(24, 22, 15, 0.62);
+}
+
+.archive-loader__bubbles {
+  position: absolute;
+  inset: 0;
+}
+
+.archive-loader__bubbles i {
+  position: absolute;
+  left: var(--bubble-x);
+  bottom: -90px;
+  width: var(--bubble-size);
+  height: var(--bubble-size);
+  border: 2px solid var(--bubble-color, var(--signal));
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.archive-loader__bubbles i:nth-child(1) {
+  --bubble-x: 14%;
+  --bubble-size: 52px;
+  --bubble-delay: 0ms;
+}
+
+.archive-loader__bubbles i:nth-child(2) {
+  --bubble-x: 31%;
+  --bubble-size: 22px;
+  --bubble-delay: 130ms;
+  --bubble-color: var(--coral);
+}
+
+.archive-loader__bubbles i:nth-child(3) {
+  --bubble-x: 58%;
+  --bubble-size: 76px;
+  --bubble-delay: 70ms;
+}
+
+.archive-loader__bubbles i:nth-child(4) {
+  --bubble-x: 76%;
+  --bubble-size: 34px;
+  --bubble-delay: 210ms;
+  --bubble-color: var(--coral);
+}
+
+.archive-loader__bubbles i:nth-child(5) {
+  --bubble-x: 88%;
+  --bubble-size: 18px;
+  --bubble-delay: 40ms;
 }
 
 .archive-loader.is-routing {
   visibility: visible;
   opacity: 1;
-  transition: opacity 140ms ease, visibility 0s;
+  clip-path: inset(0);
+  transition:
+    clip-path 360ms cubic-bezier(0.76, 0, 0.24, 1),
+    opacity 120ms ease,
+    visibility 0s;
+}
+
+.archive-loader.is-routing .archive-loader__record {
+  animation: loader-record-in 560ms 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .archive-loader.is-routing .archive-loader__line::before {
-  animation: archive-loader-line 680ms cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation: loader-fill 980ms 150ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@keyframes archive-loader-line {
-  0% {
-    transform: translateX(-110%);
+.archive-loader.is-routing .archive-loader__bubbles i {
+  animation: loader-bubble-rise 1500ms var(--bubble-delay) cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes loader-record-in {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
-  64%,
+}
+
+@keyframes loader-fill {
+  0% {
+    transform: scaleX(0);
+  }
+  72%,
   100% {
-    transform: translateX(270%);
+    transform: scaleX(1);
+  }
+}
+
+@keyframes loader-bubble-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.35);
+  }
+  22% {
+    opacity: 0.72;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-110vh) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .archive-loader__bubbles {
+    display: none;
   }
 }
