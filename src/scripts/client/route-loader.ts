@@ -1,3 +1,4 @@
+// Give the loader enough time to establish its visual rhythm before it can close.
 const MIN_VISIBLE_MS = 320;
 
 export const initializeRouteLoader = () => {
@@ -17,6 +18,15 @@ export const initializeRouteLoader = () => {
     loader.classList.add("is-routing");
   });
 
+  const triggerPageEntrance = () => {
+    const main = document.querySelector<HTMLElement>("main.main");
+    if (!main) return;
+    main.classList.remove("is-entering");
+    // Force reflow so the animation restarts on every navigation
+    void main.offsetWidth;
+    main.classList.add("is-entering");
+  };
+
   document.addEventListener("astro:page-load", () => {
     const loader = getLoader();
     if (!loader?.classList.contains("is-routing")) return;
@@ -30,6 +40,8 @@ export const initializeRouteLoader = () => {
       if (currentNavigationId !== navigationId) return;
 
       requestAnimationFrame(() => {
+        // Kick off the page entrance at the same frame the loader starts exiting
+        triggerPageEntrance();
         requestAnimationFrame(() => getLoader()?.classList.remove("is-routing"));
       });
     }, wait);
