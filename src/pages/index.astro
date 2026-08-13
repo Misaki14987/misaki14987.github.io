@@ -62,13 +62,6 @@ const tags = [...new Set(blogs.flatMap((blog) => blog.tags ?? []))]
           <span>浏览全部文章</span>
         </button>
       </div>
-
-      <div class="opening__edition" aria-hidden="true">
-        <span>BATCH 01</span>
-        <strong>{String(blogs.length).padStart(2, '0')}</strong>
-        <span>NOTES</span>
-      </div>
-
     </section>
 
     <section class="notebook home-scene" data-scene="articles" hidden>
