@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" role="img" aria-labelledby="title desc">
+  <title id="title">角频率和相角对正弦信号的影响</title>
+  <desc id="desc">左侧比较低频和高频信号，右侧比较两个频率相同但相差四十五度的信号。</desc>
+  <rect width="900" height="360" fill="#f8f7f2"/>
+  <g fill="none" stroke="#a4a6aa" stroke-width="1"><rect x="52" y="42" width="370" height="270"/><rect x="478" y="42" width="370" height="270"/><line x1="80" y1="177" x2="394" y2="177"/><line x1="506" y1="177" x2="820" y2="177"/></g>
+  <g fill="#172033" font-family="sans-serif" font-size="17"><text x="64" y="67">改变 ω：振荡快慢改变</text><text x="490" y="67">改变 φ：波形左右错开</text></g>
+  <g fill="none" stroke-linecap="round"><path d="M80 91 C100 91 116 263 136 263 S172 91 192 91 S228 263 248 263 S284 91 304 91 S340 263 360 263 S388 148 394 148" stroke="#3156d8" stroke-width="3"/><path d="M80 91 C90 91 98 263 108 263 S126 91 136 91 S154 263 164 263 S182 91 192 91 S210 263 220 263 S238 91 248 91 S266 263 276 263 S294 91 304 91 S322 263 332 263 S350 91 360 91 S378 263 388 263 S393 220 394 206" stroke="#28775f" stroke-width="2.5" stroke-dasharray="7 5"/><path d="M506 91 C526 91 542 263 562 263 S598 91 618 91 S654 263 674 263 S710 91 730 91 S766 263 786 263 S814 148 820 148" stroke="#3156d8" stroke-width="3"/><path d="M506 116 C510 101 515 91 520 91 C540 91 556 263 576 263 S612 91 632 91 S668 263 688 263 S724 91 744 91 S780 263 800 263 S817 207 820 177" stroke="#d4535d" stroke-width="2.5" stroke-dasharray="7 5"/></g>
+  <g font-family="sans-serif" font-size="15"><text x="90" y="98" fill="#3156d8">较小的 ω</text><text x="90" y="276" fill="#28775f">较大的 ω</text><text x="516" y="98" fill="#3156d8">x₁(t)=cos(ωt)</text><text x="516" y="276" fill="#d4535d">x₂(t)=cos(ωt−45°)</text></g>
+  <g fill="none" stroke="#d4535d" stroke-width="1.8"><line x1="562" y1="290" x2="576" y2="290"/><path d="M562 285v10M576 285v10"/></g><text x="569" y="309" text-anchor="middle" fill="#d4535d" font-family="sans-serif" font-size="14">45°</text>
+</svg>
