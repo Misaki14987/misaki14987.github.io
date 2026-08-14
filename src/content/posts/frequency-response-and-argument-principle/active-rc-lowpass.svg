@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" role="img" aria-label="电压控制电压源驱动的有源 RC 低通电路，输入控制受控源，受控源经过电阻连接输出节点，输出节点通过电容接地">
+  <rect width="900" height="360" fill="#f8f7f2"/>
+  <g fill="none" stroke="#172033" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M72 112h100M122 112v126M94 238h56M103 250h38M112 262h20"/>
+    <path d="M310 62l68 68-68 68-68-68zM242 130v108M214 238h56M223 250h38M232 262h20"/>
+    <path d="M378 130h52M430 130l18-24 28 48 28-48 28 48 28-48 18 24h112"/>
+    <path d="M670 130h90M670 130v62M640 192h60M640 212h60M670 212v52M642 264h56M651 276h38M660 288h20"/>
+    <path d="M122 218l-7-13m7 13 7-13"/>
+  </g>
+  <path d="M176 116C202 116 218 124 239 132" fill="none" stroke="#777c89" stroke-width="2.5" stroke-dasharray="7 7"/>
+  <g font-family="sans-serif" fill="#172033" font-size="20">
+    <text x="70" y="91">vᵢ</text>
+    <text x="180" y="94" fill="#485064">控制量</text>
+    <text x="343" y="136" text-anchor="middle">+</text>
+    <text x="276" y="136" text-anchor="middle">−</text>
+    <text x="310" y="228" text-anchor="middle">vₛ = μvᵢ</text>
+    <text x="494" y="88" text-anchor="middle">R</text>
+    <text x="670" y="105" text-anchor="middle">vₒ</text>
+    <text x="718" y="208">C</text>
+  </g>
+  <g font-family="sans-serif" fill="#485064" font-size="17">
+    <text x="310" y="320" text-anchor="middle">VCVS</text>
+    <text x="485" y="320" text-anchor="middle">虚线表示控制关系，不是导线</text>
+  </g>
+</svg>

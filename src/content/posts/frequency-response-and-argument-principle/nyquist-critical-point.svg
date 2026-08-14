@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" role="img" aria-labelledby="title desc">
-  <title id="title">反馈系统中的 Nyquist 临界点</title>
+  <title id="title">反馈系统中的奈奎斯特临界点</title>
   <desc id="desc">左侧是 F(s) 轨迹绕原点，右侧是等价的 T(s) 轨迹绕临界点一，两个轨迹的绕圈数相同。</desc>
   <defs>
     <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
