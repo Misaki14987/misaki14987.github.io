@@ -443,8 +443,6 @@ body.home-page::after {
 }
 
 .notebook {
-  display: grid;
-  grid-template-columns: var(--rail) minmax(0, 1fr);
   width: min(calc(100% - 48px), var(--container));
   min-height: calc(100vh - var(--header-height));
   margin: 0 auto;
@@ -452,14 +450,8 @@ body.home-page::after {
   border-top: 1px solid transparent;
 }
 
-.notebook__margin {
-  padding-right: 28px;
-}
-
 .note-ledger {
   min-width: 0;
-  padding-left: 56px;
-  border-left: 1px solid var(--line);
 }
 
 .note-ledger__head {
@@ -614,21 +606,6 @@ body.home-page::after {
 
   .opening__statement {
     width: 620px;
-  }
-}
-
-@media (max-width: 1000px) {
-  .notebook {
-    grid-template-columns: 1fr;
-  }
-
-  .notebook__margin {
-    padding: 0 0 42px;
-  }
-
-  .note-ledger {
-    padding-left: 0;
-    border-left: 0;
   }
 }
 

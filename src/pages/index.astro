@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogCard from '../components/BlogCard.astro';
-import Self from '../components/Self.astro';
 import { getPostCards, getPublishedPosts } from '../scripts/publication';
 import '../styles/pages/index.scss';
 
@@ -65,11 +64,7 @@ const tags = [...new Set(blogs.flatMap((blog) => blog.tags ?? []))]
     </section>
 
     <section class="notebook home-scene" data-scene="articles" hidden>
-      <aside class="notebook__margin page-reveal page-reveal--delay-1">
-        <Self />
-      </aside>
-
-      <section class="note-ledger page-reveal page-reveal--delay-2">
+      <section class="note-ledger page-reveal page-reveal--delay-1">
         <header class="note-ledger__head">
           <div>
             <h2>文章</h2>
