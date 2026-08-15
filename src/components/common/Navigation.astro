@@ -14,6 +14,13 @@ const isActive = (href: string) => isNavigationPathActive(currentPath, href);
 
 <header class="site-header" transition:persist>
   <div class="header-inner">
+    <div class="header-identity" aria-label="站点信息">
+      <a class="header-identity__name" href="/" aria-label="M1saK1 Blog 首页">M1saK1</a>
+      <div class="header-identity__links">
+        <a href="https://github.com/Misaki14987" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="/rss.xml">RSS</a>
+      </div>
+    </div>
     <nav class="nav">
       {links.map((link) => (
         <a
