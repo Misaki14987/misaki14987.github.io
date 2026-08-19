@@ -13,17 +13,17 @@ const dateOf = (post: { pubDate?: Date }) => post.pubDate ? formatPostDate(post.
       <h1 id="newspaper-masthead">Misaki<br />Journal</h1>
       <p>Code, daily life, and the unfinished notes left on a working desk.</p>
       <div class="np-desk__edition-line" aria-label="Edition contents">
-        <span>VOL. 01</span>
+        <span>VOL. 789</span>
         <span>{String(articles.length).padStart(2, '0')} ARTICLES</span>
         <span>{String(diaries.length).padStart(2, '0')} DIARY</span>
       </div>
       <div class="np-desk__edition-note">
         <strong>EDITED &amp; PUBLISHED BY M1saK1</strong>
-        <span>HANGZHOU · PERSONAL PRESS</span>
+        <span>みさき · PERSONAL PRESS</span>
       </div>
-      <b class="np-desk__masthead-stamp" aria-hidden="true">DESK COPY<br />HANGZHOU</b>
+      <b class="np-desk__masthead-stamp" aria-hidden="true">DESK <br />Osaka</b>
     </div>
-    <span class="np-opening__cue">ISSUE 01 · SUNDAY EDITION</span>
+    <span class="np-opening__cue">ISSUE · SUNDAY BREAK</span>
   </section>
 
   <div class="np-desk__surface">
@@ -45,7 +45,7 @@ const dateOf = (post: { pubDate?: Date }) => post.pubDate ? formatPostDate(post.
             <strong>READ THE CLIPPING <span aria-hidden="true">→</span></strong>
           </div>
         </a>
-        <p class="np-handnote">This one belongs in the center.<br />— M.</p>
+        <p class="np-handnote">我喜欢无糖怡泉.<br />— M.K</p>
       </section>
     )}
 
@@ -53,7 +53,7 @@ const dateOf = (post: { pubDate?: Date }) => post.pubDate ? formatPostDate(post.
       <h2 id="newspaper-columns-title" class="np-visually-hidden">Editorial Columns</h2>
       <div class="np-desk__article-stack">
         <header><span>READING PILE</span><h3>Articles</h3></header>
-        {articles.map((article, index) => (
+        {articles.map((article, index:number) => (
           <a href={article.link} style={`--i:${index}`}>
             <small>{dateOf(article)} / {article.subtitle || article.tags[0] || 'ARTICLE'}</small>
             <strong>{article.title}</strong>
@@ -75,33 +75,33 @@ const dateOf = (post: { pubDate?: Date }) => post.pubDate ? formatPostDate(post.
       <span class="np-tape" aria-hidden="true"></span>
       <small>TORN FROM THE CLASSIFIEDS</small>
       <h2>PORTFOLIO SPACE TO LET</h2>
-      <p>这里暂时还没有作品。等我真的完成了什么，也愿意把它拿出来时，它会占据这一整块版面。</p>
+      <p>这里暂时还没有作品。但其实快有了。</p>
       <b>VACANT</b>
     </section>
 
     <section class="np-scene np-desk__about" id="np-about">
       <div class="np-desk__book">
         <small>OWNER'S COPY</small><h2>M1saK1</h2>
-        <p>From HDU, making frontend systems and agents. Usually surrounded by rhythm games, TCG cards and too many open terminals.</p>
+        <p>HDU(已路边)student, love making frontend systems and agents. Surrounded by rhythm games, アイドルマスタ and many kitty(s).</p>
       </div>
-      <ul aria-label="Interests"><li>HANGZHOU</li><li>FRONTEND</li><li>AGENTS</li><li>RHYTHM GAME</li><li>TCG</li></ul>
+      <ul aria-label="Interests"><li>React</li><li>Astro</li><li></li><li>Tailwindcss/Scss</li><li>Vite/Rspack</li><li>Bun/Elysia</li><li>Langchain/Langsmith</li>
     </section>
 
     <section class="np-scene np-desk__index" id="np-subjects">
       <div class="np-desk__notebook">
-        <small>06 / THINGS I KEEP RETURNING TO</small><h2>Index notebook</h2>
-        {tags.map((tag, index) => <a href="#np-articles"><span>{String(index + 1).padStart(2, '0')}</span>{tag}</a>)}
+        <small>THINGS I KEEP RETURNING TO</small><h2>Index notebook</h2>
+        {tags.map((tag: string, index:number) => <a href="#np-articles"><span>{String(index + 1).padStart(2, '0')}</span>{tag}</a>)}
       </div>
     </section>
 
     <section class="np-scene np-desk__exchange" id="np-friends">
-      <h2>Postcards on the corner</h2>
+      <h2>FriendLink Postcards on the corner</h2>
       <a href="https://summ2.link" target="_blank" rel="noopener noreferrer"><span>POST CARD</span><strong>summ2</strong><small>Vidar Team Pwn, awmc</small></a>
       <a href="https://nan0in27.cn" target="_blank" rel="noopener noreferrer"><span>POST CARD</span><strong>nan0in</strong><small>ORAYS Pwn, Hack for fun</small></a>
     </section>
 
     <footer class="np-outro np-desk__outro">
-      <div class="np-desk__folded"><span>THAT'S ALL FOR TODAY</span><strong>Misaki Journal</strong></div>
+      <div class="np-desk__folded"><span>THAT'S ALL FOR TODAY.Thank you for your Reading!!!</span><strong>米撒奇's Journal</strong></div>
       <div class="np-mail-slot" aria-hidden="true"><i></i></div>
     </footer>
   </div>
