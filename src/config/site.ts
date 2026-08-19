@@ -1,5 +1,7 @@
 export type SiteVariant = 'blog' | 'learning';
 
+export type SiteTheme = 'newspaper' | 'units';
+
 const requestedVariant = import.meta.env.SITE_VARIANT;
 
 export const SITE_VARIANT: SiteVariant =
@@ -8,6 +10,7 @@ export const SITE_VARIANT: SiteVariant =
 const configs = {
   blog: {
     title: 'M1saK1 Blog',
+    theme: 'newspaper',
     description: 'M1saK1 的技术博客，记录软件开发、工程实践与项目复盘。',
     identity: 'M1saK1',
     identityLabel: 'M1saK1 Blog 首页',
@@ -29,6 +32,7 @@ const configs = {
   },
   learning: {
     title: 'M1saK1 Learn',
+    theme: 'units',
     description: 'M1saK1 的电子与数学学习笔记，记录推导、概念联系与理解过程。',
     identity: 'M1saK1 / Learn',
     identityLabel: 'M1saK1 Learn 首页',

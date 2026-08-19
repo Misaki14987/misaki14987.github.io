@@ -1,0 +1,36 @@
+---
+import '../../styles/components/navigation.scss';
+import { isNavigationPathActive } from '../../scripts/navigation';
+import { SITE_CONFIG } from '../../config/site';
+
+const currentPath = Astro.url.pathname;
+const links = SITE_CONFIG.nav;
+
+const isActive = (href: string) =>
+  href.startsWith('/') && isNavigationPathActive(currentPath, href);
+---
+
+<header class="site-header" transition:persist>
+  <div class="header-inner">
+    <div class="header-identity" aria-label="站点信息">
+      <a class="header-identity__name" href="/" aria-label={SITE_CONFIG.identityLabel}>{SITE_CONFIG.identity}</a>
+      <div class="header-identity__links">
+        <a href="https://github.com/Misaki14987" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="/rss.xml">RSS</a>
+      </div>
+    </div>
+    <nav class="nav">
+      {links.map((link) => (
+        <a
+          class:list={{ active: isActive(link.href) }}
+          href={link.href}
+          data-nav-link
+          aria-current={isActive(link.href) ? 'page' : undefined}
+        >
+          <span aria-hidden="true">{link.index}</span>
+          {link.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>

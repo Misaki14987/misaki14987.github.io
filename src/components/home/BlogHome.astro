@@ -1,0 +1,26 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import UnitsShell from '../../components/common/UnitsShell.astro';
+import NewspaperHome from '../../components/themes/newspaper/NewspaperHome.astro';
+import { formatPostDate, getAllTags, getPostCards, getPublishedPosts } from '../../scripts/publication';
+import { SITE_CONFIG, SITE_TITLE } from '../../config/site';
+import '../../styles/pages/index.scss';
+
+const posts = await getPublishedPosts();
+const articles = getPostCards(posts.filter((post) => post.data.kind === 'article'));
+const diaries = getPostCards(posts.filter((post) => post.data.kind === 'diary'));
+const featured = articles[0];
+const tags = getAllTags(posts.filter((post) => post.data.kind === 'article')).slice(0, 10);
+---
+
+<BaseLayout
+  title={SITE_TITLE}
+  description={SITE_CONFIG.description}
+  ogImage="/images/vn-blog-hero.png"
+  bodyClass="units-body"
+>
+  <UnitsShell active="home">
+    <NewspaperHome {featured} {articles} {diaries} {tags} />
+  </UnitsShell>
+</BaseLayout>
