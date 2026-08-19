@@ -11,7 +11,6 @@ import type { MarkdownHeading } from 'astro';
 import 'katex/dist/katex.min.css';
 import '../styles/layouts/markdown-layout.scss';
 import { SITE_TITLE } from '../config/site';
-import '../styles/components/encrypted.scss';
 
 const {
     frontmatter,
@@ -20,7 +19,6 @@ const {
     headings = [],
     previousPost,
     nextPost,
-    encrypted = false,
 } = Astro.props as {
     frontmatter: Record<string, any>;
     canonical?: string;
@@ -28,7 +26,6 @@ const {
     headings?: MarkdownHeading[];
     previousPost?: PostEntry;
     nextPost?: PostEntry;
-    encrypted?: boolean;
 };
 const {
     title,
@@ -43,9 +40,7 @@ const {
 const pageDescription = seoDescription ?? description;
 
 const tone = postTone({ title, subtitle: category, tags });
-const tocHeadings = encrypted
-    ? []
-    : headings.filter(({ depth }) => depth === 2 || depth === 3);
+const tocHeadings = headings.filter(({ depth }) => depth === 2 || depth === 3);
 const adjacentPost = (post?: PostEntry) => post && ({
     title: post.data.title,
     href: postPath(post),
@@ -134,15 +129,9 @@ const next = adjacentPost(nextPost);
                     )}
 
                     <div class='post-reading__main'>
-                        {encrypted ? (
-                            <div class='article-content' data-encrypted-stage>
-                                <slot name='encrypted-gate' />
-                            </div>
-                        ) : (
-                            <div class='article-content' data-article-content>
-                                <slot />
-                            </div>
-                        )}
+                        <div class='article-content' data-article-content>
+                            <slot />
+                        </div>
 
                         {(previous || next) && (
                             <nav class='post-pagination' aria-label='相邻文章'>
@@ -174,8 +163,6 @@ const next = adjacentPost(nextPost);
 
 <script>
   import { mountPostPage } from "../scripts/client/post";
-  import { mountEncryptedGate } from "../scripts/client/post/encrypted-gate";
 
   mountPostPage();
-  mountEncryptedGate();
 </script>

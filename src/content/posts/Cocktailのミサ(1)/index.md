@@ -5,7 +5,6 @@ author: "M1saK1"
 category: "daily"
 tags: ["daily"]
 kind: "diary"
-site: "blog"
 cover: "./cover.jpg"
 ---
 

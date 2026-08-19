@@ -6,11 +6,7 @@ kind: diary
 category: '快回你电吧你电又win了'
 cover: ./cover.jpg
 tags: ['Daily']
-site: 'personal'
-password: true
 ---
-
-## Recently
 
 一晃眼自己竟然大二了，感觉自己还是不够强，技术不过关。不过现在自己心态也好了很多，不那么焦虑了，想想至少自己比啥也没学的同学强多（是不是太摆了），就安心去打游戏了（x）。
 
