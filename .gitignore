@@ -1,6 +1,6 @@
 # build output
 dist/
-dist-learning/
+
 
 # generated types
 .astro/

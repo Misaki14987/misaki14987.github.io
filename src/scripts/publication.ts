@@ -6,7 +6,6 @@ import {
   escapeXml,
   withTrailingSlash,
 } from './seo';
-import { SITE_VARIANT } from '../config/site';
 import { ENCRYPTED_PLACEHOLDER, isEncrypted } from './encrypted';
 
 export type PostEntry = CollectionEntry<'posts'>;
@@ -34,7 +33,7 @@ export const getPublishedPosts = async (kind?: PostKind) =>
     .filter(
       (post) =>
         !post.data.draft &&
-        post.data.site === SITE_VARIANT &&
+        post.data.site === 'blog' &&
         (!kind || post.data.kind === kind),
     )
     .sort(sortByNewest);
