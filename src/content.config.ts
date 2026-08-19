@@ -15,6 +15,7 @@ const posts = defineCollection({
       summary: z.string().optional(),
       cover: image().optional(),
       tags: z.array(z.string()).default([]),
+      site: z.enum(['blog', 'learning', 'personal']).default('blog'),
     }),
 });
 

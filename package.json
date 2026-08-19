@@ -5,7 +5,9 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "dev:learning": "SITE_VARIANT=learning astro dev",
     "build": "astro build",
+    "build:learning": "SITE_VARIANT=learning astro build",
     "preview": "astro preview",
     "astro": "astro",
     "new": "node scripts/new-post.mjs"

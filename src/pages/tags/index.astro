@@ -2,12 +2,13 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getAllTags, getPublishedPosts, tagPath } from '../../scripts/publication';
 import '../../styles/pages/tags.scss';
+import { SITE_TITLE } from '../../config/site';
 
 const tags = getAllTags(await getPublishedPosts());
 ---
 
 <BaseLayout
-  title='Tags | M1saK1 Blog'
+  title={`Tags | ${SITE_TITLE}`}
   description='标签'
   ogImage="/images/home-og.png"
 >

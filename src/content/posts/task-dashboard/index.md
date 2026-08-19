@@ -4,6 +4,7 @@ pubDate: 2026-06-02
 author: "M1saK1"
 category: "GNOME"
 tags: ["GNOME"]
+site: "blog"
 cover: "./msz.jpg"
 ---
 

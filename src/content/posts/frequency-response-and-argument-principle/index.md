@@ -4,6 +4,7 @@ pubDate: 2026-08-13
 author: "M1saK1"
 category: "电路"
 tags: ["EE", "Circuit"]
+site: "learning"
 ---
 
 _本文只为笔者简单学习得到的结果，如有错误或者偏差恳请指出_

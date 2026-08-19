@@ -1,6 +1,5 @@
-export const SITE_TITLE = 'M1saK1 Blog';
-export const DEFAULT_DESCRIPTION =
-  'M1saK1 的个人博客'
+export { DEFAULT_DESCRIPTION, SITE_TITLE } from '../config/site';
+import { DEFAULT_DESCRIPTION } from '../config/site';
 
 const TRAILING_SLASH_FILE_RE = /\.[a-z0-9]+$/i;
 

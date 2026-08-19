@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogCard from '../components/BlogCard.astro';
 import { getPostCards, getPublishedPosts } from '../scripts/publication';
+import { SITE_CONFIG, SITE_TITLE } from '../config/site';
 import '../styles/pages/index.scss';
 
 const blogs = getPostCards(await getPublishedPosts());
@@ -11,8 +12,8 @@ const tags = [...new Set(blogs.flatMap((blog) => blog.tags ?? []))]
 ---
 
 <BaseLayout
-  title="M1saK1 Blog"
-  description="M1saK1 的个人博客"
+  title={SITE_TITLE}
+  description={SITE_CONFIG.description}
   ogImage="/images/home-og.png"
   bodyClass="home-page"
 >
@@ -41,24 +42,21 @@ const tags = [...new Set(blogs.flatMap((blog) => blog.tags ?? []))]
       </div>
 
       <div class="opening__topline" aria-hidden="true">
-        <span>Bright ideas</span>
+        <span>{SITE_CONFIG.home.topline}</span>
         <span>Shanghai / CN</span>
         <span>Since 2025</span>
       </div>
 
       <div class="opening__statement page-reveal">
         <h1>
-          <span>M1SAK1</span>
-          <span>SPARKLING</span>
-          <span>NOTES<i aria-hidden="true">*</i></span>
+          {SITE_CONFIG.home.headline.map((line, index) => (
+            <span>{line}{index === 2 && <i aria-hidden="true">*</i>}</span>
+          ))}
         </h1>
-        <p class="opening__intro">
-          
-        <p class="opening__eyebrow">怡泉大好き</p>
-        </p>
+        <p class="opening__eyebrow">{SITE_CONFIG.home.eyebrow}</p>
         <button class="opening__switch" type="button" data-scene-target="articles">
           <span class="opening__switch-icon" aria-hidden="true">↘</span>
-          <span>浏览全部文章</span>
+          <span>{SITE_CONFIG.home.browseLabel}</span>
         </button>
       </div>
     </section>
@@ -67,9 +65,9 @@ const tags = [...new Set(blogs.flatMap((blog) => blog.tags ?? []))]
       <section class="note-ledger page-reveal page-reveal--delay-1">
         <header class="note-ledger__head">
           <div>
-            <h2>文章</h2>
+            <h2>{SITE_CONFIG.home.archiveTitle}</h2>
           </div>
-          <a href="/tags/">查看标签 ↗</a>
+          <a href="/tags/">{SITE_CONFIG.home.archiveLinkLabel} ↗</a>
         </header>
 
         <form class="note-tools" data-note-tools>
@@ -101,12 +99,19 @@ const tags = [...new Set(blogs.flatMap((blog) => blog.tags ?? []))]
             </select>
           </label>
 
-          <div class="tone-filter" role="group" aria-label="文章类型">
-            <button type="button" data-tone-filter="" aria-pressed="true">全部</button>
-            <button type="button" data-tone-filter="build" aria-pressed="false">技术</button>
-            <button type="button" data-tone-filter="theory" aria-pressed="false">理论</button>
-            <button type="button" data-tone-filter="personal" aria-pressed="false">日常</button>
-          </div>
+          {SITE_CONFIG.home.filters.length > 0 && (
+            <div class="tone-filter" role="group" aria-label="内容主题">
+              {SITE_CONFIG.home.filters.map((filter, index) => (
+                <button
+                  type="button"
+                  data-tone-filter={filter.value}
+                  aria-pressed={index === 0 ? 'true' : 'false'}
+                >
+                  {filter.label}
+                </button>
+              ))}
+            </div>
+          )}
         </form>
 
         <div class="note-results" aria-live="polite">

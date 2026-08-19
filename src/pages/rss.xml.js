@@ -1,6 +1,6 @@
 import rss from '@astrojs/rss';
 import { getPublishedPosts, toRssItem } from '../scripts/publication';
-import { absoluteUrl, SITE_TITLE } from '../scripts/seo';
+import { absoluteUrl, DEFAULT_DESCRIPTION, SITE_TITLE } from '../scripts/seo';
 
 export async function GET(context) {
   const site = context.site;
@@ -8,7 +8,7 @@ export async function GET(context) {
 
   return rss({
     title: SITE_TITLE,
-    description: 'M1saK1 Blog 全文订阅',
+    description: DEFAULT_DESCRIPTION,
     site,
     xmlns: {
       atom: 'http://www.w3.org/2005/Atom',
