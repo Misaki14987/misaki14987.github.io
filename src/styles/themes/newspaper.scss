@@ -139,7 +139,7 @@ html[data-theme="newspaper"] .units-main {
 }
 .np-opening {
   position: relative;
-  min-height: calc(100svh - 54px);
+  min-height: calc(64svh - 54px);
   overflow: hidden;
 }
 .np-opening__cue {
@@ -173,11 +173,11 @@ html[data-theme="newspaper"] .units-main {
 
 .np-desk__newspaper {
   position: absolute;
-  top: 14vh;
+  top: 6vh;
   left: 50%;
   width: min(720px, 72vw);
-  min-height: 66vh;
-  padding: clamp(34px, 6vw, 76px);
+  min-height: 52vh;
+  padding: clamp(28px, 5vw, 60px);
   overflow: hidden;
   border: 1px solid rgb(86 76 56 / 24%);
   background:
