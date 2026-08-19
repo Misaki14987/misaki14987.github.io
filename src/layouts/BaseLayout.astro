@@ -3,10 +3,7 @@ import '../global.scss';
 import '../styles/layouts/base-layout.scss';
 import '../styles/themes/newspaper.scss';
 import SiteHead from '../components/common/SiteHead.astro';
-import ArchiveLoader from '../components/common/ArchiveLoader.astro';
-import SystemFrame from '../components/common/SystemFrame.astro';
 import { SITE_TITLE } from '../scripts/seo';
-import { SITE_CONFIG, SITE_VARIANT } from '../config/site';
 
 const {
     title = SITE_TITLE,
@@ -21,7 +18,7 @@ const {
     tags = [],
 } = Astro.props;
 ---
-<html lang='zh-CN' data-theme={SITE_CONFIG.theme}>
+<html lang='zh-CN' data-theme='newspaper'>
   <head>
     <SiteHead
       title={title}
@@ -38,12 +35,6 @@ const {
   </head>
 
   <body class={`body ${bodyClass}`}>
-    {SITE_VARIANT === 'learning' && (
-      <>
-        <SystemFrame />
-        <ArchiveLoader />
-      </>
-    )}
     <main class='main'>
       <slot />
     </main>
