@@ -1,5 +1,6 @@
 ---
 import '../../styles/components/units-shell.scss';
+import { SITE_VARIANT } from '../../config/site';
 
 interface Props {
   active?: 'home' | 'articles' | 'diary' | 'works';
@@ -17,127 +18,125 @@ const socials = [
   { label: 'Bili', href: 'https://space.bilibili.com/M1saK1', title: 'Bilibili' },
   { label: 'RSS', href: '/rss.xml', title: 'RSS Feed' },
 ];
+const isBlog = SITE_VARIANT === 'blog';
 ---
 
 <div class="units-shell">
-  <header class="newspaper-nav">
-    <a class="newspaper-nav__brand" href="/">
-      <strong>Misaki Journal</strong>
-      <span>Personal edition · Hangzhou</span>
-    </a>
-    <nav aria-label="报纸版面导航">
-      <a href="/#articles">Articles</a>
-      <a href="/#diary">Diary</a>
-      <a href="/#works">Works</a>
-    </nav>
-    <button class="newspaper-theme-switch" type="button" data-theme-toggle>
-      <span>THEME</span>
-      <b data-theme-name>NEWSPAPER</b>
-    </button>
-  </header>
-  <header class="units-mobile-head">
-    <a class="units-brand" href="/">
-      <strong>m1sak1.</strong>
-      <span>I Love Schweppes</span>
-    </a>
-    <a class="units-mobile-cta" href="/#about" data-i18n data-zh="关于我" data-en="About">关于我</a>
-    <a class="units-menu" href="/#subjects" aria-label="打开标签索引">
-      <span></span>
-      <span></span>
-      <span></span>
-    </a>
-  </header>
+  {isBlog && (
+    <header class="newspaper-nav">
+      <a class="newspaper-nav__brand" href="/">
+        <strong>Misaki Journal</strong>
+        <span>Personal edition · Hangzhou</span>
+      </a>
+      <nav aria-label="报纸版面导航">
+        <a href="/#articles">Articles</a>
+        <a href="/#diary">Diary</a>
+        <a href="/#works">Works</a>
+      </nav>
+    </header>
+  )}
 
-  <nav class="units-mobile-nav" aria-label="内容导航">
-    {items.slice(1).map((item) => (
-      <a href={item.href} data-i18n data-zh={item.zh} data-en={item.en}>{item.zh}</a>
-    ))}
-    <button class="units-theme-switch units-theme-switch--mobile" type="button" data-theme-toggle>
-      <span data-theme-name>UNIT</span>
-    </button>
-  </nav>
-
-  <div class="units-mobile-tools">
-    <div class="units-locale" aria-label="语言切换">
-      <button type="button" data-locale="zh" aria-pressed="true">中文</button>
-      <button type="button" data-locale="en" aria-pressed="false">EN</button>
-    </div>
-    <nav class="units-socials" aria-label="社交媒体">
-      {socials.map((social) => (
-        <a href={social.href} title={social.title} aria-label={social.title} target={social.href.startsWith('http') ? '_blank' : undefined} rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
-          {social.label}
+  {!isBlog && (
+    <>
+      <header class="units-mobile-head">
+        <a class="units-brand" href="/">
+          <strong>m1sak1.</strong>
+          <span>I Love Schweppes</span>
         </a>
-      ))}
-    </nav>
-  </div>
-
-  <aside class="units-rail" aria-label="站点导航">
-    <a class="units-brand" href="/">
-      <strong>米撒奇</strong>
-      <span>I Love Schweppes Without Suger</span>
-    </a>
-
-    <nav class="units-rail__nav">
-      {items.map((item) => (
-        <a
-          class={`units-tile units-tile--${item.tone}`}
-          href={item.href}
-          aria-current={active === item.key ? 'page' : undefined}
-        >
-          <span>{item.id}</span>
-          <b data-i18n data-zh={item.zh} data-en={item.en}>{item.zh}</b>
-          <i aria-hidden="true">↗</i>
+        <a class="units-mobile-cta" href="/#about" data-i18n data-zh="关于我" data-en="About">关于我</a>
+        <a class="units-menu" href="/#subjects" aria-label="打开标签索引">
+          <span></span>
+          <span></span>
+          <span></span>
         </a>
-      ))}
-    </nav>
+      </header>
 
-    <a class="units-tile units-tile--purple units-tile--cta" href="/#about">
-      <b data-i18n data-zh="M1saK1 是谁!" data-en="Who is M1saK1!">M1saK1是谁！</b>
-    </a>
+      <nav class="units-mobile-nav" aria-label="内容导航">
+        {items.slice(1).map((item) => (
+          <a href={item.href} data-i18n data-zh={item.zh} data-en={item.en}>{item.zh}</a>
+        ))}
+      </nav>
 
-    <button class="units-theme-switch" type="button" data-theme-toggle>
-      <span>THEME</span>
-      <b data-theme-name>UNIT</b>
-    </button>
+      <div class="units-mobile-tools">
+        <div class="units-locale" aria-label="语言切换">
+          <button type="button" data-locale="zh" aria-pressed="true">中文</button>
+          <button type="button" data-locale="en" aria-pressed="false">EN</button>
+        </div>
+        <nav class="units-socials" aria-label="社交媒体">
+          {socials.map((social) => (
+            <a href={social.href} title={social.title} aria-label={social.title} target={social.href.startsWith('http') ? '_blank' : undefined} rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
+              {social.label}
+            </a>
+          ))}
+        </nav>
+      </div>
 
-    <div class="units-locale" aria-label="语言切换">
-      <button type="button" data-locale="zh" aria-pressed="true">中文</button>
-      <button type="button" data-locale="en" aria-pressed="false">EN</button>
-    </div>
-
-    <nav class="units-socials" aria-label="社交媒体">
-      {socials.map((social) => (
-        <a href={social.href} title={social.title} aria-label={social.title} target={social.href.startsWith('http') ? '_blank' : undefined} rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
-          {social.label}
+      <aside class="units-rail" aria-label="站点导航">
+        <a class="units-brand" href="/">
+          <strong>米撒奇</strong>
+          <span>I Love Schweppes Without Suger</span>
         </a>
-      ))}
-    </nav>
-  </aside>
+
+        <nav class="units-rail__nav">
+          {items.map((item) => (
+            <a
+              class={`units-tile units-tile--${item.tone}`}
+              href={item.href}
+              aria-current={active === item.key ? 'page' : undefined}
+            >
+              <span>{item.id}</span>
+              <b data-i18n data-zh={item.zh} data-en={item.en}>{item.zh}</b>
+              <i aria-hidden="true">↗</i>
+            </a>
+          ))}
+        </nav>
+
+        <a class="units-tile units-tile--purple units-tile--cta" href="/#about">
+          <b data-i18n data-zh="M1saK1 是谁!" data-en="Who is M1saK1!">M1saK1是谁！</b>
+        </a>
+
+        <div class="units-locale" aria-label="语言切换">
+          <button type="button" data-locale="zh" aria-pressed="true">中文</button>
+          <button type="button" data-locale="en" aria-pressed="false">EN</button>
+        </div>
+
+        <nav class="units-socials" aria-label="社交媒体">
+          {socials.map((social) => (
+            <a href={social.href} title={social.title} aria-label={social.title} target={social.href.startsWith('http') ? '_blank' : undefined} rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
+              {social.label}
+            </a>
+          ))}
+        </nav>
+      </aside>
+    </>
+  )}
 
   <main class="units-main">
     <slot />
   </main>
 </div>
 
-<script>
-  const applyLocale = (locale: "zh" | "en") => {
-    document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
-    localStorage.setItem("site-locale", locale);
-    document.querySelectorAll<HTMLElement>("[data-i18n]").forEach((node) => {
-      node.textContent = node.dataset[locale] || node.textContent;
-    });
-    document.querySelectorAll<HTMLButtonElement>("[data-locale]").forEach((button) => {
-      button.setAttribute("aria-pressed", String(button.dataset.locale === locale));
-    });
-  };
+{!isBlog && (
+  <script>
+    const applyLocale = (locale: "zh" | "en") => {
+      document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
+      localStorage.setItem("site-locale", locale);
+      document.querySelectorAll<HTMLElement>("[data-i18n]").forEach((node) => {
+        node.textContent = node.dataset[locale] || node.textContent;
+      });
+      document.querySelectorAll<HTMLButtonElement>("[data-locale]").forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.locale === locale));
+      });
+    };
 
-  const mountControls = () => {
-    document.querySelectorAll<HTMLButtonElement>("[data-locale]").forEach((button) => {
-      button.onclick = () => applyLocale(button.dataset.locale === "en" ? "en" : "zh");
-    });
-    applyLocale(localStorage.getItem("site-locale") === "en" ? "en" : "zh");
-  };
+    const mountControls = () => {
+      document.querySelectorAll<HTMLButtonElement>("[data-locale]").forEach((button) => {
+        button.onclick = () => applyLocale(button.dataset.locale === "en" ? "en" : "zh");
+      });
+      applyLocale(localStorage.getItem("site-locale") === "en" ? "en" : "zh");
+    };
 
-  document.addEventListener("astro:page-load", mountControls);
-  mountControls();
-</script>
+    document.addEventListener("astro:page-load", mountControls);
+    mountControls();
+  </script>
+)}

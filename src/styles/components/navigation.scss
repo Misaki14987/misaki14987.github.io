@@ -1,0 +1,145 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  min-height: var(--header-height);
+  background: rgba(245, 215, 62, 0.94);
+  border-bottom: 1px solid rgba(24, 22, 15, 0.24);
+  backdrop-filter: blur(14px);
+}
+
+.header-inner {
+  width: min(calc(100% - 48px), var(--container));
+  min-height: var(--header-height);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.header-identity {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 18px;
+  font-family: var(--font-mono);
+}
+
+.header-identity__name {
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 17px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.header-identity__links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-identity__links a {
+  color: rgba(24, 22, 15, 0.72);
+  border-bottom: 1px solid rgba(24, 22, 15, 0.34);
+  font-size: 8px;
+  text-decoration: none;
+}
+
+.header-identity__name:hover,
+.header-identity__links a:hover {
+  color: var(--signal);
+  border-color: var(--signal);
+}
+
+.nav {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  font-family: var(--font-ui);
+}
+
+.nav a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  color: rgba(24, 22, 15, 0.72);
+  font-size: 12px;
+  text-decoration: none;
+  transition: color 160ms ease, background 160ms ease;
+}
+
+.nav a span {
+  color: rgba(24, 22, 15, 0.46);
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: -1px;
+  height: 2px;
+  background: var(--signal);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 180ms ease;
+}
+
+.nav a:hover,
+.nav a.active {
+  color: var(--ink);
+  background: rgba(24, 22, 15, 0.08);
+}
+
+.nav a.active::after {
+  transform: scaleX(1);
+}
+
+@media (max-width: 680px) {
+  .header-inner {
+    width: min(calc(100% - 28px), var(--container));
+    gap: 12px;
+  }
+
+  .header-identity {
+    gap: 10px;
+  }
+
+  .header-identity__name {
+    font-size: 14px;
+  }
+
+  .header-identity__links {
+    gap: 7px;
+  }
+
+  .nav a {
+    gap: 0;
+    padding: 0 9px;
+  }
+
+  .nav a span {
+    display: none;
+  }
+}
+
+@media (max-width: 390px) {
+  .header-identity {
+    gap: 7px;
+  }
+
+  .header-identity__links {
+    gap: 5px;
+  }
+
+  .nav a {
+    padding-inline: 5px;
+  }
+}
