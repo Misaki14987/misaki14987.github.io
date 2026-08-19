@@ -637,6 +637,127 @@ html[data-theme="newspaper"] .units-main {
   color: var(--np-red);
 }
 
+.np-desk__ledger {
+  position: relative;
+  width: min(820px, 88%);
+  margin: 56px auto 12px;
+}
+
+.np-desk__ledger-card {
+  position: relative;
+  padding: 46px 60px 38px;
+  background:
+    linear-gradient(var(--np-paper-bright), var(--np-paper-bright)),
+    repeating-linear-gradient(#cdbf9d 0 1px, transparent 1px 30px);
+  background-blend-mode: normal;
+  box-shadow:
+    8px 14px 30px rgb(0 0 0 / 0.2),
+    inset 0 0 0 1px rgb(0 0 0 / 0.06);
+  transform: rotate(0.6deg);
+  transform-origin: center top;
+}
+
+.np-desk__ledger-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 64px;
+  width: 1px;
+  background: rgb(125 41 43 / 0.45);
+  pointer-events: none;
+}
+
+.np-desk__ledger-card::after {
+  content: "";
+  position: absolute;
+  inset: 8px 10px;
+  pointer-events: none;
+  border: 1px dashed rgb(0 0 0 / 0.08);
+}
+
+.np-desk__ledger-card header {
+  margin: 0 0 22px;
+  padding: 0 0 14px;
+  border-bottom: 1px solid rgb(0 0 0 / 0.2);
+}
+
+.np-desk__ledger-card header span {
+  display: block;
+  margin-bottom: 8px;
+  font: 700 9px/1 Arial, sans-serif;
+  letter-spacing: 0.18em;
+  color: var(--np-muted);
+}
+
+.np-desk__ledger-card header h3 {
+  margin: 0;
+  font-family: "LXGW WenKai", cursive;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--np-ink);
+}
+
+.np-desk__ledger-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.np-desk__ledger-row {
+  border-bottom: 1px dashed rgb(0 0 0 / 0.14);
+}
+
+.np-desk__ledger-row:last-child {
+  border-bottom: none;
+}
+
+.np-desk__ledger-row a {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  align-items: baseline;
+  gap: 18px;
+  padding: 11px 6px 11px 4px;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    background 180ms ease,
+    transform 180ms ease,
+    padding 180ms ease;
+}
+
+.np-desk__ledger-row a:hover {
+  background: rgb(255 255 255 / 0.45);
+  padding-left: 10px;
+}
+
+.np-desk__ledger-date {
+  font: 700 11px/1 "Courier New", monospace;
+  letter-spacing: 0.04em;
+  color: var(--np-red);
+  white-space: nowrap;
+}
+
+.np-desk__ledger-title {
+  font-family: "LXGW WenKai", cursive;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.3;
+  color: var(--np-ink);
+}
+
+.np-desk__ledger-tag {
+  font: 700 9px/1 Arial, sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--np-muted);
+  padding: 4px 8px;
+  border: 1px solid rgb(0 0 0 / 0.22);
+  white-space: nowrap;
+  background: rgb(255 255 255 / 0.35);
+}
+
 .np-desk__exchange {
   display: grid;
   grid-template-columns: 0.7fr 1fr 1fr;
@@ -863,6 +984,50 @@ html[data-theme="newspaper"] .units-main {
   .np-desk__index.is-in-view
   .np-desk__notebook::after {
   transform: perspective(1200px) rotateY(-100deg);
+}
+
+.np-root[data-motion="full"] .np-desk__ledger-card {
+  opacity: 0;
+  transform: scale(0.94) rotate(-1.5deg);
+  transition:
+    opacity 0.5s,
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.np-root[data-motion="full"] .np-desk__ledger.is-in-view .np-desk__ledger-card {
+  opacity: 1;
+  transform: scale(1) rotate(0.6deg);
+}
+
+.np-root[data-motion="full"] .np-desk__ledger-row {
+  opacity: 0;
+  transform: translateX(-12px);
+  transition:
+    opacity 0.32s ease,
+    transform 0.5s cubic-bezier(0.2, 1.2, 0.4, 1);
+}
+.np-root[data-motion="full"] .np-desk__ledger.is-in-view .np-desk__ledger-row {
+  opacity: 1;
+  transform: translateX(0);
+}
+.np-root[data-motion="full"]
+  .np-desk__ledger.is-in-view
+  .np-desk__ledger-row:nth-child(2) {
+  transition-delay: 0.06s;
+}
+.np-root[data-motion="full"]
+  .np-desk__ledger.is-in-view
+  .np-desk__ledger-row:nth-child(3) {
+  transition-delay: 0.12s;
+}
+.np-root[data-motion="full"]
+  .np-desk__ledger.is-in-view
+  .np-desk__ledger-row:nth-child(4) {
+  transition-delay: 0.18s;
+}
+.np-root[data-motion="full"]
+  .np-desk__ledger.is-in-view
+  .np-desk__ledger-row:nth-child(n + 5) {
+  transition-delay: 0.24s;
 }
 .np-root[data-motion="full"] .np-desk__exchange > a {
   opacity: 0;
@@ -1209,6 +1374,25 @@ html[data-theme="newspaper"]
   }
   .np-desk__notebook a {
     width: 100%;
+  }
+  .np-desk__ledger {
+    width: 96%;
+  }
+  .np-desk__ledger-card {
+    padding: 32px 22px 26px;
+  }
+  .np-desk__ledger-card::before {
+    left: 24px;
+  }
+  .np-desk__ledger-row a {
+    grid-template-columns: 78px 1fr;
+    gap: 10px;
+  }
+  .np-desk__ledger-tag {
+    grid-column: 1 / -1;
+    justify-self: start;
+    margin-left: 88px;
+    margin-top: -4px;
   }
   .np-desk__exchange {
     display: flex;
