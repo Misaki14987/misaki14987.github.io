@@ -17,9 +17,9 @@ export const initializeNewspaperHome = () => {
       const progress = reduced ? 1 : active ? clamp(window.scrollY / (window.innerHeight * .5)) : 0;
       const ink = clamp((progress - .28) / .42);
       const mobile = innerWidth <= 768;
-      const startY = mobile ? -72 : -120;
-      const startRotation = mobile ? -3 : -7;
-      const startScale = mobile ? .9 : .84;
+      const startY = mobile ? -48 : -80;
+      const startRotation = mobile ? -2 : -3;
+      const startScale = mobile ? .96 : .94;
 
       root.style.setProperty('--desk-paper-y', `${startY * (1 - progress)}px`);
       root.style.setProperty('--desk-paper-rotate', `${startRotation * (1 - progress)}deg`);
