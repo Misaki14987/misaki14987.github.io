@@ -8,9 +8,9 @@
     "dev:learning": "SITE_VARIANT=learning astro dev",
     "build": "astro build",
     "build:learning": "SITE_VARIANT=learning astro build",
+    "test:theme": "node scripts/theme-navigation-check.mjs",
     "preview": "astro preview",
-    "astro": "astro",
-    "new": "node scripts/new-post.mjs"
+    "astro": "astro"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
@@ -24,7 +24,6 @@
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "sass": "^1.89.0",
-    "sharp": "^0.34.5",
-    "three": "^0.185.1"
+    "sharp": "^0.34.5"
   }
 }

@@ -1,18 +1,15 @@
 ---
 import '../global.scss';
 import '../styles/layouts/base-layout.scss';
-import '../styles/components/archive-loader.scss';
-import ArchiveLoader from '../components/common/ArchiveLoader.astro';
-import Navigation from '../components/common/Navigation.astro';
+import '../styles/themes/newspaper.scss';
 import SiteHead from '../components/common/SiteHead.astro';
-import SystemFrame from '../components/common/SystemFrame.astro';
+import ThemeController from '../components/common/ThemeController.astro';
 import { SITE_TITLE } from '../scripts/seo';
 
 const {
     title = SITE_TITLE,
     description,
     bodyClass = '',
-    showNavigation = true,
     canonical,
     ogType = 'website',
     ogImage,
@@ -22,8 +19,18 @@ const {
     tags = [],
 } = Astro.props;
 ---
-<html lang='zh-CN'>
+<html lang='zh-CN' data-theme='units'>
   <head>
+    <script is:inline>
+      try {
+        const requestedTheme = new URLSearchParams(location.search).get('theme');
+        const savedTheme = localStorage.getItem('site-theme');
+        const normalizeTheme = (value) => value === 'newspaper' || value === 'plain' ? 'newspaper' : 'units';
+        document.documentElement.dataset.theme = ['units', 'newspaper', 'plain'].includes(requestedTheme)
+          ? normalizeTheme(requestedTheme)
+          : normalizeTheme(savedTheme);
+      } catch {}
+    </script>
     <SiteHead
       title={title}
       description={description}
@@ -39,10 +46,7 @@ const {
   </head>
 
   <body class={`body ${bodyClass}`}>
-    <SystemFrame />
-    <ArchiveLoader />
-    {showNavigation && <Navigation />}
-
+    <ThemeController />
     <main class='main'>
       <slot />
     </main>

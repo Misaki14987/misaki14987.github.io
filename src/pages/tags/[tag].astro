@@ -1,57 +1,55 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import BlogCard from '../../components/BlogCard.astro';
 import {
     getAllTags,
-    getPostCards,
     getPostsByTag,
     getPublishedPosts,
+    formatPostDate,
 } from '../../scripts/publication';
 import '../../styles/pages/tag.scss';
 import { SITE_TITLE } from '../../config/site';
 
 export async function getStaticPaths() {
     const allPosts = await getPublishedPosts();
-    return getAllTags(allPosts).map((tag) => {
-        const filteredPosts = getPostCards(getPostsByTag(allPosts, tag));
-        return {
-            params: { tag },
-            props: { posts: filteredPosts },
-        };
-    });
+    return getAllTags(allPosts).map((tag) => ({
+        params: { tag },
+        props: { posts: getPostsByTag(allPosts, tag) },
+    }));
 }
 
 const { tag } = Astro.params;
 const { posts } = Astro.props;
+const cards = posts.map((post) => ({
+    title: post.data.title,
+    link: `/posts/${post.id}/`,
+    date: post.data.pubDate ? formatPostDate(post.data.pubDate) : null,
+    subtitle: post.data.category ?? post.data.tags[0] ?? '',
+}));
 ---
 
 <BaseLayout
-  title={`${tag} | ${SITE_TITLE}`}
-  description={`标签 ${tag}`}
-  ogImage="/images/home-og.png"
+    title={`${tag} | ${SITE_TITLE}`}
+    description={`标签 ${tag}`}
+    ogImage="/images/vn-blog-hero.png"
 >
-  <div class="tag-stream">
-    <section class="tag-stream__head page-reveal">
-      <div>
-        <span class="tag-stream__label">标签</span>
-        <h1>#{tag}</h1>
-      </div>
-      <span class="tag-stream__count">{String(posts.length).padStart(2, '0')} notes</span>
-    </section>
+    <div class="tag-stream">
+        <section class="tag-stream__head">
+            <div>
+                <span class="tag-stream__label">TAG</span>
+                <h1>#{tag}</h1>
+            </div>
+            <span class="tag-stream__count">{String(cards.length).padStart(2, '0')} notes</span>
+        </section>
 
-    <div class="tag-stream__list page-reveal page-reveal--delay-1">
-      {posts.map((post: any) => (
-        <BlogCard
-          title={post.title}
-          subtitle={post.subtitle}
-          image={post.image}
-          link={post.link}
-          description={post.description}
-          pubDate={post.pubDate}
-          tags={post.tags}
-          entryId={post.entryId}
-        />
-      ))}
+        <div class="tag-stream__list">
+            {cards.map((post) => (
+                <a href={post.link} class="tag-stream__item">
+                    <span class="tag-stream__date">{post.date?.display ?? ''}</span>
+                    <strong class="tag-stream__title">{post.title}</strong>
+                    <span class="tag-stream__subtitle">{post.subtitle}</span>
+                    <span class="tag-stream__arrow" aria-hidden="true">↗</span>
+                </a>
+            ))}
+        </div>
     </div>
-  </div>
 </BaseLayout>

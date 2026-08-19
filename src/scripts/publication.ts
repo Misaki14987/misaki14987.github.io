@@ -1,14 +1,16 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import {
-  absoluteUrl,
   absolutizeHtml,
+  absoluteUrl,
   entryDescription,
   escapeXml,
   withTrailingSlash,
 } from './seo';
 import { SITE_VARIANT } from '../config/site';
+import { ENCRYPTED_PLACEHOLDER, isEncrypted } from './encrypted';
 
 export type PostEntry = CollectionEntry<'posts'>;
+export type PostKind = PostEntry['data']['kind'];
 export type PostTone = 'build' | 'theory' | 'personal';
 
 export const staticPagePaths = ['/', '/about/', '/tags/'] as const;
@@ -27,15 +29,21 @@ export const postPath = (postOrId: PostEntry | string) => {
 export const tagPath = (tag: string) =>
   withTrailingSlash(`/tags/${encodeURIComponent(tag)}`);
 
-export const getPublishedPosts = async () =>
+export const getPublishedPosts = async (kind?: PostKind) =>
   (await getCollection('posts'))
-    .filter((post) => !post.data.draft && post.data.site === SITE_VARIANT)
+    .filter(
+      (post) =>
+        !post.data.draft &&
+        post.data.site === SITE_VARIANT &&
+        (!kind || post.data.kind === kind),
+    )
     .sort(sortByNewest);
 
 export const postSubtitle = (post: PostEntry) =>
   post.data.category ?? post.data.tags[0] ?? '';
 
-export const postDescription = (post: PostEntry) => entryDescription(post);
+export const postDescription = (post: PostEntry) =>
+  isEncrypted(post) ? ENCRYPTED_PLACEHOLDER : entryDescription(post);
 
 export const postTone = ({
   title,
@@ -55,7 +63,7 @@ export const postTone = ({
 
 export const formatPostDate = (
   date: Date | string,
-  format: 'dot' | 'han' = 'dot'
+  format: 'dot' | 'han' = 'dot',
 ) => {
   const parts = new Intl.DateTimeFormat('zh-CN', {
     timeZone: 'Asia/Shanghai',
@@ -63,7 +71,9 @@ export const formatPostDate = (
     month: '2-digit',
     day: '2-digit',
   }).formatToParts(new Date(date));
-  const values = Object.fromEntries(parts.map(({ type, value }) => [type, value]));
+  const values = Object.fromEntries(
+    parts.map(({ type, value }) => [type, value]),
+  );
   const machine = `${values.year}-${values.month}-${values.day}`;
 
   return {
@@ -83,48 +93,6 @@ export const getAllTags = (posts: PostEntry[]) =>
 export const getPostsByTag = (posts: PostEntry[], tag: string) =>
   posts.filter((post) => post.data.tags.includes(tag));
 
-export const toPostCard = (
-  post: PostEntry,
-  options: { index?: number; total?: number } = {}
-) => {
-  const { index, total } = options;
-  const entryId =
-    typeof index === 'number' && typeof total === 'number'
-      ? `SCENE-${String(total - index).padStart(3, '0')}`
-      : undefined;
-
-  return {
-    title: post.data.title,
-    subtitle: postSubtitle(post),
-    image: post.data.cover,
-    link: postPath(post),
-    description: postDescription(post),
-    pubDate: post.data.pubDate ? new Date(post.data.pubDate) : undefined,
-    tags: post.data.tags,
-    entryId,
-    tone: postTone({
-      title: post.data.title,
-      subtitle: postSubtitle(post),
-      tags: post.data.tags,
-    }),
-  };
-};
-
-export const getPostCards = (posts: PostEntry[]) =>
-  posts.map((post, index, allPosts) =>
-    toPostCard(post, { index, total: allPosts.length })
-  );
-
-export const toRssItem = (post: PostEntry, site: string | URL) => ({
-  title: post.data.title,
-  pubDate: post.data.pubDate,
-  description: postDescription(post),
-  content: post.rendered?.html ? absolutizeHtml(post.rendered.html, site) : undefined,
-  link: postPath(post),
-  categories: post.data.tags,
-  customData: `<dc:creator>${escapeXml(post.data.author)}</dc:creator>`,
-});
-
 export const getSitemapEntries = (posts: PostEntry[], site: string | URL) => [
   ...staticPagePaths.map((path) => ({
     loc: absoluteUrl(path, site),
@@ -143,3 +111,29 @@ export const getSitemapEntries = (posts: PostEntry[], site: string | URL) => [
     priority: '0.8',
   })),
 ];
+
+export const toPostCard = (post: PostEntry) => ({
+  title: post.data.title,
+  subtitle: postSubtitle(post),
+  image: post.data.cover,
+  link: postPath(post),
+  description: postDescription(post),
+  pubDate: post.data.pubDate ? new Date(post.data.pubDate) : undefined,
+  tags: post.data.tags,
+});
+
+export const getPostCards = (posts: PostEntry[]) => posts.map(toPostCard);
+
+export const toRssItem = (post: PostEntry, site: string | URL) => ({
+  title: post.data.title,
+  pubDate: post.data.pubDate,
+  description: postDescription(post),
+  content: isEncrypted(post)
+    ? undefined
+    : post.rendered?.html
+      ? absolutizeHtml(post.rendered.html, site)
+      : undefined,
+  link: postPath(post),
+  categories: post.data.tags,
+  customData: `<dc:creator>${escapeXml(post.data.author)}</dc:creator>`,
+});
