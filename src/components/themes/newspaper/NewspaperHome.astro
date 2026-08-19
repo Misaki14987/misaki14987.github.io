@@ -8,67 +8,47 @@ const dateOf = (post: { pubDate?: Date }) => post.pubDate ? formatPostDate(post.
 
 <div class="np-root np-desk" data-newspaper-home data-motion="pending">
   <section class="np-opening np-desk__opening" aria-labelledby="newspaper-masthead">
-    <div class="np-desk__newspaper">
-      <span>PERSONAL EDITION · NO. 14987</span>
-      <h1 id="newspaper-masthead">Misaki<br />Journal</h1>
-      <p>Code, daily life, and the unfinished notes left on a working desk.</p>
-      <div class="np-desk__edition-line" aria-label="Edition contents">
-        <span>VOL. 789</span>
-        <span>{String(articles.length).padStart(2, '0')} ARTICLES</span>
-        <span>{String(diaries.length).padStart(2, '0')} DIARY</span>
+    <div class="np-opening__grid">
+      <div class="np-desk__newspaper">
+        <span>PERSONAL EDITION · NO. 14987</span>
+        <h1 id="newspaper-masthead">Misaki<br />Journal</h1>
+        <p>Code, daily life, and the unfinished notes left on a working desk.</p>
+        <div class="np-desk__edition-line" aria-label="Edition contents">
+          <span>VOL. 789</span>
+          <span>{String(articles.length).padStart(2, '0')} ARTICLES</span>
+          <span>{String(diaries.length).padStart(2, '0')} DIARY</span>
+        </div>
+        <div class="np-desk__edition-note">
+          <strong>EDITED &amp; PUBLISHED BY M1saK1</strong>
+          <span>みさき · PERSONAL PRESS</span>
+        </div>
+        <b class="np-desk__masthead-stamp" aria-hidden="true">DESK <br />Osaka</b>
       </div>
-      <div class="np-desk__edition-note">
-        <strong>EDITED &amp; PUBLISHED BY M1saK1</strong>
-        <span>みさき · PERSONAL PRESS</span>
-      </div>
-      <b class="np-desk__masthead-stamp" aria-hidden="true">DESK <br />Osaka</b>
+      <section class="np-scene np-desk__ledger" id="np-ledger" aria-labelledby="newspaper-ledger-title">
+        <span class="np-tape" aria-hidden="true"></span>
+        <div class="np-desk__ledger-card">
+          <header>
+            <span>CLIPPING LEDGER · ALL EDITIONS</span>
+            <h3 id="newspaper-ledger-title">Index of clippings</h3>
+          </header>
+          <ol class="np-desk__ledger-list">
+            {articles.map((article) => (
+              <li class="np-desk__ledger-row">
+                <a href={article.link}>
+                  <span class="np-desk__ledger-date">{dateOf(article)}</span>
+                  <strong class="np-desk__ledger-title">{article.title}</strong>
+                  <span class="np-desk__ledger-tag">{article.subtitle || article.tags[0] || 'ARTICLE'}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
     </div>
+    <span class="np-opening__cue">ISSUE · SUNDAY BREAK · {String(articles.length).padStart(2, '0')} ARTICLES ON FILE</span>
   </section>
 
   <div class="np-desk__surface">
-    <section class="np-scene np-desk__ledger" id="np-ledger" aria-labelledby="newspaper-ledger-title">
-      <span class="np-tape" aria-hidden="true"></span>
-      <div class="np-desk__ledger-card">
-        <header>
-          <span>CLIPPING LEDGER · ALL EDITIONS</span>
-          <h3 id="newspaper-ledger-title">Index of clippings</h3>
-        </header>
-        <ol class="np-desk__ledger-list">
-          {articles.map((article) => (
-            <li class="np-desk__ledger-row">
-              <a href={article.link}>
-                <span class="np-desk__ledger-date">{dateOf(article)}</span>
-                <strong class="np-desk__ledger-title">{article.title}</strong>
-                <span class="np-desk__ledger-tag">{article.subtitle || article.tags[0] || 'ARTICLE'}</span>
-              </a>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-
-    {featured && (
-      <section class="np-scene np-desk__lead" aria-labelledby="newspaper-lead-title">
-        <span class="np-tape" aria-hidden="true"></span>
-        <a href={featured.link}>
-          {featured.image ? (
-            typeof featured.image === 'string' ? (
-              <img src={featured.image} alt="" loading="eager" decoding="async" />
-            ) : (
-              <Image src={featured.image} alt="" widths={[640, 980]} sizes="(max-width: 760px) 100vw, 52vw" loading="eager" />
-            )
-          ) : <i class="np-desk__lead-placeholder" aria-hidden="true"></i>}
-          <div>
-            <small>CLIPPING 01 · {dateOf(featured)}</small>
-            <h2 id="newspaper-lead-title">{featured.title}</h2>
-            <p>{featured.description}</p>
-            <strong>READ THE CLIPPING <span aria-hidden="true">→</span></strong>
-          </div>
-        </a>
-        <p class="np-handnote">我喜欢无糖怡泉.<br />— M.K</p>
-      </section>
-    )}
-
     <section class="np-scene np-desk__columns" id="np-articles" aria-labelledby="newspaper-columns-title">
       <h2 id="newspaper-columns-title" class="np-visually-hidden">Editorial Columns</h2>
       <div class="np-desk__article-stack">
