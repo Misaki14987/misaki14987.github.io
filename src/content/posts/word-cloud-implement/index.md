@@ -5,6 +5,7 @@ author: 'M1saK1'
 category: '不使用d3实现一个简单的无碰撞词云'
 cover: ./cover.jpg
 tags: ['Frontend', 'Web Development']
+site: 'blog'
 ---
 
 起因是在杭电助手接了一个学校图书馆的活，做一个图书馆借阅数据的年度总结的前端，其中有一个需求是要有一个词云，展示用户这年阅读的关键词。嘛没做过这种需求...遂借助互联网神力发现可以使用`d3.js`中的`d3-cloud`来实现，甚至 react 还有个别人写好的库`react-wordcloud`，赶紧塞到我的项目中。

@@ -6,6 +6,7 @@ author: 'M1saK1'
 category: '深入学习线性代数中'
 cover: ./cover.png
 tags: ['数学']
+site: 'learning'
 ---
 
 视频链接如下

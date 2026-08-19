@@ -6,6 +6,7 @@ import {
   escapeXml,
   withTrailingSlash,
 } from './seo';
+import { SITE_VARIANT } from '../config/site';
 
 export type PostEntry = CollectionEntry<'posts'>;
 export type PostTone = 'build' | 'theory' | 'personal';
@@ -28,7 +29,7 @@ export const tagPath = (tag: string) =>
 
 export const getPublishedPosts = async () =>
   (await getCollection('posts'))
-    .filter((post) => !post.data.draft)
+    .filter((post) => !post.data.draft && post.data.site === SITE_VARIANT)
     .sort(sortByNewest);
 
 export const postSubtitle = (post: PostEntry) =>

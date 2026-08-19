@@ -1,4 +1,5 @@
 # build output
+dist-learning/
 
 # generated types
 .astro/
@@ -33,3 +34,5 @@ SPEC.md
 *.md
 .direnv/
 dist/
+.vercel
+.env*
