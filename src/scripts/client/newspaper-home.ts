@@ -14,7 +14,7 @@ export const initializeNewspaperHome = () => {
     const updateOpening = () => {
       const reduced = reducedMotion.matches;
       const active = document.documentElement.dataset.theme === 'newspaper';
-      const progress = reduced ? 1 : active ? clamp(window.scrollY / (window.innerHeight * .72)) : 0;
+      const progress = reduced ? 1 : active ? clamp(window.scrollY / (window.innerHeight * .5)) : 0;
       const ink = clamp((progress - .28) / .42);
       const mobile = innerWidth <= 768;
       const startY = mobile ? -72 : -120;

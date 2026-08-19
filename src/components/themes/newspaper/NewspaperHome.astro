@@ -23,10 +23,30 @@ const dateOf = (post: { pubDate?: Date }) => post.pubDate ? formatPostDate(post.
       </div>
       <b class="np-desk__masthead-stamp" aria-hidden="true">DESK <br />Osaka</b>
     </div>
-    <span class="np-opening__cue">ISSUE · SUNDAY BREAK</span>
   </section>
 
   <div class="np-desk__surface">
+    <section class="np-scene np-desk__ledger" id="np-ledger" aria-labelledby="newspaper-ledger-title">
+      <span class="np-tape" aria-hidden="true"></span>
+      <div class="np-desk__ledger-card">
+        <header>
+          <span>CLIPPING LEDGER · ALL EDITIONS</span>
+          <h3 id="newspaper-ledger-title">Index of clippings</h3>
+        </header>
+        <ol class="np-desk__ledger-list">
+          {articles.map((article) => (
+            <li class="np-desk__ledger-row">
+              <a href={article.link}>
+                <span class="np-desk__ledger-date">{dateOf(article)}</span>
+                <strong class="np-desk__ledger-title">{article.title}</strong>
+                <span class="np-desk__ledger-tag">{article.subtitle || article.tags[0] || 'ARTICLE'}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
     {featured && (
       <section class="np-scene np-desk__lead" aria-labelledby="newspaper-lead-title">
         <span class="np-tape" aria-hidden="true"></span>
@@ -68,27 +88,6 @@ const dateOf = (post: { pubDate?: Date }) => post.pubDate ? formatPostDate(post.
             <span>{dateOf(diary)}</span><strong>{diary.title}</strong><small>SEALED ENTRY</small>
           </a>
         ))}
-      </div>
-    </section>
-
-    <section class="np-scene np-desk__ledger" id="np-ledger" aria-labelledby="newspaper-ledger-title">
-      <span class="np-tape" aria-hidden="true"></span>
-      <div class="np-desk__ledger-card">
-        <header>
-          <span>CLIPPING LEDGER · ALL EDITIONS</span>
-          <h3 id="newspaper-ledger-title">Index of clippings</h3>
-        </header>
-        <ol class="np-desk__ledger-list">
-          {articles.map((article) => (
-            <li class="np-desk__ledger-row">
-              <a href={article.link}>
-                <span class="np-desk__ledger-date">{dateOf(article)}</span>
-                <strong class="np-desk__ledger-title">{article.title}</strong>
-                <span class="np-desk__ledger-tag">{article.subtitle || article.tags[0] || 'ARTICLE'}</span>
-              </a>
-            </li>
-          ))}
-        </ol>
       </div>
     </section>
 
