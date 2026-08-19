@@ -1,150 +1,206 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import BlogCard from '../components/BlogCard.astro';
-import { getPostCards, getPublishedPosts } from '../scripts/publication';
+import UnitsShell from '../components/common/UnitsShell.astro';
+import NewspaperHome from '../components/themes/newspaper/NewspaperHome.astro';
+import FriendLink from '../components/FriendLink.astro';
+import { formatPostDate, getAllTags, getPostCards, getPublishedPosts } from '../scripts/publication';
 import { SITE_CONFIG, SITE_TITLE } from '../config/site';
 import '../styles/pages/index.scss';
 
-const blogs = getPostCards(await getPublishedPosts());
-const tags = [...new Set(blogs.flatMap((blog) => blog.tags ?? []))]
-  .filter(Boolean)
-  .sort((a, b) => a.localeCompare(b, 'zh-CN'));
+const posts = await getPublishedPosts();
+const articles = getPostCards(posts.filter((post) => post.data.kind === 'article'));
+const diaries = getPostCards(posts.filter((post) => post.data.kind === 'diary'));
+const featured = articles[0];
+const tags = getAllTags(posts.filter((post) => post.data.kind === 'article')).slice(0, 10);
+const featuredDate = featured?.pubDate ? formatPostDate(featured.pubDate) : null;
+const archives = [
+  { id: 'articles', number: '02', label: 'PROOF', zh: '一些分享', en: 'Articles', tone: 'yellow', posts: articles, fallback: 'ARTICLE' },
+  { id: 'diary', number: '03', label: 'PRIVATE PRESS', zh: '胡思乱想', en: 'Diary', tone: 'orange', posts: diaries, fallback: 'DIARY' },
+];
+const profileStats = [
+  ['base', 'Hangzhou / HDU'],
+  ['practice', 'Frontend systems', 'Agent'],
+  ['outside', 'Rhythm game / TCG ']
+];
+const interests = ['Coding', 'Rhythm Game', 'TCG', 'Idol'];
 ---
 
 <BaseLayout
   title={SITE_TITLE}
   description={SITE_CONFIG.description}
-  ogImage="/images/home-og.png"
-  bodyClass="home-page"
+  ogImage="/images/vn-blog-hero.png"
+  bodyClass="units-body"
 >
-  <div class="home" data-home-scenes data-active-scene="intro">
-    <nav class="scene-switcher" aria-label="首页场景">
-      <div class="scene-switcher__tabs">
-        <button type="button" data-scene-target="intro" aria-pressed="true">
-          <span>01</span>
-          首页
-        </button>
-        <button type="button" data-scene-target="articles" aria-pressed="false">
-          <span>02</span>
-          文章
-        </button>
-      </div>
-      <div class="scene-switcher__arrows">
-        <button type="button" data-scene-step="-1" aria-label="上一个场景">←</button>
-        <button type="button" data-scene-step="1" aria-label="下一个场景">→</button>
-      </div>
-    </nav>
+  <UnitsShell active="home">
+    <div class="units-home" data-home-motion data-theme-content="units">
+      {featured && (
+        <section class="units-hero" id="latest" data-home-hero>
+          <a class="units-hero__media" href={featured.link} aria-label={`阅读 ${featured.title}`}>
+            {featured.image ? (
+              typeof featured.image === 'string' ? (
+                <img src={featured.image} alt="" loading="eager" decoding="async" />
+              ) : (
+                <Image
+                  src={featured.image}
+                  alt=""
+                  widths={[720, 1040, 1440]}
+                  sizes="(max-width: 920px) calc(100vw - 20px), calc(100vw - 188px)"
+                  loading="eager"
+                  decoding="async"
+                  fetchpriority="high"
+                />
+              )
+            ) : (
+              <div class="units-hero__fallback" aria-hidden="true"></div>
+            )}
+          </a>
 
-    <div class="scene-viewport">
-    <section class="opening home-scene is-active" data-scene="intro">
-      <div class="opening__media" aria-hidden="true">
-        <canvas data-hero-field data-note-count={blogs.length}></canvas>
-      </div>
-
-      <div class="opening__topline" aria-hidden="true">
-        <span>{SITE_CONFIG.home.topline}</span>
-        <span>Shanghai / CN</span>
-        <span>Since 2025</span>
-      </div>
-
-      <div class="opening__statement page-reveal">
-        <h1>
-          {SITE_CONFIG.home.headline.map((line, index) => (
-            <span>{line}{index === 2 && <i aria-hidden="true">*</i>}</span>
-          ))}
-        </h1>
-        <p class="opening__eyebrow">{SITE_CONFIG.home.eyebrow}</p>
-        <button class="opening__switch" type="button" data-scene-target="articles">
-          <span class="opening__switch-icon" aria-hidden="true">↘</span>
-          <span>{SITE_CONFIG.home.browseLabel}</span>
-        </button>
-      </div>
-    </section>
-
-    <section class="notebook home-scene" data-scene="articles" hidden>
-      <section class="note-ledger page-reveal page-reveal--delay-1">
-        <header class="note-ledger__head">
-          <div>
-            <h2>{SITE_CONFIG.home.archiveTitle}</h2>
-          </div>
-          <a href="/tags/">{SITE_CONFIG.home.archiveLinkLabel} ↗</a>
-        </header>
-
-        <form class="note-tools" data-note-tools>
-          <label class="note-search">
-            <span>搜索</span>
-            <input
-              type="search"
-              name="q"
-              placeholder="标题、摘要或标签"
-              autocomplete="off"
-              data-note-search
-            />
-            <kbd>/</kbd>
-          </label>
-
-          <label class="note-select">
-            <span>标签</span>
-            <select name="tag" data-note-tag>
-              <option value="">全部</option>
-              {tags.map((tag) => <option value={tag}>{tag}</option>)}
-            </select>
-          </label>
-
-          <label class="note-select">
-            <span>排序</span>
-            <select name="sort" data-note-sort>
-              <option value="newest">最新优先</option>
-              <option value="oldest">最早优先</option>
-            </select>
-          </label>
-
-          {SITE_CONFIG.home.filters.length > 0 && (
-            <div class="tone-filter" role="group" aria-label="内容主题">
-              {SITE_CONFIG.home.filters.map((filter, index) => (
-                <button
-                  type="button"
-                  data-tone-filter={filter.value}
-                  aria-pressed={index === 0 ? 'true' : 'false'}
-                >
-                  {filter.label}
-                </button>
-              ))}
+          <div class="units-hero__registration">
+            <div class="units-hero__plates" aria-hidden="true">
+              <span>DESIGN</span>
+              <span>CODE</span>
+              <span>PLAY</span>
             </div>
-          )}
-        </form>
+            <h1>
+              <button type="button" data-author-mark aria-label="M1saK1，连续点击三次查看印刷批次">
+                <span class="units-author units-author--blue" aria-hidden="true">M1saK1</span>
+                <span class="units-author units-author--orange" aria-hidden="true">M1saK1</span>
+                <span class="units-author units-author--yellow" aria-hidden="true">M1saK1</span>
+                <span class="units-author units-author--key">M1saK1</span>
+              </button>
+            </h1>
+          </div>
 
-        <div class="note-results" aria-live="polite">
-          <span data-note-count>{blogs.length} 篇</span>
-          <button type="button" data-note-reset hidden>清除筛选</button>
-        </div>
+          <div class="units-batch-stamp" data-batch-stamp aria-hidden="true">
+            <span>LOT 14987</span>
+            <strong>ZERO SUGAR</strong>
+          </div>
 
-        <div class="note-ledger__list">
-          {blogs.map((blog, i) => (
-            <BlogCard
-              title={blog.title}
-              subtitle={blog.subtitle}
-              image={blog.image}
-              link={blog.link}
-              description={blog.description}
-              pubDate={blog.pubDate}
-              tags={blog.tags}
-              entryId={blog.entryId}
-              tone={blog.tone}
-              priority={i === 0}
-              class="archive-entry--compact"
-            />
-          ))}
+          <div class="units-hero__copy">
+            <p>01 / LATEST · {featuredDate?.display ?? 'NOW'}</p>
+            <h2>{featured.title}</h2>
+            <span>{featured.description}</span>
+            <a href={featured.link}>Read the note <i aria-hidden="true">↗</i></a>
+          </div>
+        </section>
+      )}
+
+      {archives.map((archive) => (
+        <section class={`units-panel units-panel--${archive.tone}`} id={archive.id} data-print-section>
+          <header class="units-panel__head">
+            <div>
+              <span>{archive.number} / {archive.label}</span>
+              <h2 data-i18n data-zh={archive.zh} data-en={archive.en}>{archive.zh}</h2>
+            </div>
+            {archive.id === 'articles' && (
+              <a href="#subjects" data-i18n data-zh="主题索引 ↗" data-en="Subjects ↗">主题索引 ↗</a>
+            )}
+          </header>
+
+          <div class="units-posts">
+            {archive.posts.map((blog, index) => (
+              <a class={`units-post units-post--${index % 4}`} href={blog.link}>
+                <span class="units-post__cover">
+                  {blog.image ? (
+                    typeof blog.image === 'string' ? (
+                      <img src={blog.image} alt="" loading="lazy" decoding="async" />
+                    ) : (
+                      <Image
+                        src={blog.image}
+                        alt=""
+                        widths={[320, 560, 760]}
+                        sizes="(max-width: 920px) calc(100vw - 64px), 30vw"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    )
+                  ) : (
+                    <i aria-hidden="true"></i>
+                  )}
+                </span>
+                <span class="units-post__copy">
+                  <small>{String(index + 1).padStart(2, '0')} / {blog.subtitle || archive.fallback}</small>
+                  <strong>{blog.title}</strong>
+                  <p>{blog.description}</p>
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+
+      <section class="units-panel units-panel--green" id="works" data-print-section>
+        <header class="units-panel__head">
+          <div>
+            <span>04 / PORTFOLIO</span>
+            <h2 data-i18n data-zh="作品集" data-en="Works">作品集</h2>
+          </div>
+        </header>
+        <div class="units-empty">
+          <strong>NO WORKS, YET.</strong>
+          <p data-i18n data-zh="这里会放完成并愿意公开的项目。" data-en="Finished public projects will live here.">这里会放完成并愿意公开的项目。</p>
         </div>
-        <p class="note-empty" data-note-empty hidden>没有符合条件的文章。</p>
       </section>
-    </section>
+
+      <section class="units-panel units-panel--yellow" id="about" data-print-section>
+      <header class="units-panel__head">
+        <div>
+          <span>05 / PLATES</span>
+          <h2 data-i18n data-zh="关于我" data-en="About Me">关于我</h2>
+        </div>
+      </header>
+
+      <div class="units-about">
+        <div>
+          <h3>M1saK1</h3>
+          <p>From HDU, I LOVE Schweppes</p>
+        </div>
+        <dl>
+          {profileStats.map(([term, value]) => (
+            <>
+              <dt>{term}</dt>
+              <dd>{value}</dd>
+            </>
+          ))}
+        </dl>
+      </div>
+
+      <div class="units-chips" aria-label="Interests">
+        {interests.map((interest, index) => (
+          <span><i>{String(index + 1).padStart(2, '0')}</i>{interest}</span>
+        ))}
+      </div>
+      </section>
+
+      <section class="units-panel units-panel--orange" id="subjects" data-print-section>
+      <header class="units-panel__head">
+        <div>
+          <span>06 / TYPE CASE</span>
+          <h2 data-i18n data-zh="主题索引" data-en="Subjects">主题索引</h2>
+        </div>
+      </header>
+
+      <div class="units-tags">
+        {tags.map((tag) => (
+          <a href="#articles">
+            {tag}
+          </a>
+        ))}
+      </div>
+      </section>
+
+      <section class="units-panel units-panel--white" id="friends" data-print-section>
+        <span class="units-panel__label">07 / EXCHANGE</span>
+        <FriendLink />
+      </section>
     </div>
-  </div>
+    <NewspaperHome {featured} {articles} {diaries} {tags} />
+  </UnitsShell>
 </BaseLayout>
 
 <script>
-  import { mountHomePage } from "../scripts/client/home";
+  import { initializeHomeMotion } from '../scripts/client/home/home-motion';
 
-  mountHomePage();
+  initializeHomeMotion();
 </script>

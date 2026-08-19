@@ -79,6 +79,25 @@ export default class HelloExtension extends Extension {
 - `enable()`：用户在 GNOME 扩展设置里开启扩展时调用
 - `disable()`：关闭扩展时调用，必须清理 `enable()` 里创建的所有资源
 
+`enable()` 里的典型工作：
+
+1. 创建顶栏入口
+2. 构建 UI Actor
+3. 加载配置或数据
+4. 注册 GObject 信号监听
+5. 启动定时器
+6. 监听文件变化
+
+`disable()` 必须做反向操作：
+
+1. 销毁 UI Actor
+2. 移除 timeout
+3. 断开 signal handler
+4. 取消 file monitor
+5. 解除事件订阅
+
+**资源清理是 GNOME 扩展开发里最严肃的事**。扩展跑在 Shell 进程里，泄漏一个 signal handler、忘清一个 timeout，最终都会让整个桌面卡顿或崩溃。每次改完代码要 disable/enable 一次确认没有泄漏。(一坨石)
+
 ## 常用 UI 模块
 
 GNOME Shell 的 UI 模块名都以 `St` 开头（GIR 命名空间 `gi://St`）
@@ -92,6 +111,8 @@ GNOME Shell 的 UI 模块名都以 `St` 开头（GIR 命名空间 `gi://St`）
 | `St.Entry`      | 单行输入框    |
 | `St.ScrollView` | 滚动容器      |
 | `St.Clipboard`  | 剪贴板        |
+
+需要复杂控件（文本编辑器、树形列表、富输入）时，Shell 侧做不了，要打开一个独立的 GTK 应用窗口。
 
 样式通过 CSS 控制，扩展目录下放一个 `stylesheet.css`：
 
@@ -172,6 +193,8 @@ this.menu.addMenuItem(new PopupMenu.PopupSwitchMenuItem("启用", true));
 this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 ```
 
+菜单项需要响应点击就传一个回调，需要复杂内容就继承 `PopupBaseMenuItem` 自定义。
+
 ## 桌面层 UI
 
 除了顶栏入口和菜单，扩展还可以在桌面上添加 Actor。常见做法是在 `enable()` 里构造一个 `St.Widget`，用 `Main.layoutManager.addChrome()` 加到桌面层：
@@ -187,6 +210,8 @@ widget.set_size(200, 100);
 
 Main.layoutManager.addChrome(widget);
 ```
+
+桌面层 Actor 的位置、内容需要自己管理——没有 GTK 那种布局系统，定位和尺寸都要手动算。
 
 ## 本地数据
 
@@ -214,6 +239,8 @@ await file.replace_contents_bytes_async(
 );
 ```
 
+读取时需要兜底：文件不存在、JSON 损坏、字段缺失都要处理，否则用户遇到一次坏数据，Shell 就崩一次。
+
 ## 定时刷新
 
 定时器用 `GLib.timeout_add()`：
@@ -234,6 +261,8 @@ if (this._timeoutId) {
 }
 ```
 
+时间间隔不要太短。Shell 进程里跑密集的逻辑会让整个桌面卡顿，刷新频率通常 10-30 秒就够。
+
 ## 文件监听
 
 如果需要响应外部文件变化，用 `Gio.File.monitor_file()`：
@@ -251,6 +280,8 @@ this._monitorId = this._monitor.connect("changed", () => {
 this._monitor.disconnect(this._monitorId);
 this._monitor.cancel();
 ```
+
+文件变化事件可能连续触发（编辑器保存时通常触发多次），需要 debounce。
 
 ## 调试
 
@@ -283,7 +314,9 @@ gnome-extensions info hello@misaki.local
 gnome-extensions list --enabled
 ```
 
-**Looking Glass**：按下 `Alt + F2` 输入 `lg` 回车，可以打开 GNOME 内部的 JavaScript 控制台和 inspector。
+**Looking Glass**：按下 `Alt + F2` 输入 `lg` 回车，可以打开 GNOME 内部的 JavaScript 控制台和 inspector。能直接看 Main 的状态、执行 JS、临时调用扩展方法。调试 UI 问题时会用到。
+
+修改 `extension.js` 后不会自动生效——`disable` 再 `enable` 是最低成本的迭代方式，复杂场景下需要重启 Shell（注销重新登录，或在 Wayland 下按 `Alt + F2` 输入 `r`）。
 
 ## 安装与分发
 
@@ -302,6 +335,6 @@ gnome-extensions list --enabled
 然后我还没分发,后面有空了再
 
 https://github.com/Misaki14987/Task-Dashboard 项目地址
-![Task Dashboard](./image.png)
+![Task Dashboard 效果演示](./image.png)
 
 > 是谁在喜欢Gnome？哦是我（后面换笔记本还是用Hyprland吧

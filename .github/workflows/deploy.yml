@@ -18,6 +18,8 @@ jobs:
                   cache: pnpm
             - run: pnpm install
             - run: pnpm build
+              env:
+                  BLOG_POST_PASSWORDS: ${{ secrets.BLOG_POST_PASSWORDS }}
             - uses: actions/upload-pages-artifact@v3
               with:
                   path: dist

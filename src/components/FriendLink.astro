@@ -1,6 +1,4 @@
 ---
-import '../styles/components/friend-link.scss';
-
 const friends = [
     { name: 'summ2', url: 'https://summ2.link', description: 'Vidar Team Pwn, awmc', image: 'https://nan0in27.cn/%E5%8F%8B%E9%93%BE/summ2.jpg' },
     { name: 'nan0in', url: 'https://nan0in27.cn', description: 'ORAYS Pwn, Hack for fun', image: 'https://nan0in27.cn/img/avatar_hu_85437ba0800ccf1d.png' }
@@ -8,15 +6,11 @@ const friends = [
 ---
 
 <section class="friend-section">
-  <div class="friend-section__head">
-    <span class="friend-section__label">友链</span>
-    <span class="friend-section__count">{String(friends.length).padStart(2, '0')} links</span>
-  </div>
+  <h2 class="friend-section__title">友链</h2>
 
   <div class="friend-section__list">
-    {friends.map((friend, index) => (
+    {friends.map((friend) => (
       <article class="friend-entry">
-        <span class="friend-entry__index">{String(index + 1).padStart(2, '0')}</span>
         {friend.image && (
           <a href={friend.url} target="_blank" rel="noopener noreferrer" class="friend-entry__avatar">
             <img
@@ -34,10 +28,6 @@ const friends = [
           <h3 class="friend-entry__name">
             <a href={friend.url} target="_blank" rel="noopener noreferrer">{friend.name}</a>
           </h3>
-
-          <div class="friend-entry__meta">
-            <span class="friend-entry__url">{friend.url}</span>
-          </div>
 
           {friend.description && (
             <p class="friend-entry__desc">{friend.description}</p>

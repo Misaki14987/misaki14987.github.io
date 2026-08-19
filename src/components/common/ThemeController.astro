@@ -1,0 +1,28 @@
+---
+import '../../styles/components/theme-transition.scss';
+---
+
+<div class="theme-transition" data-theme-transition data-phase="idle" aria-hidden="true">
+  <div class="theme-transition__unit" aria-hidden="true">
+    <span class="theme-transition__unit-brand">M1saK1</span>
+    <div class="theme-transition__plates">
+      <i data-plate="blue">M1saK1</i>
+      <i data-plate="yellow">M1saK1</i>
+      <i data-plate="orange">M1saK1</i>
+      <i data-plate="key">M1saK1</i>
+    </div>
+    <div class="theme-transition__blocks"><i></i><i></i><i></i><i></i></div>
+  </div>
+  <div class="theme-transition__edition" aria-hidden="true">
+    <span>PERSONAL EDITION</span>
+    <strong>Misaki<br />Journal</strong>
+    <small>DESK COPY / 14987</small>
+  </div>
+  <div class="theme-transition__bridge" aria-hidden="true"><i></i><i></i></div>
+</div>
+
+<script>
+  import { initializeThemeController } from '../../scripts/client/theme-controller';
+
+  initializeThemeController();
+</script>
