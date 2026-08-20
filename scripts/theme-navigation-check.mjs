@@ -89,10 +89,9 @@ try {
     throw new Error(`Expected ${expression} to equal ${JSON.stringify(expected)}`);
   };
 
-  await send("Page.navigate", { url: `${baseUrl}/?theme=units` }, sessionId);
+  await send("Page.navigate", { url: `${baseUrl}/?theme=newspaper` }, sessionId);
   await waitFor("document.readyState", "complete");
   await waitFor("Boolean(document.querySelector('[data-theme-toggle]'))", true);
-  await waitFor("localStorage.getItem('site-theme')", "units");
   await waitFor("document.querySelector('[data-theme-transition][data-phase]').dataset.phase", "idle");
   console.log(`reduced motion:          ${await evaluate("matchMedia('(prefers-reduced-motion: reduce)').matches")}`);
   await evaluate("document.querySelector('[data-theme-toggle]').click()");
@@ -115,12 +114,6 @@ try {
   console.log(`theme after navigation:  ${after}/${storedAfter}`);
   if (after !== "newspaper" || storedAfter !== "newspaper") process.exitCode = 1;
 
-  await evaluate("document.querySelector('.newspaper-theme-switch').click()");
-  await waitFor("document.documentElement.dataset.theme", "units");
-  await waitFor("localStorage.getItem('site-theme')", "units");
-  await waitFor("document.querySelector('[data-theme-transition][data-phase]').dataset.phase", "idle");
-  console.log("article switch back:     units/units");
-
   await send("Page.navigate", { url: `${baseUrl}/?theme=newspaper#np-articles` }, sessionId);
   await waitFor("document.readyState", "complete");
   await waitFor("document.documentElement.dataset.theme", "newspaper");
@@ -142,12 +135,9 @@ try {
     media: "screen",
     features: [{ name: "prefers-reduced-motion", value: "reduce" }],
   }, sessionId);
-  await send("Page.navigate", { url: `${baseUrl}/?theme=units` }, sessionId);
-  await waitFor("localStorage.getItem('site-theme')", "units");
-  await evaluate("document.querySelector('[data-theme-toggle]').click()");
+  await send("Page.navigate", { url: `${baseUrl}/?theme=newspaper` }, sessionId);
   await waitFor("document.documentElement.dataset.theme", "newspaper");
-  await waitFor("document.querySelector('[data-theme-transition][data-phase]').dataset.phase", "idle");
-  console.log("reduced motion switch:   immediate/newspaper");
+  console.log("reduced motion home:     loaded");
 } finally {
   socket?.close();
   const exited = new Promise((resolve) => chrome.once("exit", resolve));
