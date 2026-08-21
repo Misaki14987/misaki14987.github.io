@@ -42,7 +42,7 @@ const remainingDiaries = diaries.slice(DIARY_PREVIEW_LIMIT);
 
       <section class='masthead-articles' aria-labelledby='articles-heading'>
         <header class='masthead-articles-head'>
-          <h2 id='articles-heading' data-od-id='articles-heading'>技术文章</h2>
+          <h2 id='articles-heading' data-od-id='articles-heading'>Blog</h2>
           <span class='publication-meta' id='article-count'>{articleCount} 篇</span>
         </header>
         <ol class='entry-list' data-od-id='article-list'>
@@ -65,7 +65,7 @@ const remainingDiaries = diaries.slice(DIARY_PREVIEW_LIMIT);
         </ol>
         {remainingArticles.length > 0 && (
           <details class='archive-more'>
-            <summary>查看其余 {remainingArticles.length} 篇技术文章</summary>
+            <summary>查看其余 {remainingArticles.length} 篇文章</summary>
             <ol class='entry-list entry-list--continued'>
               {remainingArticles.map((article) => {
                 const date = formatPostDate(article.pubDate).display;
