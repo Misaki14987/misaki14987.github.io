@@ -2,60 +2,87 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FriendLink from '../components/FriendLink.astro';
 import '../styles/pages/about.scss';
-import { SITE_TITLE } from '../config/site';
+import { CONTACT_LINKS, SITE_TITLE } from '../config/site';
 
 const myInfo = {
   name: '米撒奇',
-  bio: '...怡泉大好き',
-  interests: ['Coding', 'Rhythm Game', 'VisualNovel', 'アイドルマスタ'],
+  bio: '怡泉大好き,能和我写一辈子前端吗',
 };
 
 const profileStats = [
-  ['base', 'Hangzhou / HDU'],
-  ['practice', 'Frontend systems / Agent Application'],
-  ['outside', 'Rhythm game / Visual Novel / アイドルマスタ'],
+  ['Location', 'China.Zhejiang.Hangzhou / Hangzhou Dianzi University'],
+  ['Direction', 'Frontend Development / Agent '],
+  ['Tech Stack', 'React / Node.js / TypeScript / Elysia / Astro / TailwindCSS / Vite / Python / FastAPI / LangChain'],
+  ['Hobby', 'Rhythm game / Visual Novel / 偶像和女声优'],
 ];
 ---
 
 <BaseLayout
-  title={`About | ${SITE_TITLE}`}
+  title={`Profile | ${SITE_TITLE}`}
   description="关于 M1saK1"
+  hideNavigation
 >
-  <div class="profile-page">
-    <section class="profile-stage page-reveal">
-      <div class="profile-stage__index" aria-hidden="true">
-        <strong>02</strong>
+  <main
+    class="publication profile-publication"
+    data-swipe-href="/"
+    data-swipe-direction="right"
+  >
+    <section class="profile-sheet page-reveal" aria-labelledby="profile-title">
+      <div class="edition-top publication-meta" aria-label="页面信息">
+        <span>A Introversion Misaki</span>
+        <span>Profile </span>
       </div>
 
-      <div class="profile-stage__panel">
-        <h1>{myInfo.name}</h1>
-        <p>{myInfo.bio}</p>
+      <div class="profile-grid">
+        <header class="profile-identity">
+          <span class="profile-kicker publication-meta">M1saK1</span>
+          <h1 id="profile-title">{myInfo.name}</h1>
+          <p>{myInfo.bio}</p>
+        </header>
 
-        <dl class="profile-stats">
-          {profileStats.map(([term, value]) => (
-            <>
-              <dt>{term}</dt>
-              <dd>{value}</dd>
-            </>
-          ))}
-        </dl>
+        <section class="profile-dossier" aria-labelledby="dossier-heading">
+          <header class="profile-section-head">
+            <h2 id="dossier-heading">Profile</h2>
+          </header>
+          <dl class="profile-stats">
+            {profileStats.map(([term, value], index) => (
+              <div>
+                <dt>{term}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
       </div>
 
+      <FriendLink />
     </section>
 
-    <section class="dossier-panel page-reveal page-reveal--delay-1">
-      <div class="dossier-panel__head">
-        <span class="dossier-panel__label">兴趣</span>
-        <span class="dossier-panel__count">{String(myInfo.interests.length).padStart(2, '0')}</span>
-      </div>
-
-      <div class="dossier-tags">
-        {myInfo.interests.map((interest, index) => (
-          <span><b>{String(index + 1).padStart(2, '0')}</b>{interest}</span>
+    <footer class="colophon profile-colophon">
+      <strong>Misaki Journal</strong>
+      <nav class="colophon-links" aria-label="联系方式">
+        {CONTACT_LINKS.map((link) => (
+          <a
+            class="letter-link"
+            href={link.href}
+            target={link.external ? '_blank' : undefined}
+            rel={link.external ? 'noopener noreferrer' : undefined}
+          >
+            {link.label}
+          </a>
         ))}
-      </div>
-    </section>
+      </nav>
+    </footer>
+  </main>
 
-    <FriendLink />
-  </div>
+  <a
+    class="page-edge-link page-edge-link--previous"
+    href="/"
+    aria-label="返回首页"
+    title="返回首页"
+  >
+    <span aria-hidden="true">←</span>
+    <small>首页</small>
+  </a>
 </BaseLayout>

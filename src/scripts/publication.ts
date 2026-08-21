@@ -109,6 +109,7 @@ export const getSitemapEntries = (posts: PostEntry[], site: string | URL) => [
 ];
 
 export const toPostCard = (post: PostEntry) => ({
+  id: post.id,
   title: post.data.title,
   subtitle: postSubtitle(post),
   image: post.data.cover,
@@ -116,6 +117,8 @@ export const toPostCard = (post: PostEntry) => ({
   description: postDescription(post),
   pubDate: post.data.pubDate ? new Date(post.data.pubDate) : undefined,
   tags: post.data.tags,
+  kind: post.data.kind,
+  category: post.data.category,
 });
 
 export const getPostCards = (posts: PostEntry[]) => posts.map(toPostCard);

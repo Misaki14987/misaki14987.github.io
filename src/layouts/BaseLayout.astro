@@ -1,8 +1,9 @@
 ---
 import '../global.scss';
 import '../styles/layouts/base-layout.scss';
-import '../styles/themes/newspaper.scss';
+import '../styles/themes/london-newspaper.scss';
 import SiteHead from '../components/common/SiteHead.astro';
+import SiteNav from '../components/common/SiteNav.astro';
 import { SITE_TITLE } from '../scripts/seo';
 
 const {
@@ -16,9 +17,11 @@ const {
     publishedTime,
     modifiedTime,
     tags = [],
+    hideNavigation = false,
 } = Astro.props;
 ---
-<html lang='zh-CN' data-theme='newspaper'>
+
+<html lang='zh-CN' data-theme='london-newspaper'>
   <head>
     <SiteHead
       title={title}
@@ -35,6 +38,7 @@ const {
   </head>
 
   <body class={`body ${bodyClass}`}>
+    {!hideNavigation && <SiteNav />}
     <main class='main'>
       <slot />
     </main>

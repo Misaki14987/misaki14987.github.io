@@ -1,114 +1,179 @@
 ---
-import { Image } from 'astro:assets';
 import { formatPostDate } from '../../../scripts/publication';
+import { CONTACT_LINKS } from '../../../config/site';
 
-const { featured, articles, diaries, tags } = Astro.props;
-const dateOf = (post: { pubDate?: Date }) => post.pubDate ? formatPostDate(post.pubDate).display : 'UNDATED';
+const { articles, diaries } = Astro.props;
+const articleCount = articles.length;
+const diaryCount = diaries.length;
+const ARTICLE_PREVIEW_LIMIT = 4;
+const DIARY_PREVIEW_LIMIT = 3;
+const visibleArticles = articles.slice(0, ARTICLE_PREVIEW_LIMIT);
+const remainingArticles = articles.slice(ARTICLE_PREVIEW_LIMIT);
+const visibleDiaries = diaries.slice(0, DIARY_PREVIEW_LIMIT);
+const remainingDiaries = diaries.slice(DIARY_PREVIEW_LIMIT);
 ---
 
-<div class="np-root np-desk" data-newspaper-home data-motion="pending">
-  <section class="np-opening np-desk__opening" aria-labelledby="newspaper-masthead">
-    <div class="np-opening__grid">
-      <div class="np-desk__newspaper">
-        <span>PERSONAL EDITION · NO. 14987</span>
-        <h1 id="newspaper-masthead">Misaki<br />Journal</h1>
-        <p>Code, daily life, and the unfinished notes left on a working desk.</p>
-        <div class="np-desk__edition-line" aria-label="Edition contents">
-          <span>VOL. 789</span>
-          <span>{String(articles.length).padStart(2, '0')} ARTICLES</span>
-          <span>{String(diaries.length).padStart(2, '0')} DIARY</span>
-        </div>
-        <div class="np-desk__edition-note">
-          <strong>EDITED &amp; PUBLISHED BY M1saK1</strong>
-          <span>みさき · PERSONAL PRESS</span>
-        </div>
-        <b class="np-desk__masthead-stamp" aria-hidden="true">DESK <br />Osaka</b>
-      </div>
-      <section class="np-scene np-desk__ledger" id="np-ledger" aria-labelledby="newspaper-ledger-title">
-        <span class="np-tape" aria-hidden="true"></span>
-        <div class="np-desk__ledger-card">
-          <header>
-            <span>CLIPPING LEDGER · ALL EDITIONS</span>
-            <h3 id="newspaper-ledger-title">Index of clippings</h3>
-          </header>
-          <ol class="np-desk__ledger-list">
-            {articles.map((article) => (
-              <li class="np-desk__ledger-row">
-                <a href={article.link}>
-                  <span class="np-desk__ledger-date">{dateOf(article)}</span>
-                  <strong class="np-desk__ledger-title">{article.title}</strong>
-                  <span class="np-desk__ledger-tag">{article.subtitle || article.tags[0] || 'ARTICLE'}</span>
+<main
+  id='top'
+  class='publication'
+  data-od-id='journal-publication'
+  data-swipe-href='/about/'
+  data-swipe-direction='left'
+>
+  <section
+    class='masthead'
+    id='articles'
+    data-od-id='masthead'
+    aria-labelledby='masthead-title'
+  >
+    <div class='edition-top publication-meta' aria-label='刊物信息'>
+      <span>A Blog With Peaceful Misaki</span>
+      <span>Stay live just for FUN</span>
+    </div>
+    <div class='masthead-grid'>
+      <h1
+        class='masthead-title'
+        id='masthead-title'
+        data-od-id='masthead-heading'
+      >
+        <span class='title-line'><span>Misaki</span></span>
+        <span class='title-line'><span>Journal</span></span>
+      </h1>
+
+      <section class='masthead-articles' aria-labelledby='articles-heading'>
+        <header class='masthead-articles-head'>
+          <h2 id='articles-heading' data-od-id='articles-heading'>技术文章</h2>
+          <span class='publication-meta' id='article-count'>{articleCount} 篇</span>
+        </header>
+        <ol class='entry-list' data-od-id='article-list'>
+          {visibleArticles.map((article) => {
+            const date = formatPostDate(article.pubDate).display;
+            const tag = article.subtitle || article.tags[0] || '技术';
+            return (
+              <li class='entry-row' data-od-id={`article-card-${article.id}`}>
+                <a class='entry-link' href={article.link}>
+                  <time class='entry-date' datetime={formatPostDate(article.pubDate).machine}>
+                    {date}
+                  </time>
+                  <span class='entry-title'>{article.title}</span>
+                  <span class='entry-tag publication-meta'>{tag}</span>
+                  <span class='entry-arrow' aria-hidden='true'>→</span>
                 </a>
               </li>
-            ))}
-          </ol>
+            );
+          })}
+        </ol>
+        {remainingArticles.length > 0 && (
+          <details class='archive-more'>
+            <summary>查看其余 {remainingArticles.length} 篇技术文章</summary>
+            <ol class='entry-list entry-list--continued'>
+              {remainingArticles.map((article) => {
+                const date = formatPostDate(article.pubDate).display;
+                const tag = article.subtitle || article.tags[0] || '技术';
+                return (
+                  <li class='entry-row' data-od-id={`article-card-${article.id}`}>
+                    <a class='entry-link' href={article.link}>
+                      <time class='entry-date' datetime={formatPostDate(article.pubDate).machine}>
+                        {date}
+                      </time>
+                      <span class='entry-title'>{article.title}</span>
+                      <span class='entry-tag publication-meta'>{tag}</span>
+                      <span class='entry-arrow' aria-hidden='true'>→</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ol>
+          </details>
+        )}
+      </section>
+
+      <section
+        class='masthead-folio'
+        id='folio'
+        data-od-id='folio-section'
+        aria-labelledby='folio-heading'
+      >
+        <header class='folio-head'>
+        </header>
+        <div class='folio-grid'>
+          <div class='folio-column' data-od-id='diary-column'>
+            <h3 class='folio-title'>日记</h3>
+            {diaries.length === 0 && (
+              <p class='empty-copy'>暂无日记。</p>
+            )}
+            <ol class='diary-list'>
+              {visibleDiaries.map((diary) => (
+                <li>
+                  <a
+                    class='diary-entry'
+                    href={diary.link}
+                    data-od-id={`diary-entry-${diary.id}`}
+                  >
+                    <time datetime={formatPostDate(diary.pubDate).machine}>
+                      {formatPostDate(diary.pubDate).display}
+                    </time>
+                    <strong>{diary.title}</strong>
+                    <span class='entry-arrow' aria-hidden='true'>→</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+            {remainingDiaries.length > 0 && (
+              <details class='archive-more diary-more'>
+                <summary>查看其余 {remainingDiaries.length} 篇日记</summary>
+                <ol class='diary-list'>
+                  {remainingDiaries.map((diary) => (
+                    <li>
+                      <a
+                        class='diary-entry'
+                        href={diary.link}
+                        data-od-id={`diary-entry-${diary.id}`}
+                      >
+                        <time datetime={formatPostDate(diary.pubDate).machine}>
+                          {formatPostDate(diary.pubDate).display}
+                        </time>
+                        <strong>{diary.title}</strong>
+                        <span class='entry-arrow' aria-hidden='true'>→</span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </details>
+            )}
+          </div>
+          <div class='folio-column' data-od-id='works-empty-state'>
+            <h3 class='folio-title'>作品</h3>
+            <p class='empty-copy'>暂无作品。</p>
+          </div>
         </div>
       </section>
     </div>
-    <span class="np-opening__cue">ISSUE · SUNDAY BREAK · {String(articles.length).padStart(2, '0')} ARTICLES ON FILE</span>
   </section>
 
-  <div class="np-desk__surface">
-    <section class="np-scene np-desk__columns" id="np-articles" aria-labelledby="newspaper-columns-title">
-      <h2 id="newspaper-columns-title" class="np-visually-hidden">Editorial Columns</h2>
-      <div class="np-desk__article-stack">
-        <header><span>READING PILE</span><h3>Articles</h3></header>
-        {articles.map((article, index:number) => (
-          <a href={article.link} style={`--i:${index}`}>
-            <small>{dateOf(article)} / {article.subtitle || article.tags[0] || 'ARTICLE'}</small>
-            <strong>{article.title}</strong>
-            <p>{article.description}</p>
-          </a>
-        ))}
-      </div>
-      <div class="np-desk__diary-book" id="np-diary">
-        <header><span>PRIVATE NOTEBOOK</span><h3>Diary</h3></header>
-        {diaries.map((diary) => (
-          <a href={diary.link}>
-            <span>{dateOf(diary)}</span><strong>{diary.title}</strong><small>SEALED ENTRY</small>
-          </a>
-        ))}
-      </div>
-    </section>
+  <footer class='colophon' id='colophon' data-od-id='colophon'>
+    <strong data-od-id='colophon-heading'></strong>
+    <nav class='colophon-links' aria-label='联系方式'>
+      {CONTACT_LINKS.map((link) => (
+        <a
+          class='letter-link'
+          href={link.href}
+          target={link.external ? '_blank' : undefined}
+          rel={link.external ? 'noopener noreferrer' : undefined}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+  </footer>
+</main>
 
-    <section class="np-scene np-desk__classified" id="np-works">
-      <span class="np-tape" aria-hidden="true"></span>
-      <small>TORN FROM THE CLASSIFIEDS</small>
-      <h2>PORTFOLIO SPACE TO LET</h2>
-      <p>这里暂时还没有作品。但其实快有了。</p>
-      <b>VACANT</b>
-    </section>
-
-    <section class="np-scene np-desk__about" id="np-about">
-      <div class="np-desk__book">
-        <small>OWNER'S COPY</small><h2>M1saK1</h2>
-        <p>HDU(已路边)student, love making frontend systems and agents. Surrounded by rhythm games, アイドルマスタ and many kitty(s).</p>
-      </div>
-      <ul aria-label="Interests"><li>React</li><li>Astro</li><li>Typescirpt</li><li>Tailwindcss/Scss</li><li>Vite/Rspack</li><li>Bun/Elysia</li><li>Langchain/Langsmith</li>
-    </section>
-
-    <section class="np-scene np-desk__index" id="np-subjects">
-      <div class="np-desk__notebook">
-        <small>THINGS I KEEP RETURNING TO</small><h2>Index notebook</h2>
-        {tags.map((tag: string, index:number) => <a href="#np-articles"><span>{String(index + 1).padStart(2, '0')}</span>{tag}</a>)}
-      </div>
-    </section>
-
-    <section class="np-scene np-desk__exchange" id="np-friends">
-      <h2>FriendLink Postcards on the corner</h2>
-      <a href="https://summ2.link" target="_blank" rel="noopener noreferrer"><span>POST CARD</span><strong>summ2</strong><small>Vidar Team Pwn, awmc</small></a>
-      <a href="https://nan0in27.cn" target="_blank" rel="noopener noreferrer"><span>POST CARD</span><strong>nan0in</strong><small>ORAYS Pwn, Hack for fun</small></a>
-    </section>
-
-    <footer class="np-outro np-desk__outro">
-      <div class="np-desk__folded"><span>THAT'S ALL FOR TODAY.Thank you for your Reading!!!</span><strong>米撒奇's Journal</strong></div>
-      <div class="np-mail-slot" aria-hidden="true"><i></i></div>
-    </footer>
-  </div>
-</div>
-
-<script>
-  import { initializeNewspaperHome } from '../../../scripts/client/newspaper-home';
-
-  initializeNewspaperHome();
-</script>
+<a
+  class='page-edge-link page-edge-link--next'
+  href='/about/'
+  aria-label='进入 Profile'
+  title='进入 Profile'
+>
+  <span aria-hidden='true'>→</span>
+  <small>Profile</small>
+</a>

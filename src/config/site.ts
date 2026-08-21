@@ -12,3 +12,11 @@ export const SITE_CONFIG = {
 
 export const SITE_TITLE = SITE_CONFIG.title;
 export const DEFAULT_DESCRIPTION = SITE_CONFIG.description;
+
+export const CONTACT_LINKS = [
+  { label: 'GitHub', href: 'https://github.com/Misaki14987', external: true },
+  { label: 'Bilibili', href: 'https://space.bilibili.com/M1saK1', external: true },
+  { label: 'X', href: 'https://x.com/LianiuMis', external: true },
+  { label: '邮箱', href: 'mailto:yodelmisaki@gmail.com', external: false },
+  { label: 'RSS', href: '/rss.xml', external: false },
+] as const;

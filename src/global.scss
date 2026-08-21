@@ -1,43 +1,75 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+/* Misaki Journal · London Newspaper · root tokens & reset */
+
+@import url('https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
 
 :root {
-  /* brand palette, shared with the home hero */
-  --fizz: #f5d73e;
-  --signal: #086b52;
-  --signal-soft: #dcece5;
-  --coral: #e94f37;
-  --coral-soft: #f8e2dc;
-  --bone: #fffdf2;
+  /* Source materials */
+  --ln-stone: oklch(0.82 0.008 250);
+  --ln-coal: oklch(0.235 0.012 55);
+  --ln-newsprint: oklch(0.925 0.007 95);
+  --ln-newsprint-bright: oklch(0.97 0.004 95);
+  --ln-newsprint-deep: oklch(0.87 0.009 90);
+  --ln-ink: oklch(0.2 0.012 55);
+  --ln-muted: oklch(0.44 0.012 250);
+  --ln-border: oklch(0.57 0.012 250);
+  --ln-border-soft: oklch(0.72 0.01 250 / 68%);
+  --ln-claret: oklch(0.39 0.105 24);
+  --ln-metal: oklch(0.61 0.012 250);
+  --ln-on-coal: oklch(0.94 0.006 95);
+  --ln-on-coal-muted: oklch(0.76 0.009 250);
 
-  --bg: var(--bone);
-  --paper: var(--bone);
-  --paper-deep: #eae5d3;
-  --ink: #18160f;
-  --ink-soft: #4b4736;
-  --muted: #78725f;
-  --faint: #a49d89;
-  --line: rgba(24, 22, 15, 0.18);
-  --line-soft: rgba(24, 22, 15, 0.09);
-  --line-strong: rgba(24, 22, 15, 0.42);
+  /* Six core roles */
+  --bg: var(--ln-stone);
+  --surface: var(--ln-newsprint);
+  --surface-raised: var(--ln-newsprint-bright);
+  --surface-hover: color-mix(in oklch, var(--surface) 66%, var(--ln-newsprint-bright));
+  --fg: var(--ln-ink);
+  --muted: var(--ln-muted);
+  --border: var(--ln-border);
+  --border-soft: var(--ln-border-soft);
+  --accent: var(--ln-claret);
+  --accent-ink: var(--ln-newsprint-bright);
 
-  /* reading tones: build / theory / personal */
-  --blue: var(--signal);
-  --blue-soft: var(--signal-soft);
-  --green: #8a6a10;
-  --green-soft: #f3ead0;
-  --red: var(--coral);
-  --red-soft: var(--coral-soft);
-  --container: 1180px;
-  --header-height: 72px;
-  --rail: 168px;
+  /* Semantic aliases used across components */
+  --theme-bg: var(--bg);
+  --theme-surface: var(--surface);
+  --theme-surface-raised: var(--surface-raised);
+  --theme-surface-hover: var(--surface-hover);
+  --theme-fg: var(--fg);
+  --theme-muted: var(--muted);
+  --theme-border: var(--border);
+  --theme-accent: var(--accent);
+  --theme-on-bg: var(--ln-on-coal);
+  --theme-on-bg-muted: var(--ln-on-coal-muted);
 
-  --shadow-soft: 0 18px 50px rgba(24, 22, 15, 0.08);
-  --shadow-lift: 0 28px 70px rgba(24, 22, 15, 0.12);
+  /* Layout & motion */
+  --container: 1220px;
+  --header-height: 60px;
+  --touch-target-min: 44px;
+  --focus-outline-width: 2px;
+  --focus-outline-offset: 4px;
+  --focus-halo-width: 4px;
+  --pad-newspaper: clamp(30px, 6vw, 82px);
+  --pad-surface: clamp(18px, 4vw, 56px);
+  --gap-column: clamp(32px, 6vw, 88px);
 
+  /* Role-based radius */
+  --radius-paper: 0;
+  --radius-book: 3px 8px 8px 3px;
+  --radius-card: 8px;
+  --radius-control: 9px;
+  --radius-overlay: 14px;
+
+  /* Paper elevation */
+  --paper-shadow:
+    inset 0 0 52px oklch(0.5 0.025 75 / 8%),
+    0 26px 75px oklch(0.24 0.012 55 / 18%);
+  --shadow-soft: 0 18px 50px oklch(0.24 0.012 55 / 12%);
+  --shadow-lift: 0 28px 70px oklch(0.24 0.012 55 / 18%);
+
+  /* Typography */
+  --font-display: Georgia, "Times New Roman", "Songti SC", serif;
   --font-body:
     "LXGW WenKai Screen",
     "LXGW WenKai",
@@ -46,7 +78,6 @@
     system-ui,
     sans-serif;
   --font-ui:
-    Inter,
     "Noto Sans SC",
     "Microsoft YaHei",
     system-ui,
@@ -57,6 +88,31 @@
     "SFMono-Regular",
     Consolas,
     monospace;
+
+  /* Type scale */
+  --text-masthead: clamp(4.2rem, 10vw, 8.6rem);
+  --text-masthead-lh: 0.79;
+  --text-display: clamp(2.5rem, 5vw, 5.2rem);
+  --text-section: clamp(2.1rem, 4.2vw, 4.2rem);
+  --text-body: 17px;
+  --text-body-lh: 1.9;
+  --text-metadata: 14px;
+  --text-date: 13px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-enter: 200ms;
+  --dur-exit: 140ms;
+  --dur-hover: 180ms;
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 html {
@@ -66,26 +122,30 @@ html {
 }
 
 body {
+  position: relative;
+  isolation: isolate;
   margin: 0;
+  min-width: 320px;
   min-height: 100vh;
   overflow-x: hidden;
-  color: var(--ink);
+  color: var(--fg);
   font-family: var(--font-body);
-  text-rendering: optimizeLegibility;
   background: var(--bg);
-}
-
-body::before {
-  display: none;
-}
-
-body::after {
-  display: none;
-}
-
-::selection {
-  color: var(--bone);
-  background: var(--signal);
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 9px,
+      oklch(0.32 0.008 250 / 1.8%) 10px
+    ),
+    radial-gradient(
+      circle at 20% 12%,
+      oklch(0.96 0.006 250 / 52%),
+      transparent 34%
+    );
+  background-size: auto, 100% 100%;
+  text-rendering: optimizeLegibility;
+  line-height: var(--text-body-lh);
+  font-size: var(--text-body);
 }
 
 a {
@@ -106,67 +166,24 @@ picture {
   height: auto;
 }
 
+::selection {
+  color: var(--accent-ink);
+  background: var(--accent);
+}
+
 :focus-visible {
-  outline: 2px solid var(--signal);
-  outline-offset: 4px;
-}
-
-.page-reveal {
-  animation: page-reveal 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.page-reveal--delay-1 {
-  animation-delay: 70ms;
-}
-
-.page-reveal--delay-2 {
-  animation-delay: 130ms;
-}
-
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 360ms;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-::view-transition-old(root) {
-  animation-name: page-out;
-}
-
-::view-transition-new(root) {
-  animation-name: page-in;
-}
-
-@keyframes page-out {
-  to {
-    opacity: 0;
-    transform: translateY(-18px) scale(0.99);
-  }
-}
-
-@keyframes page-in {
-  from {
-    opacity: 0;
-    transform: translateY(24px) scale(0.99);
-  }
-}
-
-@keyframes page-reveal {
-  from {
-    opacity: 0;
-    transform: translateY(24px) scale(0.985);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  outline: var(--focus-outline-width) solid var(--accent);
+  outline-offset: var(--focus-outline-offset);
+  box-shadow: 0 0 0 var(--focus-halo-width) var(--surface-raised);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {
-    scroll-behavior: auto !important;
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
