@@ -1,0 +1,32 @@
+---
+const links = [
+  { href: '/#articles', label: '文章' },
+  { href: '/#folio', label: '日记' },
+  { href: '/about/', label: 'Profile' },
+];
+const pathname = Astro.url.pathname;
+const isCurrent = (href: string) => {
+  const [path] = href.split('#');
+  if (path === '/' || path === '') return pathname === '/';
+  return pathname.startsWith(path);
+};
+---
+
+<header class='site-nav' data-od-id='site-nav'>
+  <div class='nav-inner'>
+    <a class='brand-link' href='/' data-od-id='nav-brand'>
+      <strong>Misaki Journal</strong>
+    </a>
+    <nav class='nav-links' aria-label='主要版面' data-od-id='nav-links'>
+      {links.map((link) => (
+        <a
+          href={link.href}
+          aria-current={isCurrent(link.href) ? 'page' : undefined}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+  <span class='scroll-progress' aria-hidden='true'></span>
+</header>

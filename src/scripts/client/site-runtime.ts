@@ -1,4 +1,5 @@
 import { initializeScrollRestoration } from "./scroll-restoration";
+import { mountPublication } from "./publication";
 
 let initialized = false;
 
@@ -7,4 +8,5 @@ export const initializeSiteRuntime = () => {
   initialized = true;
 
   initializeScrollRestoration();
+  mountPublication();
 };
