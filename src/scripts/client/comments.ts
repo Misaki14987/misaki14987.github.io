@@ -1,14 +1,12 @@
 import { mountPageModule } from "./page-lifecycle";
 
 /**
- * 读者来信 — giscus, re-mounted for every article (client-side navigation included) and kept
- * in step with the day/night edition. The themes live in /public/giscus so the comments are
- * printed on the same paper as the article.
+ * 读者来信 — giscus with its own light/dark themes, re-mounted for every article
+ * (client-side navigation included) and kept in step with the day/night edition.
  */
 const GISCUS_ORIGIN = "https://giscus.app";
 
-const themeUrl = () =>
-  `${location.origin}/giscus/${document.documentElement.dataset.edition === "night" ? "night" : "day"}.css`;
+const theme = () => (document.documentElement.dataset.edition === "night" ? "dark" : "light");
 
 export const mountComments = () => {
   mountPageModule<HTMLElement>("[data-comments]", (thread) => {
@@ -26,7 +24,7 @@ export const mountComments = () => {
       "reactions-enabled": "1",
       "emit-metadata": "0",
       "input-position": "top",
-      theme: themeUrl(),
+      theme: theme(),
       lang: "zh-CN",
       loading: "lazy",
     }).forEach(([key, value]) => {
@@ -37,7 +35,7 @@ export const mountComments = () => {
     // giscus has no API for the edition, so follow the attribute on <html>.
     const observer = new MutationObserver(() => {
       thread.querySelector<HTMLIFrameElement>("iframe.giscus-frame")?.contentWindow?.postMessage(
-        { giscus: { setConfig: { theme: themeUrl() } } },
+        { giscus: { setConfig: { theme: theme() } } },
         GISCUS_ORIGIN,
       );
     });
