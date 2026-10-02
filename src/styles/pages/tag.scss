@@ -1,127 +1,33 @@
-.tag-stream {
-  position: relative;
-  z-index: 2;
-  width: min(calc(100% - 48px), var(--container));
-  margin: 0 auto;
-  padding: 40px 0 120px;
+/* Tag index & tag pages · London newspaper publication */
+
+.tag-sheet {
+  margin-top: 32px;
 }
 
-.tag-stream__head {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 22px;
-  min-height: 330px;
-  padding: 64px 56px 54px 168px;
-  overflow: hidden;
-  background: var(--fizz);
-  border: 1px solid var(--ink);
+.tag-sheet .masthead {
+  border-bottom: 0;
 }
 
-.tag-stream__head::before {
-  content: "#";
-  position: absolute;
-  inset: 0 auto 0 0;
-  display: grid;
-  place-items: center;
-  width: 120px;
-  color: var(--bone);
-  background: var(--signal);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 54px;
-  font-style: italic;
+.tag-sheet .edition-top a {
+  color: inherit;
+  text-decoration: none;
 }
 
-.tag-stream__head::after {
-  content: "";
-  position: absolute;
-  right: 12%;
-  top: 42px;
-  width: 96px;
-  height: 96px;
-  border: 2px solid var(--coral);
-  border-radius: 50%;
+.tag-sheet .edition-top a:hover {
+  color: var(--accent);
 }
 
-.tag-stream__head > * {
-  position: relative;
-  z-index: 2;
-}
-
-.tag-stream__label,
-.tag-stream__count {
-  color: rgba(24, 22, 15, 0.62);
-  font-family: var(--font-mono);
-  font-size: 9px;
-}
-
-.tag-stream__label {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--signal);
-}
-
-.tag-stream__label::before {
-  content: "";
-  width: 26px;
-  height: 3px;
-  background: var(--signal);
-}
-
-.tag-stream h1 {
-  margin: 14px 0 0;
-  font-family: var(--font-ui);
-  font-size: 66px;
-  font-weight: 860;
-  line-height: 0.96;
-  letter-spacing: 0;
+.tag-title {
+  margin: clamp(36px, 6vh, 64px) 0 clamp(28px, 4vw, 44px);
   overflow-wrap: anywhere;
+  font: 700 clamp(3rem, 7vw, 6rem) / 0.95 var(--font-display);
+  letter-spacing: 0;
 }
 
-.tag-stream__list {
-  margin-left: 120px;
-  padding: 42px 0 0 48px;
-  border-left: 1px solid var(--line);
+.tag-title > span {
+  color: var(--accent);
 }
 
-@media (max-width: 760px) {
-  .tag-stream {
-    width: min(calc(100% - 28px), var(--container));
-    padding-top: 20px;
-  }
-
-  .tag-stream__head {
-    align-items: flex-start;
-    flex-direction: column;
-    min-height: 290px;
-    padding: 72px 20px 36px;
-  }
-
-  .tag-stream__head::before {
-    inset: 0 0 auto 0;
-    width: auto;
-    height: 38px;
-    place-items: center start;
-    padding-left: 18px;
-    font-size: 22px;
-  }
-
-  .tag-stream__head::after {
-    right: -28px;
-    top: 62px;
-    width: 96px;
-    height: 96px;
-  }
-
-  .tag-stream h1 {
-    font-size: 48px;
-  }
-
-  .tag-stream__list {
-    margin-left: 0;
-    padding: 34px 0 0;
-    border-left: 0;
-  }
+.tag-sheet .entry-list {
+  border-top: 3px double var(--fg);
 }

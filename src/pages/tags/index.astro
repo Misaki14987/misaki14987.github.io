@@ -1,10 +1,14 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getAllTags, getPublishedPosts, tagPath } from '../../scripts/publication';
-import '../../styles/pages/tags.scss';
+import { getAllTags, getPostsByTag, getPublishedPosts, tagPath } from '../../scripts/publication';
+import '../../styles/pages/tag.scss';
 import { SITE_TITLE } from '../../config/site';
 
-const tags = getAllTags(await getPublishedPosts());
+const posts = await getPublishedPosts();
+const tags = getAllTags(posts).map((tag) => ({
+  name: tag,
+  count: getPostsByTag(posts, tag).length,
+}));
 ---
 
 <BaseLayout
@@ -12,21 +16,27 @@ const tags = getAllTags(await getPublishedPosts());
   description='标签'
   ogImage="/images/home-og.png"
 >
-  <div class="tag-index">
-    <section class="tag-index__head page-reveal">
-      <span class="tag-index__label">{String(tags.length).padStart(2, '0')} TAGS</span>
-      <h1>内容索引</h1>
-    </section>
+  <div class="publication tag-sheet">
+    <section class="masthead" aria-labelledby="tags-title">
+      <div class="edition-top publication-meta">
+        <span>Misaki Journal · Index</span>
+        <span>{tags.length} 个标签</span>
+      </div>
 
-    <div class="tag-index__list page-reveal page-reveal--delay-1">
-      {tags.map((tag, index) => (
-        <a href={tagPath(tag)} class="tag-index__item">
-          <span class="tag-index__number">{String(index + 1).padStart(2, '0')}</span>
-          <strong>{tag}</strong>
-          <span class="tag-index__line" aria-hidden="true"></span>
-          <span>查看 ↗</span>
-        </a>
-      ))}
-    </div>
+      <h1 class="tag-title" id="tags-title">标签</h1>
+
+      <ol class="entry-list">
+        {tags.map((tag, index) => (
+          <li class="entry-row">
+            <a class="entry-link" href={tagPath(tag.name)}>
+              <span class="entry-date">{String(index + 1).padStart(2, '0')}</span>
+              <span class="entry-title">{tag.name}</span>
+              <span class="entry-tag publication-meta">{tag.count} 篇</span>
+              <span class="entry-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </section>
   </div>
 </BaseLayout>

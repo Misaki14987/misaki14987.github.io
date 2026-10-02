@@ -57,6 +57,14 @@ export const postTone = ({
   return 'build';
 };
 
+/** Rough estimate: ~400 CJK characters or ~200 Latin words per minute, code excluded. */
+export const readingMinutes = (markdown: string) => {
+  const prose = markdown.replace(/```[\s\S]*?```/g, '');
+  const cjk = prose.match(/[぀-ヿ㐀-鿿]/g)?.length ?? 0;
+  const words = prose.replace(/[぀-ヿ㐀-鿿]/g, ' ').match(/[A-Za-z0-9]+/g)?.length ?? 0;
+  return Math.max(1, Math.round(cjk / 400 + words / 200));
+};
+
 export const formatPostDate = (
   date: Date | string,
   format: 'dot' | 'han' = 'dot',

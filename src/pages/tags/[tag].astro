@@ -5,6 +5,7 @@ import {
     getPostsByTag,
     getPublishedPosts,
     formatPostDate,
+    postPath,
 } from '../../scripts/publication';
 import '../../styles/pages/tag.scss';
 import { SITE_TITLE } from '../../config/site';
@@ -21,9 +22,9 @@ const { tag } = Astro.params;
 const { posts } = Astro.props;
 const cards = posts.map((post) => ({
     title: post.data.title,
-    link: `/posts/${post.id}/`,
-    date: post.data.pubDate ? formatPostDate(post.data.pubDate) : null,
-    subtitle: post.data.category ?? post.data.tags[0] ?? '',
+    link: postPath(post),
+    date: formatPostDate(post.data.pubDate),
+    kind: post.data.kind === 'diary' ? '日记' : '文章',
 }));
 ---
 
@@ -32,24 +33,27 @@ const cards = posts.map((post) => ({
     description={`标签 ${tag}`}
     ogImage="/images/vn-blog-hero.png"
 >
-    <div class="tag-stream">
-        <section class="tag-stream__head">
-            <div>
-                <span class="tag-stream__label">TAG</span>
-                <h1>#{tag}</h1>
+    <div class="publication tag-sheet">
+        <section class="masthead" aria-labelledby="tag-title">
+            <div class="edition-top publication-meta">
+                <a href="/tags/">← 全部标签</a>
+                <span>{cards.length} 篇</span>
             </div>
-            <span class="tag-stream__count">{String(cards.length).padStart(2, '0')} notes</span>
-        </section>
 
-        <div class="tag-stream__list">
-            {cards.map((post) => (
-                <a href={post.link} class="tag-stream__item">
-                    <span class="tag-stream__date">{post.date?.display ?? ''}</span>
-                    <strong class="tag-stream__title">{post.title}</strong>
-                    <span class="tag-stream__subtitle">{post.subtitle}</span>
-                    <span class="tag-stream__arrow" aria-hidden="true">↗</span>
-                </a>
-            ))}
-        </div>
+            <h1 class="tag-title" id="tag-title"><span aria-hidden="true">#</span>{tag}</h1>
+
+            <ol class="entry-list">
+                {cards.map((post) => (
+                    <li class="entry-row">
+                        <a class="entry-link" href={post.link}>
+                            <time class="entry-date" datetime={post.date.machine}>{post.date.display}</time>
+                            <span class="entry-title">{post.title}</span>
+                            <span class="entry-tag publication-meta">{post.kind}</span>
+                            <span class="entry-arrow" aria-hidden="true">→</span>
+                        </a>
+                    </li>
+                ))}
+            </ol>
+        </section>
     </div>
 </BaseLayout>

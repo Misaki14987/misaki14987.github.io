@@ -17,7 +17,6 @@ export const initializeFootnotes = (
       preview.className = "footnote-preview";
       preview.innerHTML = note.innerHTML;
       preview.querySelectorAll("[data-footnote-backref]").forEach((backref) => backref.remove());
-      preview.style.setProperty("--footnote-top", `${reference.offsetTop}px`);
 
       const close = document.createElement("button");
       close.type = "button";
@@ -27,11 +26,8 @@ export const initializeFootnotes = (
       preview.prepend(close);
 
       const paragraph = reference.closest("p, li, blockquote");
-      if (matchMedia("(max-width: 1080px)").matches && paragraph) {
-        paragraph.after(preview);
-      } else {
-        article.append(preview);
-      }
+      if (paragraph) paragraph.after(preview);
+      else article.append(preview);
     }, { signal });
   });
 

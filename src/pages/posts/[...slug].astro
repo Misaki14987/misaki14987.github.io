@@ -1,7 +1,7 @@
 ---
 import { render } from 'astro:content';
 import MarkdownLayout from '../../layouts/MarkdownLayout.astro';
-import { getPublishedPosts, postDescription, postPath } from '../../scripts/publication';
+import { getPublishedPosts, postDescription, postPath, readingMinutes } from '../../scripts/publication';
 
 export async function getStaticPaths() {
   const posts = await getPublishedPosts();
@@ -26,6 +26,7 @@ const { Content, headings } = await render(post);
   canonical={postPath(post)}
   seoDescription={description}
   headings={headings}
+  readingMinutes={readingMinutes(post.body ?? '')}
   previousPost={previousPost}
   nextPost={nextPost}
 >

@@ -1,7 +1,8 @@
 const COLLAPSE_AFTER_LINES = 18;
 const RESET_LABEL_MS = 1200;
 
-const codeLanguage = (code: HTMLElement | null) =>
+const codeLanguage = (pre: HTMLElement, code: HTMLElement | null) =>
+  pre.dataset.language ||
   Array.from(code?.classList || [])
     .find((name) => name.startsWith("language-"))
     ?.replace("language-", "") || "code";
@@ -23,7 +24,7 @@ export const initializeCodeBlocks = (
     toolbar.className = "code-block__toolbar";
 
     const label = document.createElement("span");
-    label.textContent = codeLanguage(code);
+    label.textContent = codeLanguage(pre, code);
 
     const copy = document.createElement("button");
     copy.type = "button";

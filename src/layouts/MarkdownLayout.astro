@@ -2,8 +2,10 @@
 import BaseLayout from './BaseLayout.astro';
 import { Image } from 'astro:assets';
 import {
+    formatPostDate,
     postPath,
     postTone,
+    tagPath,
     type PostEntry,
 } from '../scripts/publication';
 import type { MarkdownHeading } from 'astro';
@@ -16,6 +18,7 @@ const {
     canonical,
     seoDescription,
     headings = [],
+    readingMinutes,
     previousPost,
     nextPost,
 } = Astro.props as {
@@ -23,6 +26,7 @@ const {
     canonical?: string;
     seoDescription?: string;
     headings?: MarkdownHeading[];
+    readingMinutes?: number;
     previousPost?: PostEntry;
     nextPost?: PostEntry;
 };
@@ -31,6 +35,8 @@ const {
     description,
     pubDate,
     updatedDate,
+    author,
+    kind = 'article',
     tags = [],
     category,
     cover,
@@ -38,15 +44,14 @@ const {
 const pageDescription = seoDescription ?? description;
 
 const tone = postTone({ title, subtitle: category, tags });
+const kindLabel = kind === 'diary' ? '日记' : '文章';
+const published = formatPostDate(pubDate);
+const updated = updatedDate && formatPostDate(updatedDate);
 const tocHeadings = headings.filter(({ depth }) => depth === 2 || depth === 3);
 const adjacentPost = (post?: PostEntry) => post && ({
     title: post.data.title,
     href: postPath(post),
-    tone: postTone({
-        title: post.data.title,
-        subtitle: post.data.category,
-        tags: post.data.tags,
-    }),
+    date: formatPostDate(post.data.pubDate).display,
 });
 const previous = adjacentPost(previousPost);
 const next = adjacentPost(nextPost);
@@ -63,92 +68,118 @@ const next = adjacentPost(nextPost);
     modifiedTime={updatedDate}
     tags={tags}
 >
-    <div class='reading-progress' aria-hidden='true'>
-        <span data-reading-progress></span>
-    </div>
+    <article class='post-sheet' data-tone={tone}>
+        <header class='post-masthead'>
+            <div class='edition-top publication-meta'>
+                <span>Misaki Journal · {kindLabel}</span>
+                {category && <span>{category}</span>}
+            </div>
 
-    <section class='post-section'>
-        <article class='post-article' data-tone={tone}>
-            <header class='post-header'>
-                <div class='post-header__main'>
-                    <h1 class='post-header__title'>{title}</h1>
-                    {description && <p class='post-header__description'>{description}</p>}
+            <div class='post-masthead__grid'>
+                <dl class='post-dateline'>
+                    <div>
+                        <dt>发布</dt>
+                        <dd><time datetime={published.machine}>{published.display}</time></dd>
+                    </div>
+                    {updated && (
+                        <div>
+                            <dt>更新</dt>
+                            <dd><time datetime={updated.machine}>{updated.display}</time></dd>
+                        </div>
+                    )}
+                    {readingMinutes && (
+                        <div>
+                            <dt>阅读</dt>
+                            <dd>约 {readingMinutes} 分钟</dd>
+                        </div>
+                    )}
+                    {author && (
+                        <div>
+                            <dt>作者</dt>
+                            <dd>{author}</dd>
+                        </div>
+                    )}
+                </dl>
+
+                <div class='post-masthead__main'>
+                    <h1 class='post-title'>{title}</h1>
+                    {description && <p class='post-standfirst'>{description}</p>}
                     {tags.length > 0 && (
-                        <ul class='post-header__tags'>
-                            {tags.map((tag:string) => (
-                                <li class='post-header__tag'>
-                                    {tag}
-                                </li>
+                        <ul class='post-tags' aria-label='标签'>
+                            {tags.map((tag: string) => (
+                                <li><a href={tagPath(tag)}>#{tag}</a></li>
                             ))}
                         </ul>
                     )}
                 </div>
-            </header>
-            {cover && (
-                <figure class='post-cover'>
-                    <Image
-                        src={cover}
-                        alt={title}
-                        widths={[720, 960, 1200]}
-                        sizes='(max-width: 920px) calc(100vw - 20px), calc(100vw - 188px)'
-                        loading='eager'
-                        decoding='async'
-                    />
-                </figure>
+            </div>
+        </header>
+
+        {cover && (
+            <figure class='post-cover'>
+                <Image
+                    src={cover}
+                    alt={title}
+                    widths={[720, 960, 1200]}
+                    sizes='(max-width: 1220px) calc(100vw - 40px), 1056px'
+                    loading='eager'
+                    decoding='async'
+                />
+            </figure>
+        )}
+
+        <div class='post-reading'>
+            {tocHeadings.length > 0 && (
+                <aside class='post-toc' data-post-toc>
+                    <button
+                        class='post-toc__toggle'
+                        type='button'
+                        aria-expanded='false'
+                        data-toc-toggle
+                    >
+                        目录
+                        <span aria-hidden='true'>+</span>
+                    </button>
+                    <nav aria-label='文章目录' data-toc-list>
+                        <span class='post-toc__title publication-meta'>目录</span>
+                        <ol>
+                            {tocHeadings.map((heading) => (
+                                <li data-depth={heading.depth}>
+                                    <a href={`#${heading.slug}`} data-toc-link={heading.slug}>
+                                        {heading.text}
+                                    </a>
+                                </li>
+                            ))}
+                        </ol>
+                    </nav>
+                </aside>
             )}
 
-            <div class='post-reading'>
-                {tocHeadings.length > 0 && (
-                    <aside class='post-toc' data-post-toc>
-                        <button
-                            class='post-toc__toggle'
-                            type='button'
-                            aria-expanded='false'
-                            data-toc-toggle
-                        >
-                            目录
-                            <span aria-hidden='true'>+</span>
-                        </button>
-                        <nav aria-label='文章目录' data-toc-list>
-                            <span class='post-toc__title'>目录</span>
-                            <ol>
-                                {tocHeadings.map((heading) => (
-                                    <li data-depth={heading.depth}>
-                                        <a href={`#${heading.slug}`} data-toc-link={heading.slug}>
-                                            {heading.text}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ol>
-                        </nav>
-                    </aside>
-                )}
-
-                <div class='post-reading__main'>
-                    <div class='article-content' data-article-content>
-                        <slot />
-                    </div>
-
-                    {(previous || next) && (
-                        <nav class='post-pagination' aria-label='相邻文章'>
-                            {previous ? (
-                                <a href={previous.href} data-tone={previous.tone}>
-                                    <span>上一篇</span>
-                                    <strong>{previous.title}</strong>
-                                </a>
-                            ) : <span></span>}
-                            {next && (
-                                <a href={next.href} data-tone={next.tone}>
-                                    <span>下一篇</span>
-                                    <strong>{next.title}</strong>
-                                </a>
-                            )}
-                        </nav>
-                    )}
+            <div class='post-reading__main'>
+                <div class='article-content' data-article-content>
+                    <slot />
                 </div>
+                <p class='post-endmark' aria-hidden='true'>■</p>
             </div>
-        </article>
-    </section>
+        </div>
+
+        {(previous || next) && (
+            <nav class='post-pagination' aria-label='相邻文章'>
+                {previous ? (
+                    <a href={previous.href} rel='prev'>
+                        <span class='publication-meta'>← 上一篇 · {previous.date}</span>
+                        <strong>{previous.title}</strong>
+                    </a>
+                ) : <span></span>}
+                {next && (
+                    <a href={next.href} rel='next'>
+                        <span class='publication-meta'>下一篇 · {next.date} →</span>
+                        <strong>{next.title}</strong>
+                    </a>
+                )}
+            </nav>
+        )}
+    </article>
 
     <button class='back-to-top' type='button' data-back-to-top aria-label='返回顶部'>
         <span aria-hidden='true'>↑</span>

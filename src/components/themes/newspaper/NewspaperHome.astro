@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { formatPostDate } from '../../../scripts/publication';
 import { CONTACT_LINKS } from '../../../config/site';
 
@@ -7,10 +8,16 @@ const articleCount = articles.length;
 const diaryCount = diaries.length;
 const ARTICLE_PREVIEW_LIMIT = 4;
 const DIARY_PREVIEW_LIMIT = 3;
-const visibleArticles = articles.slice(0, ARTICLE_PREVIEW_LIMIT);
-const remainingArticles = articles.slice(ARTICLE_PREVIEW_LIMIT);
+const [lead, ...followingArticles] = articles;
+const visibleArticles = followingArticles.slice(0, ARTICLE_PREVIEW_LIMIT - 1);
+const remainingArticles = followingArticles.slice(ARTICLE_PREVIEW_LIMIT - 1);
 const visibleDiaries = diaries.slice(0, DIARY_PREVIEW_LIMIT);
 const remainingDiaries = diaries.slice(DIARY_PREVIEW_LIMIT);
+const latestDate = [...articles, ...diaries]
+  .map((post) => post.pubDate)
+  .filter(Boolean)
+  .sort((a, b) => b.getTime() - a.getTime())[0];
+const entryTag = (post) => post.tags[0] || post.subtitle || '技术';
 ---
 
 <main
@@ -30,129 +37,163 @@ const remainingDiaries = diaries.slice(DIARY_PREVIEW_LIMIT);
       <span>A Blog With Peaceful Misaki</span>
       <span>Stay live just for FUN</span>
     </div>
-    <div class='masthead-grid'>
-      <h1
-        class='masthead-title'
-        id='masthead-title'
-        data-od-id='masthead-heading'
-      >
-        <span class='title-line'><span>Misaki</span></span>
-        <span class='title-line'><span>Journal</span></span>
-      </h1>
 
+    <h1
+      class='masthead-title'
+      id='masthead-title'
+      data-od-id='masthead-heading'
+    >
+      <span class='title-line'><span>Misaki</span></span>
+      <span class='title-line'><span>Journal</span></span>
+    </h1>
+
+    <div class='masthead-dateline publication-meta'>
+      {latestDate && (
+        <span>
+          最近更新 <time datetime={formatPostDate(latestDate).machine}>{formatPostDate(latestDate).display}</time>
+        </span>
+      )}
+      <span>{articleCount} 篇文章 · {diaryCount} 篇日记</span>
+    </div>
+
+    <div class='masthead-grid'>
       <section class='masthead-articles' aria-labelledby='articles-heading'>
         <header class='masthead-articles-head'>
           <h2 id='articles-heading' data-od-id='articles-heading'>Blog</h2>
           <span class='publication-meta' id='article-count'>{articleCount} 篇</span>
         </header>
+
+        {lead && (
+          <a class='lead-story' href={lead.link} data-od-id={`article-card-${lead.id}`}>
+            {lead.image && (
+              <figure class='lead-story__image'>
+                <Image
+                  src={lead.image}
+                  alt=''
+                  widths={[640, 960, 1280]}
+                  sizes='(max-width: 820px) calc(100vw - 72px), 620px'
+                  loading='eager'
+                  decoding='async'
+                />
+              </figure>
+            )}
+            <div class='lead-story__meta publication-meta'>
+              <time datetime={formatPostDate(lead.pubDate).machine}>
+                {formatPostDate(lead.pubDate).display}
+              </time>
+              <span>{entryTag(lead)}</span>
+            </div>
+            <h3 class='lead-story__title'>{lead.title}</h3>
+            {lead.description && <p class='lead-story__excerpt'>{lead.description}</p>}
+            <span class='lead-story__more'>阅读全文 <span aria-hidden='true'>→</span></span>
+          </a>
+        )}
+
         <ol class='entry-list' data-od-id='article-list'>
-          {visibleArticles.map((article) => {
-            const date = formatPostDate(article.pubDate).display;
-            const tag = article.subtitle || article.tags[0] || '技术';
-            return (
-              <li class='entry-row' data-od-id={`article-card-${article.id}`}>
-                <a class='entry-link' href={article.link}>
-                  <time class='entry-date' datetime={formatPostDate(article.pubDate).machine}>
-                    {date}
-                  </time>
-                  <span class='entry-title'>{article.title}</span>
-                  <span class='entry-tag publication-meta'>{tag}</span>
-                  <span class='entry-arrow' aria-hidden='true'>→</span>
-                </a>
-              </li>
-            );
-          })}
+          {visibleArticles.map((article) => (
+            <li class='entry-row' data-od-id={`article-card-${article.id}`}>
+              <a class='entry-link' href={article.link}>
+                <time class='entry-date' datetime={formatPostDate(article.pubDate).machine}>
+                  {formatPostDate(article.pubDate).display}
+                </time>
+                <span class='entry-title'>{article.title}</span>
+                <span class='entry-tag publication-meta'>{entryTag(article)}</span>
+                <span class='entry-arrow' aria-hidden='true'>→</span>
+              </a>
+            </li>
+          ))}
         </ol>
         {remainingArticles.length > 0 && (
           <details class='archive-more'>
             <summary>查看其余 {remainingArticles.length} 篇文章</summary>
             <ol class='entry-list entry-list--continued'>
-              {remainingArticles.map((article) => {
-                const date = formatPostDate(article.pubDate).display;
-                const tag = article.subtitle || article.tags[0] || '技术';
-                return (
-                  <li class='entry-row' data-od-id={`article-card-${article.id}`}>
-                    <a class='entry-link' href={article.link}>
-                      <time class='entry-date' datetime={formatPostDate(article.pubDate).machine}>
-                        {date}
-                      </time>
-                      <span class='entry-title'>{article.title}</span>
-                      <span class='entry-tag publication-meta'>{tag}</span>
-                      <span class='entry-arrow' aria-hidden='true'>→</span>
-                    </a>
-                  </li>
-                );
-              })}
-            </ol>
-          </details>
-        )}
-      </section>
-
-      <section
-        class='masthead-folio'
-        id='folio'
-        data-od-id='folio-section'
-        aria-labelledby='folio-heading'
-      >
-        <header class='folio-head'>
-        </header>
-        <div class='folio-grid'>
-          <div class='folio-column' data-od-id='diary-column'>
-            <h3 class='folio-title'>日记</h3>
-            {diaries.length === 0 && (
-              <p class='empty-copy'>暂无日记。</p>
-            )}
-            <ol class='diary-list'>
-              {visibleDiaries.map((diary) => (
-                <li>
-                  <a
-                    class='diary-entry'
-                    href={diary.link}
-                    data-od-id={`diary-entry-${diary.id}`}
-                  >
-                    <time datetime={formatPostDate(diary.pubDate).machine}>
-                      {formatPostDate(diary.pubDate).display}
+              {remainingArticles.map((article) => (
+                <li class='entry-row' data-od-id={`article-card-${article.id}`}>
+                  <a class='entry-link' href={article.link}>
+                    <time class='entry-date' datetime={formatPostDate(article.pubDate).machine}>
+                      {formatPostDate(article.pubDate).display}
                     </time>
-                    <strong>{diary.title}</strong>
+                    <span class='entry-title'>{article.title}</span>
+                    <span class='entry-tag publication-meta'>{entryTag(article)}</span>
                     <span class='entry-arrow' aria-hidden='true'>→</span>
                   </a>
                 </li>
               ))}
             </ol>
-            {remainingDiaries.length > 0 && (
-              <details class='archive-more diary-more'>
-                <summary>查看其余 {remainingDiaries.length} 篇日记</summary>
-                <ol class='diary-list'>
-                  {remainingDiaries.map((diary) => (
-                    <li>
-                      <a
-                        class='diary-entry'
-                        href={diary.link}
-                        data-od-id={`diary-entry-${diary.id}`}
-                      >
-                        <time datetime={formatPostDate(diary.pubDate).machine}>
-                          {formatPostDate(diary.pubDate).display}
-                        </time>
-                        <strong>{diary.title}</strong>
-                        <span class='entry-arrow' aria-hidden='true'>→</span>
-                      </a>
-                    </li>
-                  ))}
-                </ol>
-              </details>
-            )}
-          </div>
-          <div class='folio-column' data-od-id='works-empty-state'>
-            <h3 class='folio-title'>作品</h3>
-            <p class='empty-copy'>暂无作品。</p>
-          </div>
-        </div>
+          </details>
+        )}
       </section>
+
+      <aside
+        class='masthead-folio'
+        id='folio'
+        data-od-id='folio-section'
+        aria-label='日记与作品'
+      >
+        <section class='folio-column' data-od-id='diary-column' aria-labelledby='diary-heading'>
+          <header class='folio-head'>
+            <h2 id='diary-heading'>日记</h2>
+            <span class='publication-meta'>{diaryCount} 篇</span>
+          </header>
+          {diaries.length === 0 && (
+            <p class='empty-copy'>暂无日记。</p>
+          )}
+          <ol class='diary-list'>
+            {visibleDiaries.map((diary) => (
+              <li>
+                <a
+                  class='diary-entry'
+                  href={diary.link}
+                  data-od-id={`diary-entry-${diary.id}`}
+                >
+                  <time datetime={formatPostDate(diary.pubDate).machine}>
+                    {formatPostDate(diary.pubDate).display}
+                  </time>
+                  <strong>{diary.title}</strong>
+                  <span class='entry-arrow' aria-hidden='true'>→</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+          {remainingDiaries.length > 0 && (
+            <details class='archive-more diary-more'>
+              <summary>查看其余 {remainingDiaries.length} 篇日记</summary>
+              <ol class='diary-list'>
+                {remainingDiaries.map((diary) => (
+                  <li>
+                    <a
+                      class='diary-entry'
+                      href={diary.link}
+                      data-od-id={`diary-entry-${diary.id}`}
+                    >
+                      <time datetime={formatPostDate(diary.pubDate).machine}>
+                        {formatPostDate(diary.pubDate).display}
+                      </time>
+                      <strong>{diary.title}</strong>
+                      <span class='entry-arrow' aria-hidden='true'>→</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </details>
+          )}
+        </section>
+
+        <section class='folio-column' data-od-id='works-empty-state' aria-labelledby='works-heading'>
+          <header class='folio-head'>
+            <h2 id='works-heading'>作品</h2>
+          </header>
+          <p class='empty-copy'>暂无作品。</p>
+        </section>
+      </aside>
     </div>
   </section>
 
   <footer class='colophon' id='colophon' data-od-id='colophon'>
-    <strong data-od-id='colophon-heading'></strong>
+    <div class='colophon-mark'>
+      <strong data-od-id='colophon-heading'>Misaki Journal</strong>
+      <span>Edited &amp; published by M1saK1 · Hangzhou</span>
+    </div>
     <nav class='colophon-links' aria-label='联系方式'>
       {CONTACT_LINKS.map((link) => (
         <a
