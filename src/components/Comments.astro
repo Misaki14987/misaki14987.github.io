@@ -1,0 +1,21 @@
+---
+import Icon from './common/Icon.astro';
+import { COMMENTS_CONFIG } from '../config/site';
+---
+
+<section class='letters' aria-labelledby='letters-heading'>
+  <header class='letters__head'>
+    <h2 id='letters-heading'><Icon name='mail' class='section-icon' />读者来信</h2>
+    <span class='publication-meta'>用 GitHub 账号登录即可留言</span>
+  </header>
+  <div
+    class='letters__thread'
+    data-comments
+    data-repo={COMMENTS_CONFIG.repo}
+    data-repo-id={COMMENTS_CONFIG.repoId}
+    data-category={COMMENTS_CONFIG.category}
+    data-category-id={COMMENTS_CONFIG.categoryId}
+  >
+    <p class='letters__fallback publication-meta'>来信加载中…</p>
+  </div>
+</section>

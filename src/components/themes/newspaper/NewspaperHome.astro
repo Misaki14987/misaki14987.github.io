@@ -14,10 +14,6 @@ const visibleArticles = followingArticles.slice(0, ARTICLE_PREVIEW_LIMIT - 1);
 const remainingArticles = followingArticles.slice(ARTICLE_PREVIEW_LIMIT - 1);
 const visibleDiaries = diaries.slice(0, DIARY_PREVIEW_LIMIT);
 const remainingDiaries = diaries.slice(DIARY_PREVIEW_LIMIT);
-const latestDate = [...articles, ...diaries]
-  .map((post) => post.pubDate)
-  .filter(Boolean)
-  .sort((a, b) => b.getTime() - a.getTime())[0];
 const entryTag = (post) => post.tags[0] || post.subtitle || '技术';
 ---
 
@@ -49,15 +45,6 @@ const entryTag = (post) => post.tags[0] || post.subtitle || '技术';
         <span class='title-line'><span>Journal</span></span>
       </h1>
       <span class='nameplate__roller' aria-hidden='true'></span>
-    </div>
-
-    <div class='masthead-dateline publication-meta'>
-      {latestDate && (
-        <span>
-          最近更新 <time datetime={formatPostDate(latestDate).machine}>{formatPostDate(latestDate).display}</time>
-        </span>
-      )}
-      <span>{articleCount} 篇文章 · {diaryCount} 篇日常</span>
     </div>
 
     <div class='masthead-grid'>

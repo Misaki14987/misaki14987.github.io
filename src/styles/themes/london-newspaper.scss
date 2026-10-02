@@ -162,11 +162,11 @@
 /* ───────────── publication ───────────── */
 :root {
   --sheet-light: oklch(1 0 0 / 22%);
-  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .18 0 0 0 0 .15 0 0 0 .11 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .2 0 0 0 0 .2 0 0 0 .11 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 :root[data-edition="night"] {
   --sheet-light: oklch(1 0 0 / 2.5%);
-  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .9 0 0 0 0 .88 0 0 0 0 .84 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .9 0 0 0 0 .9 0 0 0 0 .9 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 .publication,
 .post-sheet {
@@ -189,12 +189,8 @@
 
 /* First print of the session: the nameplate is inked by a roller and the rules are drawn.
    Every later visit opens straight onto a printed page. */
-.is-first-print .edition-top,
-.is-first-print .masthead-dateline {
+.is-first-print .edition-top {
   animation: publication-rule-reveal 640ms 140ms var(--ease-out-expo) both;
-}
-.is-first-print .masthead-dateline {
-  animation-delay: 900ms;
 }
 .is-first-print .masthead-title {
   animation: nameplate-ink 920ms 240ms cubic-bezier(0.65, 0, 0.35, 1) both;
@@ -245,12 +241,12 @@
 }
 .nameplate {
   position: relative;
-  margin: clamp(18px, 2.6vw, 32px) 0 clamp(12px, 1.8vw, 20px);
+  margin-top: clamp(18px, 2.6vw, 32px);
 }
 .nameplate__roller {
   position: absolute;
-  top: -6%;
-  bottom: -6%;
+  top: -4%;
+  bottom: -4%;
   left: 0;
   width: 3px;
   background: var(--fg);
@@ -264,21 +260,6 @@
 }
 .title-line > span {
   display: block;
-}
-.masthead-dateline {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 20px;
-  padding: 9px 0;
-  border-top: 1px solid var(--fg);
-  border-bottom: 3px double var(--fg);
-}
-.masthead-dateline > :last-child {
-  text-align: right;
-}
-.masthead-dateline time {
-  font-family: var(--font-mono);
-  font-size: var(--text-date);
 }
 .masthead-grid {
   display: grid;
@@ -415,6 +396,23 @@
   transform: rotate(45deg);
   pointer-events: none;
   transition: opacity 700ms var(--ease-out-expo);
+}
+/* The dots are printed in the edition's ink rather than pure black. */
+.halftone::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: var(--fg);
+  mix-blend-mode: lighten;
+  pointer-events: none;
+  transition: opacity 700ms var(--ease-out-expo);
+}
+:root[data-edition="night"] .halftone::after {
+  mix-blend-mode: darken;
+}
+:is(.lead-story, .continue-reading__feature):is(:hover, :focus-visible) .halftone::after {
+  opacity: 0;
 }
 /* Night edition prints light ink on dark paper. */
 :root[data-edition="night"] .halftone__print {
@@ -779,13 +777,6 @@
     font-size: clamp(3.4rem, 19vw, 5.6rem);
     text-align: left;
   }
-  .masthead-dateline {
-    grid-template-columns: 1fr;
-    gap: 2px;
-  }
-  .masthead-dateline > :last-child {
-    text-align: left;
-  }
   .masthead-grid {
     margin-top: 28px;
   }
@@ -815,7 +806,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .is-first-print .edition-top,
-  .is-first-print .masthead-dateline,
   .is-first-print .masthead-title,
   .is-first-print .nameplate__roller {
     animation: none;
@@ -823,6 +813,7 @@
 
   .story-title,
   .manicule,
+  .halftone::after,
   .halftone__print,
   .halftone__print img,
   .halftone__print::after,

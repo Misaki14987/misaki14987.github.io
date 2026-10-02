@@ -20,3 +20,12 @@ export const CONTACT_LINKS = [
   { label: '邮箱', icon: 'mail', href: 'mailto:yodelmisaki@gmail.com', external: false },
   { label: 'RSS', icon: 'rss', href: '/rss.xml', external: false },
 ] as const;
+
+/** 读者来信: giscus comments, stored as GitHub Discussions on the blog repository. */
+export const COMMENTS_CONFIG = {
+  repo: 'Misaki14987/misaki14987.github.io',
+  repoId: 'R_kgDOUBbkag',
+  // Only maintainers and giscus can open discussions in Announcements, so strangers can't spam the repo.
+  category: 'Announcements',
+  categoryId: 'DIC_kwDOUBbkas4DG3UY',
+} as const;

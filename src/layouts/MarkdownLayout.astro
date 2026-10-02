@@ -15,6 +15,7 @@ import '../styles/layouts/markdown-layout.scss';
 import { SITE_TITLE } from '../config/site';
 import Colophon from '../components/common/Colophon.astro';
 import Icon from '../components/common/Icon.astro';
+import Comments from '../components/Comments.astro';
 
 const {
     frontmatter,
@@ -178,6 +179,8 @@ const featuredLabel = previousPost ? '上一篇' : '下一篇';
                     <slot />
                 </div>
                 <p class='post-endmark' aria-hidden='true'>■</p>
+
+                <Comments />
             </div>
         </div>
 
@@ -216,6 +219,8 @@ const featuredLabel = previousPost ? '上一篇' : '下一篇';
 
 <script>
   import { mountPostPage } from "../scripts/client/post";
+  import { mountComments } from "../scripts/client/comments";
 
   mountPostPage();
+  mountComments();
 </script>
