@@ -1,0 +1,41 @@
+---
+import Icon from './Icon.astro';
+import { CONTACT_LINKS } from '../../config/site';
+import { formatPostDate, getPublishedPosts, siteStats } from '../../scripts/publication';
+
+const stats = siteStats(await getPublishedPosts());
+const founded = stats.founded && formatPostDate(stats.founded);
+const daysSince = (date: Date) => Math.max(1, Math.floor((Date.now() - date.getTime()) / 86_400_000) + 1);
+---
+
+<footer class='colophon' data-od-id='colophon'>
+  <div class='colophon-mark'>
+    <strong data-od-id='colophon-heading'>Misaki Journal</strong>
+    <span>Edited &amp; published by M1saK1</span>
+  </div>
+  <nav class='colophon-links' aria-label='联系方式'>
+    {CONTACT_LINKS.map((link) => (
+      <a
+        class='letter-link'
+        href={link.href}
+        target={link.external ? '_blank' : undefined}
+        rel={link.external ? 'noopener noreferrer' : undefined}
+      >
+        <Icon name={link.icon} />
+        {link.label}
+      </a>
+    ))}
+  </nav>
+  <p class='colophon-stats'>
+    <span>共 {stats.posts} 篇</span>
+    <span>约 {stats.words} 字</span>
+    {founded && stats.founded && (
+      <span>
+        创刊于 <time datetime={founded.machine}>{founded.display}</time>，第
+        <b data-days-since={founded.machine}>{daysSince(stats.founded)}</b> 天
+      </span>
+    )}
+    <span class='visit-count'>总访问 <b id='vercount_value_site_pv'></b> 次</span>
+    <span class='visit-count'>读者 <b id='vercount_value_site_uv'></b> 人</span>
+  </p>
+</footer>

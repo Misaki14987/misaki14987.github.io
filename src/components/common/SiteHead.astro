@@ -41,25 +41,26 @@ const ogImageUrl = ogImage ? absoluteUrl(ogImage, site) : undefined;
 <link rel='icon' type='image/svg+xml' href='/icons/favicon.svg' />
 <meta name='viewport' content='width=device-width, initial-scale=1' />
 <meta name='generator' content='Astro Blog' />
-<link rel='preconnect' href='https://fonts.googleapis.com' />
-<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
-<link rel='preconnect' href='https://cdn.jsdelivr.net' crossorigin />
-<link
-  href='https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap'
-  rel='stylesheet'
-  media='print'
-  onload="this.media='all'"
-/>
-<link
-  href='https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css'
-  rel='stylesheet'
-  media='print'
-  onload="this.media='all'"
-/>
-<noscript>
-  <link href='https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap' rel='stylesheet' />
-  <link href='https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css' rel='stylesheet' />
-</noscript>
+<script is:inline>
+  (() => {
+    const root = document.documentElement;
+    const applyEdition = () => {
+      let stored = null;
+      try { stored = localStorage.getItem('edition'); } catch {}
+      root.dataset.edition = stored === 'night' || stored === 'day'
+        ? stored
+        : matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day';
+    };
+    applyEdition();
+    try {
+      if (!sessionStorage.getItem('printed')) {
+        root.classList.add('is-first-print');
+        sessionStorage.setItem('printed', '1');
+      }
+    } catch {}
+    document.addEventListener('astro:after-swap', applyEdition);
+  })();
+</script>
 <title>{title}</title>
 <ClientRouter />
 <meta name='description' content={pageDescription} />

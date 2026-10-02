@@ -5,6 +5,7 @@ import {
     formatPostDate,
     postPath,
     postTone,
+    storyNames,
     tagPath,
     type PostEntry,
 } from '../scripts/publication';
@@ -12,9 +13,12 @@ import type { MarkdownHeading } from 'astro';
 import 'katex/dist/katex.min.css';
 import '../styles/layouts/markdown-layout.scss';
 import { SITE_TITLE } from '../config/site';
+import Colophon from '../components/common/Colophon.astro';
+import Icon from '../components/common/Icon.astro';
 
 const {
     frontmatter,
+    postId,
     canonical,
     seoDescription,
     headings = [],
@@ -23,6 +27,7 @@ const {
     nextPost,
 } = Astro.props as {
     frontmatter: Record<string, any>;
+    postId: string;
     canonical?: string;
     seoDescription?: string;
     headings?: MarkdownHeading[];
@@ -44,17 +49,22 @@ const {
 const pageDescription = seoDescription ?? description;
 
 const tone = postTone({ title, subtitle: category, tags });
-const kindLabel = kind === 'diary' ? '日记' : '文章';
+const kindLabel = kind === 'diary' ? '日常' : '文章';
 const published = formatPostDate(pubDate);
 const updated = updatedDate && formatPostDate(updatedDate);
 const tocHeadings = headings.filter(({ depth }) => depth === 2 || depth === 3);
+const names = storyNames(postId);
 const adjacentPost = (post?: PostEntry) => post && ({
+    id: post.id,
     title: post.data.title,
     href: postPath(post),
     date: formatPostDate(post.data.pubDate).display,
+    cover: post.data.cover,
 });
-const previous = adjacentPost(previousPost);
-const next = adjacentPost(nextPost);
+// Feature the older story as the natural next read; the newer one gets a quiet link.
+const featured = adjacentPost(previousPost ?? nextPost);
+const secondary = previousPost ? adjacentPost(nextPost) : undefined;
+const featuredLabel = previousPost ? '上一篇' : '下一篇';
 ---
 
 <BaseLayout
@@ -68,7 +78,11 @@ const next = adjacentPost(nextPost);
     modifiedTime={updatedDate}
     tags={tags}
 >
-    <article class='post-sheet' data-tone={tone}>
+    <article
+        class='post-sheet'
+        data-tone={tone}
+        data-pagefind-meta={`kind:${kindLabel}`}
+    >
         <header class='post-masthead'>
             <div class='edition-top publication-meta'>
                 <span>Misaki Journal · {kindLabel}</span>
@@ -78,31 +92,35 @@ const next = adjacentPost(nextPost);
             <div class='post-masthead__grid'>
                 <dl class='post-dateline'>
                     <div>
-                        <dt>发布</dt>
-                        <dd><time datetime={published.machine}>{published.display}</time></dd>
+                        <dt><Icon name='calendar' />发布</dt>
+                        <dd><time datetime={published.machine} data-pagefind-meta='date'>{published.display}</time></dd>
                     </div>
                     {updated && (
                         <div>
-                            <dt>更新</dt>
+                            <dt><Icon name='pencil' />更新</dt>
                             <dd><time datetime={updated.machine}>{updated.display}</time></dd>
                         </div>
                     )}
                     {readingMinutes && (
                         <div>
-                            <dt>阅读</dt>
+                            <dt><Icon name='hourglass' />阅读</dt>
                             <dd>约 {readingMinutes} 分钟</dd>
                         </div>
                     )}
                     {author && (
                         <div>
-                            <dt>作者</dt>
+                            <dt><Icon name='pen' />作者</dt>
                             <dd>{author}</dd>
                         </div>
                     )}
+                    <div class='visit-count'>
+                        <dt><Icon name='glasses' />浏览</dt>
+                        <dd><b id='vercount_value_page_pv'></b> 次</dd>
+                    </div>
                 </dl>
 
                 <div class='post-masthead__main'>
-                    <h1 class='post-title'>{title}</h1>
+                    <h1 class='post-title' style={names.title} data-story={names.key} data-pagefind-meta='title'><span class='story-title'>{title}</span></h1>
                     {description && <p class='post-standfirst'>{description}</p>}
                     {tags.length > 0 && (
                         <ul class='post-tags' aria-label='标签'>
@@ -116,7 +134,7 @@ const next = adjacentPost(nextPost);
         </header>
 
         {cover && (
-            <figure class='post-cover'>
+            <figure class='post-cover' style={names.cover} data-story={names.key}>
                 <Image
                     src={cover}
                     alt={title}
@@ -156,29 +174,38 @@ const next = adjacentPost(nextPost);
             )}
 
             <div class='post-reading__main'>
-                <div class='article-content' data-article-content>
+                <div class='article-content' data-article-content data-pagefind-body>
                     <slot />
                 </div>
                 <p class='post-endmark' aria-hidden='true'>■</p>
             </div>
         </div>
 
-        {(previous || next) && (
-            <nav class='post-pagination' aria-label='相邻文章'>
-                {previous ? (
-                    <a href={previous.href} rel='prev'>
-                        <span class='publication-meta'>← 上一篇 · {previous.date}</span>
-                        <strong>{previous.title}</strong>
-                    </a>
-                ) : <span></span>}
-                {next && (
-                    <a href={next.href} rel='next'>
-                        <span class='publication-meta'>下一篇 · {next.date} →</span>
-                        <strong>{next.title}</strong>
+        {featured && (
+            <nav class='continue-reading' aria-label='继续阅读'>
+                <a class='continue-reading__feature' href={featured.href}>
+                    <span class='continue-reading__label publication-meta'>继续阅读 · {featuredLabel} · {featured.date}</span>
+                    <strong class='continue-reading__title' style={storyNames(featured.id).title} data-story={storyNames(featured.id).key}>
+                        <span class='story-title'>{featured.title}</span>
+                    </strong>
+                    {featured.cover && (
+                        <figure class='continue-reading__cover halftone' style={storyNames(featured.id).cover} data-story={storyNames(featured.id).key}>
+                            <div class='halftone__print'><Image src={featured.cover} alt='' widths={[480, 720]} sizes='(max-width: 820px) 100vw, 360px' /></div>
+                        </figure>
+                    )}
+                    <span class='continue-reading__arrow' aria-hidden='true'><Icon name='manicule' /></span>
+                </a>
+                {secondary && (
+                    <a class='continue-reading__secondary' href={secondary.href}>
+                        <span class='publication-meta'>下一篇 · {secondary.date}</span>
+                        <strong>{secondary.title}</strong>
+                        <span aria-hidden='true'>→</span>
                     </a>
                 )}
             </nav>
         )}
+
+        <Colophon />
     </article>
 
     <button class='back-to-top' type='button' data-back-to-top aria-label='返回顶部'>

@@ -1,13 +1,14 @@
+import { navigate } from 'astro:transitions/client';
 import { mountPageModule } from './page-lifecycle';
+import { turnBackTo } from './transitions';
 
-/** Misaki Journal publication motion and reading progress. */
+/** Misaki Journal publication: scroll progress and swipe-to-turn. */
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
 export const mountPublication = () => {
   mountPageModule<HTMLElement>('.publication', (root) => {
     const controller = new AbortController();
     const { signal } = controller;
-    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
     let progressFrame = 0;
     let touchStartX = 0;
     let touchStartY = 0;
@@ -25,43 +26,6 @@ export const mountPublication = () => {
       if (progressFrame) return;
       progressFrame = requestAnimationFrame(updateProgress);
     };
-
-    const revealTargets = Array.from(
-      root.querySelectorAll<HTMLElement>('.friend-section, .colophon'),
-    );
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-revealed');
-        revealObserver.unobserve(entry.target);
-      });
-    }, { rootMargin: '0px 0px -10%', threshold: 0.08 });
-
-    const configureMotion = () => {
-      const reduced = reducedMotion.matches;
-      root.dataset.motion = reduced ? 'reduced' : 'full';
-      revealTargets.forEach((target) => {
-        target.classList.add('publication-reveal');
-        if (reduced) target.classList.add('is-revealed');
-        else revealObserver.observe(target);
-      });
-    };
-
-    const pointerRows = Array.from(
-      root.querySelectorAll<HTMLElement>('.entry-link, .diary-entry, .friend-entry'),
-    );
-    if (!reducedMotion.matches && matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      pointerRows.forEach((row) => {
-        row.addEventListener('pointermove', (event) => {
-          const bounds = row.getBoundingClientRect();
-          const offset = clamp01((event.clientX - bounds.left) / bounds.width) - 0.5;
-          row.style.setProperty('--pointer-shift', `${offset * 7}px`);
-        }, { passive: true, signal });
-        row.addEventListener('pointerleave', () => {
-          row.style.setProperty('--pointer-shift', '0px');
-        }, { signal });
-      });
-    }
 
     const swipeHref = root.dataset.swipeHref;
     const swipeDirection = root.dataset.swipeDirection;
@@ -85,21 +49,20 @@ export const mountPublication = () => {
         const movesTowardPage = swipeDirection === 'left' ? deltaX < -72 : deltaX > 72;
         const isHorizontal = Math.abs(deltaX) > Math.abs(deltaY) * 1.35;
         if (movesTowardPage && isHorizontal && elapsed < 850) {
-          window.location.assign(swipeHref);
+          // Swiping right reveals the previous page, so it turns back.
+          if (swipeDirection === 'right') turnBackTo(swipeHref);
+          else navigate(swipeHref);
         }
       }, { passive: true, signal });
     }
 
     updateProgress();
-    configureMotion();
     window.addEventListener('scroll', scheduleProgress, { passive: true, signal });
     window.addEventListener('resize', scheduleProgress, { signal });
-    reducedMotion.addEventListener('change', configureMotion, { signal });
 
     return () => {
       controller.abort();
       cancelAnimationFrame(progressFrame);
-      revealObserver.disconnect();
     };
   });
 };

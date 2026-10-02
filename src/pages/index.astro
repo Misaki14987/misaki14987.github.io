@@ -13,7 +13,7 @@ const diaries = getPostCards(posts.filter((post) => post.data.kind === 'diary'))
   title={SITE_TITLE}
   description={SITE_CONFIG.description}
   ogImage="/images/vn-blog-hero.png"
-  hideNavigation
+  deferBrand
 >
   <NewspaperHome {articles} {diaries} />
 </BaseLayout>

@@ -55,8 +55,6 @@
 
 .friend-entry__body {
   min-width: 0;
-  transform: translateX(var(--pointer-shift, 0));
-  transition: transform 350ms var(--ease-out-expo);
 }
 
 .friend-entry__name {

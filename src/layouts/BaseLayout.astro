@@ -1,7 +1,14 @@
 ---
+// Fonts are bundled and served from this site: no third-party font hosts,
+// which are slow or blocked for many readers in mainland China.
+import '@fontsource-variable/newsreader/opsz.css';
+import '@fontsource-variable/noto-serif-sc';
+import '@fontsource-variable/fira-code';
+import 'lxgw-wenkai-screen-webfont/lxgwwenkaigbscreen.css';
 import '../global.scss';
 import '../styles/layouts/base-layout.scss';
 import '../styles/themes/london-newspaper.scss';
+import '../styles/motion.scss';
 import SiteHead from '../components/common/SiteHead.astro';
 import SiteNav from '../components/common/SiteNav.astro';
 import { SITE_TITLE } from '../scripts/seo';
@@ -17,7 +24,7 @@ const {
     publishedTime,
     modifiedTime,
     tags = [],
-    hideNavigation = false,
+    deferBrand = false,
 } = Astro.props;
 ---
 
@@ -38,7 +45,7 @@ const {
   </head>
 
   <body class={`body ${bodyClass}`}>
-    {!hideNavigation && <SiteNav />}
+    <SiteNav deferBrand={deferBrand} />
     <main class='main'>
       <slot />
     </main>

@@ -1,31 +1,49 @@
 ---
-const links = [
-  { href: '/#articles', label: '文章' },
-  { href: '/#folio', label: '日记' },
-  { href: '/about/', label: 'Profile' },
+import Icon, { type IconName } from './Icon.astro';
+
+const { deferBrand = false } = Astro.props as { deferBrand?: boolean };
+
+const links: { href: string; label: string; icon: IconName }[] = [
+  { href: '/#articles', label: '文章', icon: 'article' },
+  { href: '/#folio', label: '日常', icon: 'daily' },
+  { href: '/archive/', label: '合订本', icon: 'archive' },
+  { href: '/about/', label: 'Profile', icon: 'profile' },
 ];
 const pathname = Astro.url.pathname;
-const isCurrent = (href: string) => {
-  const [path] = href.split('#');
-  if (path === '/' || path === '') return pathname === '/';
-  return pathname.startsWith(path);
-};
+// Section anchors on the front page are not pages of their own.
+const isCurrent = (href: string) => !href.includes('#') && pathname.startsWith(href);
 ---
 
-<header class='site-nav' data-od-id='site-nav'>
+<header
+  class:list={['site-nav', { 'site-nav--defer-brand': deferBrand }]}
+  data-od-id='site-nav'
+  data-site-nav
+>
   <div class='nav-inner'>
-    <a class='brand-link' href='/' data-od-id='nav-brand'>
+    <a class='brand-link' href='/' data-od-id='nav-brand' data-turn='back'>
       <strong>Misaki Journal</strong>
     </a>
     <nav class='nav-links' aria-label='主要版面' data-od-id='nav-links'>
       {links.map((link) => (
         <a
           href={link.href}
+          title={link.label}
           aria-current={isCurrent(link.href) ? 'page' : undefined}
         >
-          {link.label}
+          <Icon name={link.icon} />
+          <span class='nav-label'>{link.label}</span>
         </a>
       ))}
+      <button
+        class='edition-toggle'
+        type='button'
+        data-edition-toggle
+        title='切换日报 / 晚报'
+        aria-label='切换日报 / 晚报（浅色 / 深色）'
+      >
+        <span class='edition-toggle__to-night'><Icon name='night' /><span class='nav-label'>晚报</span></span>
+        <span class='edition-toggle__to-day'><Icon name='day' /><span class='nav-label'>日报</span></span>
+      </button>
     </nav>
   </div>
   <span class='scroll-progress' aria-hidden='true' data-reading-progress></span>

@@ -1,0 +1,149 @@
+/* Page motion · every navigation is something you could do with paper.
+ *
+ *   forward / back — turn the page: the next sheet is laid over the current one
+ *   story          — open the story: its cover and headline stay in your hands
+ *   edition        — switch day/night: the new edition is inked out from the toggle
+ *
+ * Direction comes from Astro's `data-astro-transition` (set in client/transitions.ts).
+ */
+
+:root {
+  --ease-turn: cubic-bezier(0.72, 0, 0.18, 1);
+  --ease-settle: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* The desk and the masthead bar stay put; only paper moves. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+::view-transition-group(site-nav) {
+  z-index: 10;
+  animation: none;
+}
+
+::view-transition-old(site-nav) {
+  display: none;
+}
+
+::view-transition-new(site-nav) {
+  animation: none;
+}
+
+/* ───────────── turning pages ───────────── */
+::view-transition-group(sheet) {
+  animation-duration: 640ms;
+  animation-timing-function: var(--ease-turn);
+}
+
+[data-astro-transition="forward"]::view-transition-old(sheet) {
+  animation: 560ms var(--ease-turn) both sheet-aside-left;
+}
+
+[data-astro-transition="forward"]::view-transition-new(sheet) {
+  animation: 640ms var(--ease-turn) both sheet-over-from-right;
+}
+
+[data-astro-transition="back"]::view-transition-old(sheet) {
+  animation: 560ms var(--ease-turn) both sheet-aside-right;
+}
+
+[data-astro-transition="back"]::view-transition-new(sheet) {
+  animation: 640ms var(--ease-turn) both sheet-over-from-left;
+}
+
+@keyframes sheet-aside-left {
+  to {
+    opacity: 0.35;
+    transform: translateX(-14%) scale(0.94);
+  }
+}
+
+@keyframes sheet-aside-right {
+  to {
+    opacity: 0.35;
+    transform: translateX(14%) scale(0.94);
+  }
+}
+
+@keyframes sheet-over-from-right {
+  from { transform: translateX(104vw) rotate(1.6deg); }
+}
+
+@keyframes sheet-over-from-left {
+  from { transform: translateX(-104vw) rotate(-1.6deg); }
+}
+
+/* ───────────── opening a story ───────────── */
+/* The open page stays on the desk; the story's page is laid over it. */
+[data-astro-transition="story"]::view-transition-old(sheet) {
+  animation: none;
+}
+
+[data-astro-transition="story"]::view-transition-new(sheet) {
+  animation: 440ms 80ms ease-out both paper-fade-in;
+}
+
+::view-transition-group(*.story-cover),
+::view-transition-group(*.story-title) {
+  animation-duration: 720ms;
+  animation-timing-function: var(--ease-settle);
+}
+
+::view-transition-old(*.story-cover),
+::view-transition-new(*.story-cover) {
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The halftone print develops into the photograph as the story opens. */
+::view-transition-old(*.story-cover) {
+  animation: 520ms ease-out both paper-fade-out;
+}
+
+::view-transition-new(*.story-cover) {
+  animation: 620ms 60ms ease-out both paper-fade-in;
+}
+
+::view-transition-old(*.story-title) {
+  animation: 240ms ease-out both paper-fade-out;
+}
+
+::view-transition-new(*.story-title) {
+  animation: 380ms 200ms ease-out both paper-fade-in;
+}
+
+@keyframes paper-fade-out {
+  to { opacity: 0; }
+}
+
+@keyframes paper-fade-in {
+  from { opacity: 0; }
+}
+
+/* ───────────── switching edition ───────────── */
+.is-edition-switching * {
+  view-transition-name: none !important;
+}
+
+.is-edition-switching::view-transition-old(root) {
+  animation: none;
+}
+
+.is-edition-switching::view-transition-new(root) {
+  animation: 820ms var(--ease-turn) both edition-ink;
+}
+
+@keyframes edition-ink {
+  from { clip-path: circle(0 at var(--flood-x, 100%) var(--flood-y, 0)); }
+  to { clip-path: circle(150vmax at var(--flood-x, 100%) var(--flood-y, 0)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,192 @@
+/* 合订本 · searchable back issues */
+
+.archive-sheet {
+  margin-top: 32px;
+}
+
+.archive-sheet .masthead {
+  border-bottom: 0;
+}
+
+.archive-title {
+  display: flex;
+  align-items: center;
+  gap: 0.18em;
+  margin: clamp(36px, 6vh, 60px) 0 clamp(26px, 4vw, 40px);
+  font: 800 clamp(3rem, 7vw, 6rem) / 0.95 var(--font-display);
+  letter-spacing: 0;
+}
+
+.archive-title__icon {
+  width: 0.8em;
+  height: 0.8em;
+  stroke-width: 1.3;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ───────────── search ───────────── */
+.archive-search {
+  display: block;
+  margin-bottom: clamp(36px, 5vw, 56px);
+}
+
+.archive-search__field {
+  display: flex;
+  min-height: 60px;
+  padding: 0 14px;
+  align-items: center;
+  gap: 12px;
+  border-top: 3px double var(--fg);
+  border-bottom: 1px solid var(--fg);
+  cursor: text;
+}
+
+.archive-search__icon {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  color: var(--accent);
+}
+
+.archive-search input {
+  min-width: 0;
+  flex: 1;
+  padding: 14px 0;
+  color: var(--fg);
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font: 500 clamp(1.1rem, 2vw, 1.35rem) / 1.3 var(--font-display);
+}
+
+.archive-search input::placeholder {
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+.archive-search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.archive-search__field:focus-within {
+  background: var(--surface-hover);
+}
+
+.archive-search kbd {
+  min-width: 26px;
+  padding: 2px 6px;
+  color: var(--muted);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  font: 500 12px / 1.4 var(--font-mono);
+  text-align: center;
+}
+
+.archive-search__status {
+  min-height: 1.45em;
+  margin: 12px 4px 0;
+}
+
+.archive-results {
+  margin-top: 10px;
+}
+
+.archive-result {
+  align-items: start;
+}
+
+.archive-result__body {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+}
+
+.archive-result__excerpt {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.archive-result__excerpt mark {
+  padding: 0 2px;
+  color: var(--fg);
+  background: color-mix(in oklch, var(--accent) 18%, transparent);
+}
+
+/* ───────────── years ───────────── */
+.archive-year + .archive-year,
+.archive-tags {
+  margin-top: clamp(36px, 5vw, 56px);
+}
+
+.archive-year__head {
+  display: flex;
+  min-height: 58px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-top: 3px double var(--fg);
+}
+
+.archive-year__head h2 {
+  margin: 0;
+  font: 800 clamp(1.7rem, 3vw, 2.4rem) / 1 var(--font-display);
+  letter-spacing: 0;
+}
+
+.archive-year__head a {
+  text-decoration: none;
+}
+
+.archive-year__head a:hover {
+  color: var(--accent);
+}
+
+/* ───────────── tags ───────────── */
+.archive-tags__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 18px 0 0;
+  border-top: 1px solid var(--fg);
+  list-style: none;
+}
+
+.archive-tags__list a {
+  display: inline-flex;
+  min-height: 34px;
+  padding: 0 10px;
+  align-items: center;
+  gap: 8px;
+  color: var(--fg);
+  border: 1px solid var(--border-soft);
+  font: 500 13px / 1 var(--font-ui);
+  text-decoration: none;
+  transition: border-color var(--dur-hover) var(--ease);
+}
+
+.archive-tags__list a:hover {
+  border-color: var(--accent);
+}
+
+.archive-tags__list span {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* The "/" shortcut only means something with a keyboard. */
+@media (hover: none) {
+  .archive-search kbd {
+    display: none;
+  }
+}

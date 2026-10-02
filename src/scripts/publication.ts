@@ -6,6 +6,7 @@ import {
   escapeXml,
   withTrailingSlash,
 } from './seo';
+import { storyKey } from './story-key';
 
 export type PostEntry = CollectionEntry<'posts'>;
 export type PostKind = PostEntry['data']['kind'];
@@ -23,6 +24,12 @@ export const postPath = (postOrId: PostEntry | string) => {
   const id = typeof postOrId === 'string' ? postOrId : postOrId.id;
   return withTrailingSlash(`/posts/${id}`);
 };
+
+export const storyNames = (id: string) => ({
+  key: storyKey(id),
+  cover: `--story-cover: story-cover-${storyKey(id)}`,
+  title: `--story-title: story-title-${storyKey(id)}`,
+});
 
 export const tagPath = (tag: string) =>
   withTrailingSlash(`/tags/${encodeURIComponent(tag)}`);
@@ -57,12 +64,38 @@ export const postTone = ({
   return 'build';
 };
 
-/** Rough estimate: ~400 CJK characters or ~200 Latin words per minute, code excluded. */
-export const readingMinutes = (markdown: string) => {
+const CJK = /[぀-ヿ㐀-鿿]/g;
+
+/** Words in prose, code excluded: each CJK character counts as one, as do Latin words. */
+const proseCounts = (markdown: string) => {
   const prose = markdown.replace(/```[\s\S]*?```/g, '');
-  const cjk = prose.match(/[぀-ヿ㐀-鿿]/g)?.length ?? 0;
-  const words = prose.replace(/[぀-ヿ㐀-鿿]/g, ' ').match(/[A-Za-z0-9]+/g)?.length ?? 0;
+  const cjk = prose.match(CJK)?.length ?? 0;
+  const words = prose.replace(CJK, ' ').match(/[A-Za-z0-9]+/g)?.length ?? 0;
+  return { cjk, words };
+};
+
+/** Rough estimate: ~400 CJK characters or ~200 Latin words per minute. */
+export const readingMinutes = (markdown: string) => {
+  const { cjk, words } = proseCounts(markdown);
   return Math.max(1, Math.round(cjk / 400 + words / 200));
+};
+
+/** The colophon's circulation line: issues, words and the founding date. */
+export const siteStats = (posts: PostEntry[]) => {
+  const words = posts.reduce((total, post) => {
+    const counts = proseCounts(post.body ?? '');
+    return total + counts.cjk + counts.words;
+  }, 0);
+  const founded = posts.reduce<Date | undefined>((earliest, post) => {
+    const date = new Date(post.data.pubDate);
+    return !earliest || date < earliest ? date : earliest;
+  }, undefined);
+
+  return {
+    posts: posts.length,
+    words: words >= 10000 ? `${(words / 10000).toFixed(1)} 万` : String(words),
+    founded,
+  };
 };
 
 export const formatPostDate = (

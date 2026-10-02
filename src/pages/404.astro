@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/common/Icon.astro';
+import Colophon from '../components/common/Colophon.astro';
+import { formatPostDate, getPublishedPosts, postPath } from '../scripts/publication';
+import { SITE_TITLE } from '../config/site';
+import '../styles/pages/missing.scss';
+
+const latest = (await getPublishedPosts('article')).slice(0, 3);
+---
+
+<BaseLayout title={`缺页 | ${SITE_TITLE}`} description='这一页没有付印。'>
+  <div class='publication missing-sheet'>
+    <section class='masthead' aria-labelledby='missing-title'>
+      <div class='edition-top publication-meta'>
+        <span>Misaki Journal · 缺页</span>
+        <span>Error 404</span>
+      </div>
+
+      <div class='missing-grid'>
+        <Icon name='torn' class='missing-icon' />
+        <div>
+          <h1 class='missing-title' id='missing-title'>此版面不存在</h1>
+          <p class='missing-copy'>
+            你要找的这一页没有付印，或者已经从合订本里撕掉了。
+            地址可能拼错了，也可能文章换了位置。
+          </p>
+          <nav class='missing-actions' aria-label='接下来去哪'>
+            <a class='missing-action' href='/' data-turn='back'><Icon name='article' />回到头版</a>
+            <a class='missing-action' href='/archive/'><Icon name='archive' />翻阅合订本</a>
+          </nav>
+        </div>
+      </div>
+
+      {latest.length > 0 && (
+        <section class='missing-latest' aria-labelledby='latest-heading'>
+          <header class='folio-head'>
+            <h2 id='latest-heading'>最近几期</h2>
+          </header>
+          <ol class='entry-list'>
+            {latest.map((post) => (
+              <li class='entry-row'>
+                <a class='entry-link' href={postPath(post)}>
+                  <time class='entry-date' datetime={formatPostDate(post.data.pubDate).machine}>
+                    {formatPostDate(post.data.pubDate).display}
+                  </time>
+                  <span class='entry-title'><span class='story-title'>{post.data.title}</span></span>
+                  <span class='entry-tag publication-meta'>{post.data.tags[0] ?? ''}</span>
+                  <span class='entry-arrow' aria-hidden='true'>→</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+    </section>
+
+    <Colophon />
+  </div>
+</BaseLayout>

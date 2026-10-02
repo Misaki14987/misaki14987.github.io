@@ -23,6 +23,7 @@ const { Content, headings } = await render(post);
 
 <MarkdownLayout
   frontmatter={post.data}
+  postId={post.id}
   canonical={postPath(post)}
   seoDescription={description}
   headings={headings}

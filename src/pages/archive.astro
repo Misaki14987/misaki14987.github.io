@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/common/Icon.astro';
+import Colophon from '../components/common/Colophon.astro';
+import {
+  formatPostDate,
+  getAllTags,
+  getPostsByTag,
+  getPublishedPosts,
+  postPath,
+  storyNames,
+  tagPath,
+} from '../scripts/publication';
+import { SITE_TITLE } from '../config/site';
+import '../styles/pages/archive.scss';
+
+const posts = await getPublishedPosts();
+// Posts arrive newest first, so each year's list keeps that order.
+const byYear = new Map<string, typeof posts>();
+for (const post of posts) {
+  const year = formatPostDate(post.data.pubDate).machine.slice(0, 4);
+  byYear.set(year, [...(byYear.get(year) ?? []), post]);
+}
+const years = [...byYear.entries()];
+const tags = getAllTags(posts).map((tag) => ({ name: tag, count: getPostsByTag(posts, tag).length }));
+---
+
+<BaseLayout title={`合订本 | ${SITE_TITLE}`} description='Misaki Journal 的全部往期：检索、按年份翻阅、按标签翻阅。'>
+  <div class='publication archive-sheet'>
+    <section class='masthead' aria-labelledby='archive-title'>
+      <div class='edition-top publication-meta'>
+        <span>Misaki Journal · 合订本</span>
+        <span>{posts.length} 篇 · {tags.length} 个标签</span>
+      </div>
+
+      <h1 class='archive-title' id='archive-title'><Icon name='archive' class='archive-title__icon' />合订本</h1>
+
+      <search class='archive-search' data-archive-search>
+        <label class='archive-search__field'>
+          <Icon name='search' class='archive-search__icon' />
+          <span class='visually-hidden'>检索往期</span>
+          <input
+            type='search'
+            placeholder='检索往期：标题、正文、标签'
+            autocomplete='off'
+            spellcheck='false'
+            data-search-input
+          />
+          <kbd aria-hidden='true'>/</kbd>
+        </label>
+        <p class='archive-search__status publication-meta' data-search-status aria-live='polite'></p>
+        <ol class='entry-list archive-results' data-search-results hidden></ol>
+      </search>
+
+      <div class='archive-years' data-archive-years>
+        {years.map(([year, entries]) => (
+          <section class='archive-year' aria-labelledby={`year-${year}`}>
+            <header class='archive-year__head'>
+              <h2 id={`year-${year}`}>{year}</h2>
+              <span class='publication-meta'>{entries.length} 篇</span>
+            </header>
+            <ol class='entry-list'>
+              {entries.map((post) => (
+                <li class='entry-row'>
+                  <a class='entry-link' href={postPath(post)}>
+                    <time class='entry-date' datetime={formatPostDate(post.data.pubDate).machine}>
+                      {formatPostDate(post.data.pubDate).display}
+                    </time>
+                    <span class='entry-title' style={storyNames(post.id).title} data-story={storyNames(post.id).key}>
+                      <span class='story-title'>{post.data.title}</span>
+                    </span>
+                    <span class='entry-tag publication-meta'>
+                      {post.data.kind === 'diary' ? '日常' : '文章'}
+                    </span>
+                    <span class='entry-arrow' aria-hidden='true'>→</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </section>
+        ))}
+      </div>
+
+      <section class='archive-tags' aria-labelledby='archive-tags-heading'>
+        <header class='archive-year__head'>
+          <h2 id='archive-tags-heading'><Icon name='type' class='section-icon' />按标签翻阅</h2>
+          <a class='publication-meta' href='/tags/'>全部标签 →</a>
+        </header>
+        <ul class='archive-tags__list'>
+          {tags.map((tag) => (
+            <li>
+              <a href={tagPath(tag.name)}>#{tag.name}<span>{tag.count}</span></a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </section>
+
+    <Colophon />
+  </div>
+</BaseLayout>
+
+<script>
+  import { mountArchiveSearch } from "../scripts/client/archive-search";
+
+  mountArchiveSearch();
+</script>

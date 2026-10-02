@@ -21,23 +21,19 @@
 }
 
 .profile-identity {
-  animation: profile-identity-reveal 760ms 390ms var(--ease-out-expo) both;
-}
-
-.profile-identity {
   grid-area: identity;
   min-width: 0;
 }
 
 .profile-kicker {
   display: block;
-  margin-bottom: 16px;
+  margin-bottom: 22px;
   color: var(--accent);
 }
 
 .profile-identity h1 {
   margin: 0;
-  font: 700 clamp(4.4rem, 8vw, 7.4rem) / 0.86 var(--font-display);
+  font: 700 clamp(4.4rem, 8vw, 7.4rem) / 1 var(--font-display);
   letter-spacing: 0;
 }
 
@@ -66,11 +62,7 @@
   justify-content: space-between;
   gap: 24px;
   border-bottom: 1px solid var(--fg);
-  animation: publication-rule-reveal 580ms var(--ease-out-expo) both;
 }
-
-.profile-dossier .profile-section-head { animation-delay: 500ms; }
-.profile-interests .profile-section-head { animation-delay: 680ms; }
 
 .profile-section-head h2 {
   margin: 0;
@@ -90,12 +82,8 @@
   gap: 24px;
   padding: 14px 4px;
   border-bottom: 1px solid var(--border-soft);
-  animation: publication-row-reveal 520ms var(--ease-out-expo) both;
 }
 
-.profile-stats > div:nth-child(1) { animation-delay: 600ms; }
-.profile-stats > div:nth-child(2) { animation-delay: 665ms; }
-.profile-stats > div:nth-child(3) { animation-delay: 730ms; }
 
 .profile-stats dt {
   display: grid;
@@ -133,13 +121,8 @@
   gap: 5px;
   padding: 12px 4px;
   border-bottom: 1px solid var(--border-soft);
-  animation: publication-row-reveal 500ms var(--ease-out-expo) both;
 }
 
-.interest-list li:nth-child(1) { animation-delay: 760ms; }
-.interest-list li:nth-child(2) { animation-delay: 815ms; }
-.interest-list li:nth-child(3) { animation-delay: 870ms; }
-.interest-list li:nth-child(4) { animation-delay: 925ms; }
 
 .interest-list li:nth-child(even) {
   padding-left: 18px;
@@ -155,21 +138,6 @@
   min-width: 0;
   overflow-wrap: anywhere;
   font: 700 1rem / 1.35 var(--font-display);
-}
-
-.profile-colophon {
-  border-top: 1px solid var(--border);
-}
-
-@keyframes profile-identity-reveal {
-  from {
-    opacity: 0;
-    transform: translateY(26px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
 }
 
 @media (max-width: 820px) {
@@ -217,17 +185,8 @@
     border-left: 0;
   }
 
-  .profile-colophon {
+  .profile-publication .colophon {
     padding-right: clamp(24px, 6vw, 82px);
     padding-left: 58px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .profile-identity,
-  .profile-section-head,
-  .profile-stats > div,
-  .interest-list li {
-    animation: none;
   }
 }

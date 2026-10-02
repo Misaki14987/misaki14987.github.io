@@ -6,6 +6,7 @@ import {
     getPublishedPosts,
     formatPostDate,
     postPath,
+    storyNames,
 } from '../../scripts/publication';
 import '../../styles/pages/tag.scss';
 import { SITE_TITLE } from '../../config/site';
@@ -21,10 +22,11 @@ export async function getStaticPaths() {
 const { tag } = Astro.params;
 const { posts } = Astro.props;
 const cards = posts.map((post) => ({
+    id: post.id,
     title: post.data.title,
     link: postPath(post),
     date: formatPostDate(post.data.pubDate),
-    kind: post.data.kind === 'diary' ? '日记' : '文章',
+    kind: post.data.kind === 'diary' ? '日常' : '文章',
 }));
 ---
 
@@ -36,7 +38,7 @@ const cards = posts.map((post) => ({
     <div class="publication tag-sheet">
         <section class="masthead" aria-labelledby="tag-title">
             <div class="edition-top publication-meta">
-                <a href="/tags/">← 全部标签</a>
+                <a href="/tags/" data-turn="back">← 全部标签</a>
                 <span>{cards.length} 篇</span>
             </div>
 
@@ -47,7 +49,7 @@ const cards = posts.map((post) => ({
                     <li class="entry-row">
                         <a class="entry-link" href={post.link}>
                             <time class="entry-date" datetime={post.date.machine}>{post.date.display}</time>
-                            <span class="entry-title">{post.title}</span>
+                            <span class="entry-title" style={storyNames(post.id).title} data-story={storyNames(post.id).key}><span class="story-title">{post.title}</span></span>
                             <span class="entry-tag publication-meta">{post.kind}</span>
                             <span class="entry-arrow" aria-hidden="true">→</span>
                         </a>

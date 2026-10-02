@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets';
-import { formatPostDate } from '../../../scripts/publication';
-import { CONTACT_LINKS } from '../../../config/site';
+import { formatPostDate, storyNames } from '../../../scripts/publication';
+import Colophon from '../../common/Colophon.astro';
+import Icon from '../../common/Icon.astro';
 
 const { articles, diaries } = Astro.props;
 const articleCount = articles.length;
@@ -20,7 +21,7 @@ const latestDate = [...articles, ...diaries]
 const entryTag = (post) => post.tags[0] || post.subtitle || '技术';
 ---
 
-<main
+<div
   id='top'
   class='publication'
   data-od-id='journal-publication'
@@ -38,14 +39,17 @@ const entryTag = (post) => post.tags[0] || post.subtitle || '技术';
       <span>Stay live just for FUN</span>
     </div>
 
-    <h1
-      class='masthead-title'
-      id='masthead-title'
-      data-od-id='masthead-heading'
-    >
-      <span class='title-line'><span>Misaki</span></span>
-      <span class='title-line'><span>Journal</span></span>
-    </h1>
+    <div class='nameplate' data-nameplate>
+      <h1
+        class='masthead-title'
+        id='masthead-title'
+        data-od-id='masthead-heading'
+      >
+        <span class='title-line'><span>Misaki</span></span>
+        <span class='title-line'><span>Journal</span></span>
+      </h1>
+      <span class='nameplate__roller' aria-hidden='true'></span>
+    </div>
 
     <div class='masthead-dateline publication-meta'>
       {latestDate && (
@@ -53,20 +57,21 @@ const entryTag = (post) => post.tags[0] || post.subtitle || '技术';
           最近更新 <time datetime={formatPostDate(latestDate).machine}>{formatPostDate(latestDate).display}</time>
         </span>
       )}
-      <span>{articleCount} 篇文章 · {diaryCount} 篇日记</span>
+      <span>{articleCount} 篇文章 · {diaryCount} 篇日常</span>
     </div>
 
     <div class='masthead-grid'>
       <section class='masthead-articles' aria-labelledby='articles-heading'>
         <header class='masthead-articles-head'>
-          <h2 id='articles-heading' data-od-id='articles-heading'>Blog</h2>
+          <h2 id='articles-heading' data-od-id='articles-heading'><Icon name='article' class='section-icon' />Blog</h2>
           <span class='publication-meta' id='article-count'>{articleCount} 篇</span>
         </header>
 
         {lead && (
           <a class='lead-story' href={lead.link} data-od-id={`article-card-${lead.id}`}>
             {lead.image && (
-              <figure class='lead-story__image'>
+              <figure class='lead-story__image halftone' style={storyNames(lead.id).cover} data-story={storyNames(lead.id).key}>
+                <div class='halftone__print'>
                 <Image
                   src={lead.image}
                   alt=''
@@ -75,6 +80,7 @@ const entryTag = (post) => post.tags[0] || post.subtitle || '技术';
                   loading='eager'
                   decoding='async'
                 />
+                </div>
               </figure>
             )}
             <div class='lead-story__meta publication-meta'>
@@ -83,9 +89,9 @@ const entryTag = (post) => post.tags[0] || post.subtitle || '技术';
               </time>
               <span>{entryTag(lead)}</span>
             </div>
-            <h3 class='lead-story__title'>{lead.title}</h3>
+            <h3 class='lead-story__title' style={storyNames(lead.id).title} data-story={storyNames(lead.id).key}><span class='story-title'>{lead.title}</span></h3>
             {lead.description && <p class='lead-story__excerpt'>{lead.description}</p>}
-            <span class='lead-story__more'>阅读全文 <span aria-hidden='true'>→</span></span>
+            <span class='lead-story__more'><Icon name='manicule' class='manicule' />阅读全文</span>
           </a>
         )}
 
@@ -96,7 +102,7 @@ const entryTag = (post) => post.tags[0] || post.subtitle || '技术';
                 <time class='entry-date' datetime={formatPostDate(article.pubDate).machine}>
                   {formatPostDate(article.pubDate).display}
                 </time>
-                <span class='entry-title'>{article.title}</span>
+                <span class='entry-title' style={storyNames(article.id).title} data-story={storyNames(article.id).key}><span class='story-title'>{article.title}</span></span>
                 <span class='entry-tag publication-meta'>{entryTag(article)}</span>
                 <span class='entry-arrow' aria-hidden='true'>→</span>
               </a>
@@ -113,7 +119,7 @@ const entryTag = (post) => post.tags[0] || post.subtitle || '技术';
                     <time class='entry-date' datetime={formatPostDate(article.pubDate).machine}>
                       {formatPostDate(article.pubDate).display}
                     </time>
-                    <span class='entry-title'>{article.title}</span>
+                    <span class='entry-title' style={storyNames(article.id).title} data-story={storyNames(article.id).key}><span class='story-title'>{article.title}</span></span>
                     <span class='entry-tag publication-meta'>{entryTag(article)}</span>
                     <span class='entry-arrow' aria-hidden='true'>→</span>
                   </a>
@@ -128,15 +134,15 @@ const entryTag = (post) => post.tags[0] || post.subtitle || '技术';
         class='masthead-folio'
         id='folio'
         data-od-id='folio-section'
-        aria-label='日记与作品'
+        aria-label='日常'
       >
         <section class='folio-column' data-od-id='diary-column' aria-labelledby='diary-heading'>
           <header class='folio-head'>
-            <h2 id='diary-heading'>日记</h2>
+            <h2 id='diary-heading'><Icon name='daily' class='section-icon' />日常</h2>
             <span class='publication-meta'>{diaryCount} 篇</span>
           </header>
           {diaries.length === 0 && (
-            <p class='empty-copy'>暂无日记。</p>
+            <p class='empty-copy'>暂无日常。</p>
           )}
           <ol class='diary-list'>
             {visibleDiaries.map((diary) => (
@@ -149,7 +155,7 @@ const entryTag = (post) => post.tags[0] || post.subtitle || '技术';
                   <time datetime={formatPostDate(diary.pubDate).machine}>
                     {formatPostDate(diary.pubDate).display}
                   </time>
-                  <strong>{diary.title}</strong>
+                  <strong style={storyNames(diary.id).title} data-story={storyNames(diary.id).key}><span class='story-title'>{diary.title}</span></strong>
                   <span class='entry-arrow' aria-hidden='true'>→</span>
                 </a>
               </li>
@@ -157,7 +163,7 @@ const entryTag = (post) => post.tags[0] || post.subtitle || '技术';
           </ol>
           {remainingDiaries.length > 0 && (
             <details class='archive-more diary-more'>
-              <summary>查看其余 {remainingDiaries.length} 篇日记</summary>
+              <summary>查看其余 {remainingDiaries.length} 篇日常</summary>
               <ol class='diary-list'>
                 {remainingDiaries.map((diary) => (
                   <li>
@@ -169,7 +175,7 @@ const entryTag = (post) => post.tags[0] || post.subtitle || '技术';
                       <time datetime={formatPostDate(diary.pubDate).machine}>
                         {formatPostDate(diary.pubDate).display}
                       </time>
-                      <strong>{diary.title}</strong>
+                      <strong style={storyNames(diary.id).title} data-story={storyNames(diary.id).key}><span class='story-title'>{diary.title}</span></strong>
                       <span class='entry-arrow' aria-hidden='true'>→</span>
                     </a>
                   </li>
@@ -179,35 +185,12 @@ const entryTag = (post) => post.tags[0] || post.subtitle || '技术';
           )}
         </section>
 
-        <section class='folio-column' data-od-id='works-empty-state' aria-labelledby='works-heading'>
-          <header class='folio-head'>
-            <h2 id='works-heading'>作品</h2>
-          </header>
-          <p class='empty-copy'>暂无作品。</p>
-        </section>
       </aside>
     </div>
   </section>
 
-  <footer class='colophon' id='colophon' data-od-id='colophon'>
-    <div class='colophon-mark'>
-      <strong data-od-id='colophon-heading'>Misaki Journal</strong>
-      <span>Edited &amp; published by M1saK1</span>
-    </div>
-    <nav class='colophon-links' aria-label='联系方式'>
-      {CONTACT_LINKS.map((link) => (
-        <a
-          class='letter-link'
-          href={link.href}
-          target={link.external ? '_blank' : undefined}
-          rel={link.external ? 'noopener noreferrer' : undefined}
-        >
-          {link.label}
-        </a>
-      ))}
-    </nav>
-  </footer>
-</main>
+  <Colophon />
+</div>
 
 <a
   class='page-edge-link page-edge-link--next'
