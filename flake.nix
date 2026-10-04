@@ -18,12 +18,6 @@
             pnpm
             git
           ];
-
-          shellHook = ''
-            echo "🚀 Misaki's Blog dev shell"
-            echo "Node: $(node --version)"
-            echo "pnpm: $(pnpm --version)"
-          '';
         };
       });
 }
