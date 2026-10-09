@@ -1,11 +1,12 @@
 ---
-title: "Cocktail尝试（1）"
+title: Cocktail尝试（1）
 pubDate: 2026-08-19
-author: "M1saK1"
-category: "daily"
-tags: ["daily"]
-kind: "diary"
-cover: "./cover.jpg"
+author: 我是上伊娜牡丹
+category: daily
+tags:
+  - daily
+kind: diary
+cover: ./cover.jpg
 ---
 
 ## 今日はカクテル作りに緒戦してみました！（塑料日语）

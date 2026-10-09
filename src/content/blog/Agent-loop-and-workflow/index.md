@@ -1,10 +1,13 @@
 ---
-title: "Agent 循环与工作流模式"
+title: Agent 循环与工作流模式
 pubDate: 2026-10-01
-author: "M1saK1"
-category: "agent"
-tags: ["agent", "LLM", "Anthropic"]
-cover: "./cover.jpg"
+author: Agent型高性能米撒奇
+category: agent
+tags:
+  - agent
+  - LLM
+  - Anthropic
+cover: ./cover.jpg
 ---
 # Agent 循环与工作流模式
 
