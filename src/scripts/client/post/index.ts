@@ -5,6 +5,13 @@ import { initializeHeadingNavigation } from "./heading-navigation";
 import { initializeReadingControls } from "./reading-controls";
 
 export const initializePostContent = (article: HTMLElement, signal: AbortSignal) => {
+  if (article.querySelector('[data-music-player]')) {
+    void import('./music-players').then(({ initializeMusicPlayers }) => {
+      if (!signal.aborted) initializeMusicPlayers(article, signal);
+    }).catch(() => {
+      // The server-rendered source links remain usable if the player fails to load.
+    });
+  }
   initializeReadingControls(article, signal);
   const disconnectHeadingObserver = initializeHeadingNavigation(article, signal);
   initializeCodeBlocks(article, signal);

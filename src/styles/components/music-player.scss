@@ -1,0 +1,42 @@
+.article-content .music-embed {
+  margin: 1.4rem 0 2rem;
+  min-width: 0;
+
+  .aplayer {
+    margin: 0;
+    color: var(--fg);
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    box-shadow: none;
+    font-family: var(--font-ui);
+  }
+
+  .aplayer .aplayer-info .aplayer-music .aplayer-author {
+    color: var(--muted);
+  }
+
+  .aplayer .aplayer-info .aplayer-controller .aplayer-time {
+    color: var(--muted);
+  }
+
+  .aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-icon path {
+    fill: var(--muted);
+  }
+
+  .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar {
+    background: var(--border-soft);
+  }
+
+  iframe {
+    display: block;
+    width: 100%;
+    height: 120px;
+    border: 0;
+  }
+
+  figcaption {
+    margin-top: 0.5rem;
+    color: var(--muted);
+    font: 400 12px / 1.6 var(--font-ui);
+  }
+}
